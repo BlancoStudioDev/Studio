@@ -1,0 +1,73 @@
+Esercizio 1
+a)
+        13
+      11  23
+    4 12 19 32
+              46
+
+Prima li ordino e poi li metto dentro con la cosa del frattale
+
+b)
+        13
+     12     23
+  11      19  32
+4               46
+
+Esercizio 2
+Sequenza: 13 46 23 11 4 19 32 12
+11 12 4 13 23 19 32 46
+
+46 13 32 12 4 19 23 11
+
+13 46 23 11 4 19 32 12
+13 23 11 4 19 32 12 46
+13 11 4 19 23 12 32 46
+
+13 46 23 11
+ 4 19 32 12
+4 13 19 32 12 46 23 11
+
+Esercizio 3
+Un Albero nella teoria dei grafi è un grafo non orientato che soddisfa contemporaneamente la proprietà di connessione
+e la proprietà dell'essere aciclico. questo vuol dire che tutti i suoi vertici sono connessi o si parlerebbe di foresta
+di alberi e che le connessioni presenti tra i suoi vertici non formano un ciclo.
+
+Un albero ricoprente, dato G=(V,E), è un sottografo di G che contiene lo stesso numero di vertici V e sottisfa la proprietà
+di non essere ciclico, il che vuol dire che dal grafo originale si tolgono tutti quegli archi che portano il grafo a creare
+dei cicli.
+
+Un albero ricoprente minimo è un albero ricoprente, quindi che soddisfa la proprietà di albero e di contenere gli stessi
+vertici di G, ma la somma degli archi che connettono i vertici è minima. questo si può ottenere usando un algoritmo come
+Kruskal che da un grafo estrae un albero ricoprente minimo.
+
+Per controllare la condizione imposta nella riga 5 dell pseudocodice si possono introdurre delle strutture quali una coda
+con priorità, in particolare il nuovo pseudocodice risulterebbe:
+
+PSEUDOCODICE
+
+ALGORITMO KRUSKAL(G(V,E,w) non orientato) -> albero
+
+  Ordina l'insieme degli archi in ordine non decrescente in base al loro peso
+  T <- (V,0)
+  Sia P una coda di priorità inizialmente vuota
+  FOR EACH v in V DO P.makeset(v)
+  FOR EACH (x,y) in E in base all'ordine DO
+    Tx <- P.find(x)
+    Ty <- P.find(y)
+    if tx != ty THEN
+        aggiungi (x,y) all'albero T
+        P.union(Tx,Ty)
+
+  RETURN T
+
+il grafo più oppurtuno per fornirlo a questo algoritmo è sicuramente il grafo non orientato con i pesi dei vari archi
+in un insieme E che contiene i loro pesi. Il tempo di computazione di questo algoritmo risulta essere:
+  - nlogn per l'ordinamento degli archi in base ai loro pesi
+  - n per il riempimento della cosa con priorità nel for each
+  - m numero di archi che per un grafo molto denso può essere anche m = n^2-1 ovvero n^2
+
+quindi il tempo di computazione di questo algoritmo risulta essere n^2 per via dell'ultimo ciclo.
+
+Per questo punto andrei a prendere la matrice in ingresso, applicare la seconda parte dell'algoritmo di floyd warshall
+per poi ordinare i vertici della matrice e preoseguire con l'implementazione di KRUSKAL per la ricerca dell'albero
+ricoprente minimo.

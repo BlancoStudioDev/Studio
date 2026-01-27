@@ -1,0 +1,57 @@
+INIZIO 15:36
+
+Esercizio 1
+Sequenza: gatto gufo leone capra pecora geco pitone lepre
+
+0 geco
+1
+2 capra
+3
+4
+5
+6 gatto
+7 pitone
+8 leone
+9 pecora
+10
+11 gufo
+12
+13 lepre
+14
+15
+
+Esercizio 2
+Sequenza: 44 63 22 77 10 88 55 33 85
+
+a) 10 33 22 44 77 88 55 44 85
+b) 10 33 22 44 63 88 55 77 85
+c) 10 22 63 77 44 88 55 33 85
+d) 22 44 10 63 55 33 77 85 88
+
+FINE PRIMA PARTE 15:47 -> tempo 11 minuti
+
+Esercizio 3
+PSEUDOCODICE
+  ALGORITMO DIJKSTRA(G(V,E,w), s vertice) -> media
+    D[s] <- 0
+    FOR EACH v in V-{s} DO
+      D[v] <- infinito
+    Sia C una coda con priorità
+    FOR EACH v in V-{s} DO
+      C.insert(v,D[v])
+    WHILE C != 0 DO
+      u <- elemento minimo D[u] in C
+      IF D[u] + w(u,v) < D[v] THEN
+        C.ChangeKey(v,D[v])
+        D[v] <- D[u] w(u,v)
+    FOR EACH v in V-{s} DO 
+      IF D[v] < infinito THEN
+        somma <- somma + D[v]
+        n <- n + 1
+    IF n > 0 THEN
+      RETURN somma/n
+    ELSE
+      RETURN 0
+
+Lista di adiacenza -> rappresentazione del grafo in cui ogni vertice è associato a una lista che contiene tutti i vertici
+u tali che esiste un arco (u,v) in E. Occupazione memoria (n+m) 

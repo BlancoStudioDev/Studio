@@ -1,0 +1,102 @@
+INIZIO: 13:46
+
+Esercizio 1
+
+Sequenza: 28 25 16 4 56 20 26
+
+a) 25 16 28 4 20 26 56
+b) 20 16 28 4    26 56        25
+
+Esercizio 2
+
+Sequenza: 25 16 4 13 12 56 20 26
+
+a) 4 12 20 13 16 56 25 26
+b) 12 13 20 26 16 56 25
+c) 4 13 20 26 16 56 25 28
+d) 12 13 4 20 16 26 56 25
+
+FINE PARTE 1 13:55 => Tempo 9 minuti
+
+INIZIO PARTE 2 14:02
+
+Esercizio 3
+
+a)
+
+PSEUDOCODICE
+
+ALGORITMO KRUSKAL(G(V,E)) -> A
+  A <- (V,vuoto)
+  FOR EACH (x,y) in E DO
+    Se x e y non sono connessi in A THEN
+      Aggiungi l'arco (x,y) ad A
+  RETURN A
+
+b) Per controllare in maniera efficace la condizione a riga 5 possiamo introdurre delle strutture di supporto quali le
+   partizioni manipolabili tramite delle funzioni come Union, Find e Makeset. La prima va ad unire due insiemi, la seconda
+   ricerca all'interno degli insiemi il valore che stiamo cercando e infine la makeset crea un insieme con il valore
+   passato come argomento. Per fare questo scriviamo lo pseudocodice modificato in modo che racchiuda queste strutture
+   di supporto
+
+   1 Algoritmo Kruskal (G = (V, E, ω)) → albero
+   2  ordina l’insieme E in base ai pesi in modo non decrescente
+   3  A = ∅
+   4  Sia P una partizione inizialmente vuota
+   5  foreach v in V DO P.MakeSet(v)
+   6  foreach (x, y) ∈ E secondo l’ordine do
+   7    Tx <- P.Find(x)
+   8    Ty <- P.Find(y)
+   9    if Tx != Ty then
+   10     A ← A ∪ {(x, y)}
+   11     P.Union(Tx,Ty)
+   12  return (V, A)
+
+c) Per descrivere in modo più efficiente il grafo in modo che sia utile all'implementazione dell'algoritmo possiamo usare
+   una lista di archi, ovvero un array di archi, che associano ad ogni vertice tutti gli archi uscenti da quel
+   vertice. Il tempo di computazione dopo questa implementazione risulterà il seguente (per comodità scomponiamo
+   l'algoritmo in modo da analizzarlo meglio):
+     * Ordinare l'insieme E, siccome ci troviamo in una lista di archi, ovvero un array, l'ordinamento può essere fatto
+       tramite un algoritmo di sorting che ordina gli elementi in base al loro peso, per fare ciò possiamo usare l'algoritmo
+       di heap sort che consente di ordinare gli elementi in ordine crescente in tempo O(mlog m) con m che è il numero degli
+       elementi di E, ovvero il numero degli archi, sappiamo che in un grafo fortemente connesso, ovvero che ogni vertice
+       è connesso a tutti gli arlti, abbiamo un numero di archi pari a n^2, e in generale il numero di archi è compreso
+       tra n-1 <= m <= n^2, per questo, prendendo il worst case, possiamo dire che per ordinare l'insieme E ci vuole
+       O(m log m) = O(n^2 log n^2) = O(2n^2 log n) = O(m log n)
+     * Per creare l'albero A e per creare la partizione P, ovvero la loro dichiarazione iniziale si usa tempo costante
+       e per il criterio del costo unitario questo tempo è assumibilie a O(1), quindi queste due dichiarazioni portano
+       via tempo per O(1)
+     * Per Riempire la partizione si scorre l'insieme dei vertici V e facendo questo si ottiene un tempo di O(n), poichè
+       per qualsiasi tipo di algoritmo, Quick Find bilanciata o no, Quick Union bilanciata o no, si ha sempre una complessità
+       dell'operazione di makeset che è uguale a O(1), questa operazione viene poi ripetuta per n vertivi nel ciclo
+       for e quindi porta il tutto ad una complessità di O(n)
+     * Il foreach ha al suo interno diverse componenti che andiamo ora ad analizzare:
+       + Assegnazione tramite funzione Find a Tx <- P.Find(x) e Ty <- P.Find(y), la complessità di questa operazione
+         dipende dall'algoritmo usato per implementarla, nel caso di una Quick Find non bilanciata questa operazione
+         impiegherebbe O(1) e la stessa cosa se usassimo un algoritmo di Quick Find bilanciato, se invece usassimo un
+         algoritmo di Quick Union non bilanciato avremmo una complessità di O(n) e se invece questo fosse bilanciato
+         porterebbe la complessità ad O(log n)
+       + Per quanto riguarda l'IF, al suo interno ha diversi componenti, il confronto in generale costa O(1) sempre per il
+         criterio del costo unitario, al suo interno abbiamo un'operazione di assegnamente all'albero che ha come detto
+         prima un costo di O(1) giustificabile grazie al criterio del costo unitario, e l'operazione di Union che dipende
+         con che algoritmo venga implementata, se viene usato un algoritmo di Quick Find non bilanciato si ha un tempo
+         pari a O(n), nel caso di una Quick Find bilanciata si ha un tempo di O(log n), se invece si usasse un algoritmo
+         di Quick Union si avrebbe una complessità pari a O(1) in entrambi i casi, sia che l'algoritmo sia QUick Union
+         o Quick Union bilanciato. L'IF ha quindi complessità variabile da 1 a n a log n.
+     * Siccome sia l'assegnamento di Tx e Ty e le operazioni all'interno dell'if hanno tempo di computazione inverso, possiamo
+       scegliere l'algoritmo che preferiamo tra Quick Union bilanciato e Quick Find bilanciato, in ogni caso la complessità
+       delle operazioni all'interno del for risulterebbe O(log m), se poi andiamo a prendere il for che cicla su tutti
+       gli archi allora la complessità diventa O(m log m) che come visto e spiegato in precedenza porta la complessità
+       ad essere O(m log n).
+
+d) Siccome adesso il grafico è rappresentato tramite matrice di adiacenza dovremo modificare lo pseudocodice dellesercizio
+   a) nel seguente modo: togliere l'ordinamento dell'insieme E, il for each non sarà più un for each ma un for normale e ne
+   conterrà un altro sempre di for normale che insieme scorreranno la matrice, se il valore che trovano è == 1 allora
+   vuol dire che esiste un arco, a quel punto faccio un if e vedo se i due vertici i e j sono già connessi nell'albero
+   che sto creando A, se così dovesse essere allora non aggiungo l'arco, se invece non sono già connessi allora lo prendo
+   e lo aggiungo ad A, ovvero l'albero ricoprente.
+
+e) L'algoritmo nuovo sicuramente riporta un cambiamento sostanziale nei costi essendo che adesso ho un doppio ciclo che porta
+   il costo ad essere nell'ordine di n^2 a causa appunto del doppio for che itera sui vertici.
+
+FINE PARTE 2 14:39 => Tempo: 37 minuti.

@@ -1,0 +1,40 @@
+INIZIO 9:53
+
+- stazione detta centro
+- a ogni stazione x è associato un costo C(x)
+- somma dei costi delle stazioni passate
+- tariffa è il minimo tra tutti i costi delle stazioni
+
+
+a) Per risolvere il problema posto andremo a formalizzare il problema nel seguente modo: l'insieme delle stazioni sarà
+   il nostro grafo G, che contiene V ovvero l'insieme dei vertici che per noi è l'insieme delle stazioni, E che è l'insieme
+   degli archi e w che è l'insieme dei pesi delle stazioni presenti nel grafo stazioni. In generale l'insieme V
+   è formalizzato come un insieme dei vertici V = {1, .... , n}, nel nostro caso hanno nome dato da lettere, quindi
+   possiamo formalizzarlo come V = {a, .... , z}, mentre l'insieme degli archi è l'insieme E = {(a,b), ... , (y,z)} e
+   w, l'insieme dei pesi per stazione, ovvero il peso di ogni arco di E. Nel nostro problema E è l'insieme delle tratte
+   ferroviarie, V è l'insieme delle stazioni della metro e infine w è l'insieme dei costi delle stazioni della metro.
+   Il nostro algoritmo ha come istanza G, il grafo, e centro, un vertice del grafo che si trova al centro della città
+   da cui si vorranno analizzare gli spostamenti massimi (minimi) rispetto a questo posto centrale. Per fare questo
+   scriveremo un algoritmo che si basa su quello di Dijkstra, il quale ricerca i cammini minimi da un punto centrale
+   e li pone all'interno di un vettore, noi faremo la stessa cosa solo che il peso non è associato all'arco, ma al
+   vertice. Per fare questo modificheremo l'algoritmo di Dijkstra nel seguente modo:
+   * 
+
+b)
+ALGORITMO DIJKSTRA(G(V,E,w), vertice centro, costo_nodi) -> Vettore
+  Sia D un vettore con indici in V
+  D[centro] <- costo_nodi[centro]
+  FOR EACH v in V - {centro} DO D[v] <- infinito
+  C <- V
+
+  WHILE C != 0 DO
+    u <- elemento minimo D[u] in C
+    C <- C - {u}
+    FOR EACH (u,v) in E DO
+      IF D[u] + costo_nodi[v] < D[v] THEN
+        D[v] <- D[u] + costo_nodi[v]
+
+  RETURN D
+
+
+

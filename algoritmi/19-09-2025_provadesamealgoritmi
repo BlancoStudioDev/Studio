@@ -1,0 +1,60 @@
+14:55
+
+Esercizio 1
+Sequenza: 28 25 16 14 56 29 26 48
+a)
+            28
+        25      56
+    16     26 29
+  14            48
+
+b)            25
+        16          29
+    14          28      56
+              26       48
+
+Esercizio 2
+Sequenza: 25 16 14 13 48 56 29 26
+a) 13 16 14 25 28 56 29 26
+b) 26 13 16 48 25 56 14 29
+c) 25 26 29 13 16 14 48 56
+d) 13 14 16 25 48 56 29 26
+
+FINE PARTE 1 TEMPO: 18 minuti (5 di intelligenza artificiale per visionarne la correttezza)
+
+Esercizio 3
+a) Dato un grafo G=(V,E) con peso w, un cammino da x a y è una serie di archi che congiungono il vertice x al vertice con
+   un peso specifico, dato dalla somma dei pesi degli archi necessari per passare da x a y
+
+   Un cammino minimo da x a y è invece il cammino con la somma dei pesi degli archi che congiungono x a y
+   minore rispetto a tutti gli altri
+
+b) Il problema risolto dall'algoritmo di Dijkstra è quello di trovare tutti i cammini minimi che congiungono un vertice 
+   centrale (s) a tutti gli altri vertici presenti nel grafo fornito riportandone i pesi.
+
+d1) In termini di tempo la linea 7 dello pseudocodice costa n, poichè basta fare una ricerca lineare del minimo, scorrendo
+   semplicemente l'array.
+d2) Siccome C è una copia dell'insieme dei vertici e dobbiamo scorrerlo tutto con Djikstra allora complessivamente la linea
+    7 costa n*n ovvero n^2 poichè sono n iterazioni per n che è la ricerca binaria
+
+e) Vengono fatte n^2 iterazioni, ovvero m iterazioni che sono il numero di archi per un grafo complesso molto connesso
+   Vengono fatte n^2*n iterazioni.
+
+f) PSEUDOCODICE
+  
+  ALGORITMO DIJKSTRA(Grafo G=(V,E,w), vertice s) -> vettore
+    Sia D un vettore con indici in V
+    D[s] <- 0
+    Sia C una coda con priorità inizialmente vuota
+    FOR EACH v in V - {s} DO D[v] <- infinito
+    FOR EACH v in V -{s} DO C.insert(v,D[v])
+    WHILE C != 0 DO
+      u <- C.deleteMin()
+      FOR EACH (u,v) in E DO
+        IF D[u] + w(u,v) < D[v]
+           D[v] <- D[u] + w(u,v)
+           C.changeKey(v,D[v])
+
+    RETURN D
+
+

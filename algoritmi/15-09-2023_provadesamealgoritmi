@@ -1,0 +1,60 @@
+INIZIO 14:31
+
+Esercizio 1
+Sequenza: geco lepre gatto capra gufo leone pecora panda
+
+0 gufo
+1
+2 capra
+3
+4
+5 panda
+6 geco
+7 pecora
+8 lepre
+9
+10
+11 gatto
+12
+13 leone
+14
+15
+
+Esercizio 2
+Sequenza: 54 62 11 70 24 31 32 12
+a) DA VEDERE RADIX SORT
+b) 70 62 32 54 24 31 11 12
+c) 11 12 31 62 24 54 32 70
+d) 11 24 31 62 37 54 32 70
+
+FINE PARTE 1: 11 minuti
+Esercizio 3
+a) L'algoritmo che userei per risolvere questo problema è quello di Floyd Warshall modificato per restituire una lista
+e per ricevere in input una matrice, il punto è togliere i primi for per il riempimento della matrice, e aggiungere una
+coppia di for alla fine per scorrere la matrice e prendere il massimo che poi verrà cercato in un ulteriore scorrimento della
+matrice per cercare se ci sono elementi uguali. tanto il tempo dipenderà solamente dal triplo for interno.
+
+b) PSEUDOCODICE
+  ALGORITMO FLOYDWARSHALL(Matrice M, int K) -> lista
+    FOR k <- 1 TO n DO
+      FOR j <- 1 TO n DO
+        FOR i <- 1 TO n DO
+          IF D[i,k] + D[k,j] < D[i,j] THEN
+            D[i,j] <- D[i,k] + D[k,j]
+    max <- 0
+    FOR i <- 1 TO n DO
+      FOR j <- 1 TO n DO
+        IF max < M[i,j] THEN
+          max <- M[i,j]
+    Sia lista_max una lista inizialmente vuota
+    FOR i <- 1 TO n DO
+      FOR j <- 1 TO n DO
+        IF M[i,j] == max THEN
+          aggiungi a lista_max l'arco (i,j)
+
+    RETURN lista_max
+
+c) il tempo è O(n^3) per forza poichè il triplo ciclo for porta questo tempo
+d) a livello totale il tempo di computazione non cambia, tuttavia a livello locale, c'è un ciclo di troppo, infatti è
+possibile usare un solo ciclo for per scorrere la matrice e trovare il massimo poichè siamo solamente su una riga e 
+non dobbiamo cercare in tutte.

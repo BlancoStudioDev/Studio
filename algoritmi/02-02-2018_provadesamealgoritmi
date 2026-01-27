@@ -1,0 +1,97 @@
+Esame di 02/02/2018 Algoritmi e Strutture Dati
+
+Esercizio 1
+
+Parole da Inserire: cinghiale criceto cigno calabrone fagiano panda piccione ape
+
+Funziona da utilizzare: c(k,i) = (h(k) + i*g(k)) mod 16
+
+h(cinghiale) = 2 -> g(cinghiale) = 5
+h(criceto) = 2 -> g(criceto) = 11
+h(cigno) = 2 -> g(cigno) = 11
+h(calabrone) = 2 -> g(calabrone) = 5
+h(fagiano) = 5 -> g(fagiano) = 11
+h(panda) = 11 -> h(panda) = 1
+h(piccione) = 11 -> g(piccione) = 5
+h(ape) = 0 -> g(ape) = 5
+
+0 piccione
+1 
+2 cinghiale
+3
+4
+5 fagiano
+6
+7 calabrone
+8 cigno
+9
+10 ape
+11 panda
+12
+13 criceto
+14
+15
+
+Esercizio 2
+
+Sequenza: 13 18 20 15 16 10 12
+
+        15
+    12      18
+  10  13  16  20
+
+        12 15
+   10     13     16 18
+  10 12  13 15   16 18 20
+
+15 12 18 10 13 16 20
+10 13 12 16 20 18 15
+
+Esercizio 3
+
+Sequenza: 14 13 18 20 15 16 10 12
+
+Quick Sort -> 13 12 10 14 15 16 20 18
+
+Bubble Sort:
+13 14 18 15 16 10 12 20
+13 14 15 16 10 12 18 20
+13 14 15 10 12 16 18 20
+13 14 10 12 15 16 18 20
+13 10 12 14 15 16 18 20
+10 12 13 14 15 16 18 20
+
+Esercizio 4
+
+Mosse possibili:
+  - a destra se libera da pezzi
+  - a destra in alto se contiene un pezzo e se esiste
+  - a destra e in basso se contiene un pezzo e se esiste
+
+E' UN PEDONE DI SCACCHI
+
+Se viene preso il pezzo allora si attribuiscono quei punti al giocatore
+
+Svolgimento:
+
+  - Formule:
+      - se la casella precedente è vuota allora -> Ci,j = Ci,j-1 (questo implica che il peso precedente simane anche ora)
+      - se la casella contiene qualcosa M i,j + max{C i-1,j-1 [se esiste], C i+1,j-1 [se esiste]}
+
+  - Descrizione del programma:
+      La risoluzione del problema implica che si parta dalla prima colonna andando poi a sommare il peso dei valori nella
+      prima colonna con quelli che sono possibili nella seconda colonna. 
+
+  - PSEUDOCODICE:
+
+    Sia M una matrice nxn
+    FOR i <- 1 TO n DO
+      FOR j <- 2 TO n DO
+        IF i == 1 AND M(i,j) > 0
+          C(1,j) <- M(1,j)+C(2,j-1) // se provo a muovermi dalla prima riga prendero solamente quello che c'è nella seconda
+        ELSE IF i == n AND M(i,j) > 0
+          C(n,j) <- M(n,j) + C(n-1,j-1) // se provo a muovermi nell'ultima riga prendo solamente quello che c'è nella prenultima
+        ELSE IF M(i,j) > 0
+          SEI UN PIRLA
+
+    ci vorrà O(n^2) poichè il tempo per fare i 2 for e poi per fare i confronti basta solamente O(1)

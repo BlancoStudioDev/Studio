@@ -1,0 +1,62 @@
+INIZIO 11:35
+
+Esercizio 1
+
+Sequenza: 29 13 23 11 10 22 48 44
+
+a) 13 29      10 11    22    29 44     10 11 13    22 23     29 44 48
+b) 44 29 48 13 11 23 10 22
+
+Esercizio 2
+
+Sequenza: 23 11 10 13 46 22 48 44
+
+a) 22 11 10 13 23 46 48 44
+b) 46 44 48 23 13 22 10 11
+c) 10 44 23 13 11 22 46 48
+d) 44 13 11 46 23 22 10 48
+
+FINE PARTE 1: 11:50 => Tempo: 15 min
+
+Esercizio 3
+
+a) Un albero nell'ambito dei grafi è un grafo non orientato che rispetta simultaneamente le seguenti condizioni:
+     * Deve essere connesso
+     * Deve essere aciclico, il che vuol dire che non deve avere dei cicli al suo interno
+
+b) Un albero ricoprente di G(V,E) è un sottografo di G, G'(V,E'), che ha lo stesso insieme dei vertici V = {1, ... , n}, ma
+   l'insieme degli archi E' è rappresentato come un sottoinsieme di E, contenente o uguale il numero di archi di E. Essendo
+   un albero deve comunque rispettare le condizioni di albero, ovvero essere connesso e aciclico.
+
+c) Un albero ricoprente minimo è un albero ricoprente il cui insieme E' contiene l'insieme di tutti gli archi con peso minimo,
+   rimanendo comunque aciclico e connesso.
+
+d) PSEUDOCODICE
+   ALGORITMO KRUSKAL(G(V,E,w)) -> array_archi_minimi, array_archi
+     Ordino l'insieme E degli archi in modo non decrescente in base al peso
+     A <- (V,vuoto)
+     FOR EACH (x,y) in E secondo l'ordine DO
+       IF x e y non sono connessi in A THEN
+         A <- A U {(x,y)}
+         Aggiungi a array_archi_minimi la coppia (x,y)
+       ELSE
+         Aggiungi a array_archi la coppia (x,y)
+     RETURN array_archi_minimi, array_archi
+
+e) PSEUDOCODICE
+   ALGORITMO KRUSKAL(G(V,E,w)) -> array_archi_minimi, array_archi
+     Ordino l'insieme E degli archi in modo non decrescente in base al peso
+     A <- (V,vuoto)
+     Sia P una partizione inizialmente vuota
+     FOR EACH v in V DO P.makeset(v)
+     FOR EACH (x,y) in E secondo l'ordine DO
+       Tx <- P.Find(x)
+       Ty <- P.Find(y)
+       IF Tx != Ty THEN
+         P.Union(Tx,Ty)
+         Aggiungi a array_archi_minimi la coppia (x,y)
+       ELSE
+         Aggiungi a array_archi la coppia (x,y)
+     RETURN array_archi_minimi, array_archi
+
+

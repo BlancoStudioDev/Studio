@@ -1,0 +1,39 @@
+INIZIO 16:40
+Sequenza: 24 12 36 22 15 44 27 10 5
+
+a) 24 15 36 10 22 27 44 5 12
+b) Un albero si dice perfettamente bilanciato se per ogni suo nodo il numero di nodi nel sottoalbero sinistro e il numero
+di nodi nel sottoalbero differiscono al massimo di 1. L'albero non è perfettamente bilanciato poichè alla radice 24 a sinistra
+ci sono 5 nodi e a destra solo 3. Quindi l'albero perfettamente bilanciato sarebbe:
+22 12 27 10 15 24 36 5 44
+
+Esercizio 2
+Sequenza: 24 12 36 22 15 44 27 10  5
+a) 10 12 5 22 15 24 27 44 36
+b) 44 22 36 12 15 24 27 10 5
+c) 12 15 22 24 10 5 27 36 44
+d) 15 24 12 36 22 44 27 10 5
+
+FINE PARTE 1 16:50 -> Tempo 10 minuti
+
+Esercizio 2
+Distanza massima tra due vertici nel grafo
+ALGORITMO FLOYDWARSHALL(M matrice) -> max
+  FOR k <- 1 TO n DO
+    FOR j <- 1 TO n DO
+      FOR i <- 1 TO n DO
+        IF M[i,k] + M[k,j] < M[i,j] THEN
+          M[i,j] <- M[i,k] + M[k,j]
+  max <- 0
+  FOR i <- 1 TO n DO
+    FOR j <- 1 TO n DO
+      IF M[i,j] > max THEN
+        max <- M[i,j]
+
+  RETURN max
+
+il tempo deriva dal triplo for e quindi un tempo di O(n^3)
+
+facciamo un algoritmo che associa per chiascun vertice espresso nella lista di adiacenza gli archi e riempie la matrice
+se la i == j allora m[i,j] = 0, inizialmente si avrà tutta la matrice ad infinito a parte la diagonale, poi vado a riempire
+la matrice con un if i != 0 AND (vi,vj) in E ì

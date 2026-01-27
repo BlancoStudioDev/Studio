@@ -1,0 +1,96 @@
+INIZIO 14:19
+
+Esercizio 1
+
+Sequenza: 37 22 49 52 46 60 35
+
+a) 49 37 53 22 46 60 35
+b) L'albero AVL disegnato in precedenza non è perfettamente bilanciato infatti vi è una discrepanza sui nodi della radice
+   il sottoalbero di destra ha 2 nodi e quello di sinistra ha 4 nodi |4-2| = 2 != 1. l'albero perfettamente binaciato
+   sarebbe: 46 35 52 22 37 49 60
+
+Esercizio 2
+
+Sequenza: 35 50 37 22 49 52 46 60 55
+
+a) 22 35 37 50 49 52 46 60 55
+b) 35 22 37 49 46 50 52 55 60
+c) 35 49 50 37 22 52 46 60 55
+c) 35 50 37 22      49 52 46 60 55 => 50 37 35 22       60 55 52 49 46 => 50 37 35 22 60 55 52 49 46
+
+FINE PARTE 1 14:33 => Tempo: 14 minuti
+
+Esercizio 3
+
+a) Per descrivere il problema in termine di Grafi utilizzere un grafo orientato pesato che associa ad ogni arco un peso
+   sulla base del tempo che ci si impiega a percorrerlo, questo nella vita reale sarebbe il sentiero che collega le baite
+   nella foresta ed è indicato da E che è l'insieme di questi archi. I vertici del grafo sono invece le baite effettive
+   collegate dai vari archi che appunto sono pesati e orientati e rappresentano i sentieri. Il grafo, ovvero la foresta con
+   i sentieri e le baite sarà così formalizzato: G(V,E,w) dove V = {1, ... , n} insieme dei vertici (delle baite),
+   E = {(V0,V0), ... ,(Vi,Vj)} insieme degli archi (sentieri che collegano le baite) e infine il peso w = |(Vi,Vj)|.
+   L'algoritmo avrà come istanza G(V,E,w) e come soluzione un intero che sarà la baita scelta e la media dei tempi della
+   baita scelta.
+
+b) Per ovviare al problema presentato utilizzeremo un algoritmo presentato a lezione ovvero l'algoritmo di FLOYD-WARSHALL.
+   Le modifiche da apportare sono le seguenti:
+     * Togliere la prima coppia di for per il riempimento della matrice e sostiruirla con il semplice ingresso della matrice
+       al posto del grafo G come citato in precedenza.
+     * Aggiungere una coppia di for per fare la media con la seguente formula: Media[i] = Media[i] + T[i,j]/(n)
+     * Aggiungere un for per capire qual'è la baita con la massima media ed estrarre la i e la sua Media
+   
+   PSEUDOCODICE
+   ALGORITMO FLOYD-WARSHALL(T) -> nome, max
+    FOR k <- 1 TO n DO
+      FOR j <- 1 TO n DO
+        FOR i <- 1 TO n DO
+          IF T[i,k] + T[k,j] < T[i,j] THEN
+            T[i,j] <- T[i,k] + T[k,j]
+    Sia Media un array di valori inizialmente vuoto
+    FOR i <- i TO n DO
+      FOR j <- 1 TO n DO
+        Media[i] <- Media[i] + T[j,i]/(n-1)
+    max <- 0
+    nome <- 0
+    FOR i <- 1 TO n DO
+      IF Media[i] > max THEN
+        max = Media[i]
+        nome <- i
+    RETURN max, nome
+
+c) Sulla base delle n baite che sono presenti nel grafico il tempo di calcolo dell'algoritmo scritto in precedenza risulta:
+     * Per i primi tre cicli FOR -> O(n^3) poichè sono appunto tre cicli e gli if interni hanno tempo O(1)
+     * Per la dichiarazione di variabili è sempre O(1)
+     * Per la seconda coppia di FOR è O(n^2)
+     * Ultimo FOR O(n) poichè è una semplice ricerca lineare del massimo di un array
+   Tempo totale O(n^3 + 1 + n^2 + n) = O(n^3)
+
+d)PSEUDOCODICE
+   ALGORITMO FLOYD-WARSHALL(T) -> nome, max
+    FOR k <- 1 TO n DO
+      FOR j <- 1 TO n DO
+        FOR i <- 1 TO n DO
+          IF T[i,k] + T[k,j] < T[i,j] THEN
+            T[i,j] <- T[i,k] + T[k,j]
+    Sia Media un array di valori inizialmente vuoto
+    Sia L una lista inizialmente vuota così costruite (i,j,wij)
+    FOR i <- i TO n DO
+      FOR j <- 1 TO n DO
+        Aggiungi a L la tripla (i,j,wij)
+        Media[i] <- Media[i] + T[j,i]/n-1
+    max <- 0
+    nome <- 0
+    Ordino in base al peso in ordine decrescente la lista di coppie L
+    FOR i <- 1 TO n DO
+      IF Media[i] > max THEN
+        max = Media[i]
+        nome <- i
+    RETURN max, nome, L
+
+d) Creazione della lista Tempo O(1) scorrimento della lista per il suo riempimento O(n^2), ordinamento della lista descritto
+   descritto con l'algoritmo di heapSort avrà tempo O(m log m) con m tra n-1 e n^2, quindi il worst case per l'algoritmo di
+   heapSort per questo problema sarà O(2n^2logn) = O(n^2 log(n)), e quindi questo è il tempo massimo che impiega l'algoritmo
+   poichè non ce ne sono di più alti.
+
+FINE PROVA 15:19 => Tempo: 1 ora
+
+

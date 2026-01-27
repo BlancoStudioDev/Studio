@@ -1,0 +1,94 @@
+INIZIO 15:10
+
+Esercizio 1
+
+Sequenza: 14 16 80 33 44 17 28 35
+
+a)        14
+              16
+                  80
+              33
+          17      44
+            28  35
+
+b) 
+
+Sequenza: 17 28 35 16 45 80 33 44
+
+a) 16 17 35 28 45 80 33 44
+b) 44 16 28 45 17 80 35 33
+c) 33 44 35 16 28 17 45 80
+d) 17 28 16 35 45 33 80 44
+
+FINE PARTE 1 15:24 => 14 minuti
+
+INIZIO PARTE 2 15:24
+
+a) Per risolvere il problema utilizzeremo l'algoritmo di FLOYD-WARSHALL, algoritmo che permette tramite, tramite un grafo
+   di identificare i cammini minimi per passare da tutti i vertici a tutti gli altri. Questo algoritmo base ha come
+   istanza un Grafo, ma avendo noi bisogno di istanza una matrice andremo a modificare l'algoritmo per includere come
+   istanza una matrice D. per fare questo sarà necessario rimuovere la prima coppia di for che riempie la matrice, poichè
+   la matrice che ci viene fornita ha già le specifiche richieste dall'algoritmo di FLOYD-WARSHALL. Un altra modifica che
+   va datta è quella per garantire di creare la media tra tutti i cammini ce sono presenti tra un vertice e l'altro. Per
+   fare questo sarà necessario un doppio for che consentirà di scorrere la matrice e prendere tutti i valori per farne
+   la somma e successivamente la media sulla base di n*n - n, così facendo andiamo a prendere tutti i valori meno quelli
+   della diagonale che non ci serve poichè è tutta impostata a zero. Per fare la media escludendo la diagonale andremo a
+   prendere tutti i valori di D esclusi quelli in cui i == j, quindi l'if sarà: IF i != j THEN media = media + D[i,j]/(n*n)-n.
+   Inoltre possiamo utilizzare la media per calcolare successivamente in una nuova coppia di for se il peso attuale è maggiore
+   della media o no, in tal caso lo andiamo ad aggiungere alla lista di adiacenza che avrà come chiave principale il vertice
+   iesimo da cui stiamo partendo e come "figli" tutti i vertici che sono maggiori della media.
+
+b)
+PSEUDOCODICE
+  ALGORITMO FLOYD-WARSHALL(Matrice D) -> media
+    Sia media un valore intero inizializzato a 0
+    Sia superiori un array di n elementi con n-1 possibili elementi (lista di adiacenza)
+    FOR k <- 1 TO n DO
+      FOR j <- 1 TO n DO
+        FOR i <- 1 TO n DO
+          IF D[i,k] + D[k,j] < D[i,j] THEN
+            D[i,j] <- D[i,k+] D[k,j]
+
+    FOR i <- 1 TO n DO
+      FOR j <- 1 TO n DO
+        IF i != j THEN
+          media <- media + D[i,j]/[(n*n)-n]
+
+    FOR i <- 1 TO n DO
+      FOR j <- 1 TO n DO
+        IF D[i,j] > media THEN
+          aggiungi a superiori[j] il numero i
+
+    RETURN media, superiori
+
+c) Per stimare il tempo di calcolo di questo algoritmo andiamo a spezzarlo in parti e calcolare il tempo di ogni parte
+    * L'if interno al triplo ciclo for ha una complessità pari a O(1) per il criterio del costo unitario e lo stesso costo
+      lo ha anche l'assegnazione di D[i,j] all'interno dell'IF. quindi nel complesso l'if e la somma e l'assegnazione
+      hanno una complessità pari a O(2) = O(1)
+    * Per quanto riguarda il triplo for, essi vengono scorsi da 1 a n tutti e tre e quindi hanno una complessità insieme
+      pari a O(n^3) e con l'if all'interno e la sua operazione di somma ed assegnazione comunque non cambia perchè verrebbe
+      O(n^3 * 1) = O(n^3)
+    * Il doppio for ha invece una complessità di O(n^2) e al suo interno sono presenti due operazioni di assegnamento e 
+      somma e l'if, queste due operazioni, sempre per il teorema del costo unitario hanno complessità di O(2) = O(1)
+      e moltiplicando questo costo per n^2 che è il numero di iterazioni sui for si ottiene che la complessità totale è
+      O(n^2*1) = O(n^2)
+    * l'altra coppia di for fa la stessa cosa descritta nel punto precedente e l'assegnazione e l'inizializzazione dell'array
+      e del valore media è uguale a O(1)
+
+   Concludendo, la complessità totale e quindi il tempo totale impiegato è O(n^3+n^2+n^2) = O(n^3).
+
+d) Per creare un elenco di archi e ordinarli in base al peso dovrei modificare l'algoritmo nel seguente modo: in primis
+   creare l'elenco, che sarà fatto come un array con al suo interno triple composte da peso, vertice i e vertice j. Questo
+   più a basso livello sarà fatto utilizzando delle struct come in c che vanno ad associare a w, il peso, le altre variabili
+   come il vertice i e il vertice j, poi sulla base del peso ordino l'array in ordine non decrescente. questo può essere fatto
+   tramite diversi algoritmi di sorting come l'algoritmo di heap sort.
+
+e) Per creare l'array citato in precedenza semplicemente basta aggiungere un assegnamento all'interno di uno dei doppi cicli
+   così da non aumentare la complessità, portandola semplicemente a O(n^2), necessaria per scorrere la matrice, escludendo
+   però le posizioni della matrice in cui il peso è uguale a zero. Per quanto riguarda l'ordinamento, che è una cosa a
+   parte, se fatto tramite Heap Sort, l'heap sort dovrà eseguire un sorting su m elementi ovvero il numero degli archi, che
+   nel nostro caso corrisponde a n^2 - n, dato che la diagonale della matrice che contiene tutti 0 non verrà presa. Così
+   facendo abbiamo la possibilità di ordinare l'elenco dei vertici in base al peso e avere un costo parti a O(m log m) = 
+   = O(m log n).
+
+FINE PARTE 2 16:02 => Tempo: 38 minuti

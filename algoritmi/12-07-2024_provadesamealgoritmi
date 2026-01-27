@@ -1,0 +1,95 @@
+INIZIO 14:25
+
+Esercizio 1
+Sequenza: 14 17 24 37 46 21 15
+
+1) 15  14 17  24 37  14 15 17 21 24 33 37 46
+2) 24 17 37 15 21 33 46 14
+
+Esercizio 2
+Sequenza: 12 14 17 24 2 33 46 21 15
+
+1) 2 12 17 24 14 33 46 21 15
+2) 46 24 33 21 2 12 17 14 15
+3) 2 12 17 15 14 33 46 21 24
+4) 21 14 17 15 24 33 46 12 2
+
+FINE PARTE 1 14:36 => Tempo 11 minuti
+
+Esercizio 3
+1) Il problema in oggetto richiede di trovare la distanza di tutti gli incroci rispetto ad un vertice centrale
+   ovvero il vertice 1. L'algoritmo quindi sarà in grado tramite istanza di un vertice V = 1 iniziale e un Grafo G(V,E,w)
+   dove V è l'insieme dei vertici del grafo V = {1, ... , n} e E l'insieme di tutti gli archi che incombono sui vari
+   incroci della città, avrà come soluzione un vettore V delle distanze, ordinate in ordine crescente le quali sono
+   la somma delle distanze dal vertice centrale V = 1 ai vertici ennesimi. Questo procedimento verrà fatto tramite l'algoritmo
+   di Dijkstra che già plain ha queste caratteristiche, ma produce un vettore non ordinato di coppie composte da vertice
+   + distanza dal punto centrale. Per aggiungere l'ordinamento crescente possiamo semplicemente introdurre un algoritmo
+   di ordinamento basato sull'array di coppie prodotto dall'algoritmo di Dijkstra. 
+
+   PSEUDOCODICE
+   ALGORITMO DIJKSTRA(G(V,E,w), vertice s=1) -> vettore
+     Sia D un vettore con indici in V
+     D[1] <- 0
+     FOR EACH v in V - {s} DO D[v] <- infinito
+     C <- V
+     WHILE C != 0 DO
+       u <- elemento minimo di D[u] in C
+       C <- C - {u}
+       FOR EACH (u,v) in E DO
+         IF D[u] + w(u,v) < D[v] THEN
+           D[v] <- D[u] + w(u,v)
+     Ordina D tramite Heap Sort
+     RETURN D
+
+2) PSEUDOCODICE
+      ALGORITMO DIJKSTRA(G(V,E,w), vertice s=1) -> vettore
+         Sia D un vettore con inidici in V
+         D[1] <- 0
+         Sia C una coda con priorità inizialmente vuota
+         FOR EACH v in V - {s} DO D[v] <- infinito
+         FOR EACH v in V - {s} DO C.insert(v,D[v])
+         WHILE C != 0 DO
+           u <- C.deleteMin()
+           FOR EACH (u,v) in E DO
+             IF D[u] + w(u,v) < D[v] THEN
+               D[v] <- D[u] + w(u,v)
+               C.changeKey(v,D[v])
+         Ordina D tramite Heap Sort
+         RETURN D
+
+   Per ottimizzare la rappresentazione del grafo si può utilizzare una lista di adiacenza che porta così ad una più veloce
+   consultazione dei vertici del grafo poichè richiede solamente O(n+m) con m chè è asintotico a n^2, quindi per la ricerca
+   in una lista di adiacenza di utilizza tempo O(n^2). Per il resto dello PSEUDOCODICE possiamo dire che:
+    - Per la creazione del vettore si impiega tempo O(n)
+    - Per l'inizializzazione di D[s] <- 0 si impiega tempo O(1) per il teorema del costo unitario
+    - Per la Creazione della coda con priorità vuota si usa O(1) per il teorema del costo unitario
+    - Per il riempimento del vettore inizialmente si usa Tempo O(n) poichè ci sono n vertici nell'insieme V come descritto
+      nella consegna del problema
+    - Per il riempimento della coda con priorità si usa sempre Tempo(nlog n) poichè ci sono n vertici e si deve costruire
+      un heap
+    - Il While si compone di più parti e esso viene eseguito n volte poichè la coda con priorità è riempita di n elementi
+      che sono gli n vertici appartenenti all'insieme V
+        * La ricerca del minimo viene eseguita i tempo O(log n) poichè si adopera un MinHeap per risolverla
+        * Il for interno viene eseguito un numero di volte pari al grado del vertice u
+          + L'if come descritto in precedenza ha tempo di esecuzione che riguarda O(1) per il teorema del costo unitario
+          + Per lo stesso teorema anche l'assegnamento ha costo in tempo O(1)
+          + Il changeKey, siccome siamo in un Heap, avrà tempo di esecuzione O(log n)
+        * in totale il FOR ha come tempo di esecuzione: O(grado(u)*(log n + 1 + 1)) = O(grado(u)*log (n))
+    - Il while totale avrà come tempo di esecuzione n volte e con le operazioni a lui sottostanti risultano O(m log n)
+      poichè il while esegue n volte l'operazione grado(u) * log n, quindi se io vado a prendere tutti i vertici del grafo
+      e a controllare i suoi archi uscenti trovo tutti i vertici presenti nel grafo che risultano essere al massimo m
+      con m che è al massimo n^2 per un grafo molto connesso. questo porta la complessità di tutto il while ad essere:
+      O(m log n)
+    - L'ordinamento esterno fatto con Heap Sort sorta sui vertici e quindi avrà come complessità O(nlogn)
+    La complessità totale è quindi O(n log n + m log n + n log n) = O((2n + m) log n) = O((n+m) log n)
+
+3) Per fare ciò che viene richiesto ovvero a somma di pesi minimi da tutti i vertici a quello centrale, semplicemente possiamo
+   costruire il grafo al contrario creando il seguente grafo(G(V,E^T,w)) e utilizzando per la sua rappresentazione delle
+   liste di adiacenza come spiegato nel punto b. Per riempire questa lista di adiacenza e per scorrere quella vecchia, per
+   poi riempire quella nuova sia ha un costo che è O(n+m) poichè le liste di adiacenza associano ad ogni vertice tutti i suoi
+   archi uscenti. Quindi avremo il costo per sviluppare la lista di adiacenza di O(n+m) e poi il costo di Dijkstra normale,
+   ovvero con le modifiche che già abbiamo citato in precedenza, portiamo quindi il costo ad essere: O(m+n+(n+m)log n)
+   che è lo stesso costo di prima poichè ne n ne m sono più grandi di (n+m) log n in una stima con O.
+
+FINE PROVA COMPLETA E FATTA BENE 15:41 Tempo: 1:16 minuti
+

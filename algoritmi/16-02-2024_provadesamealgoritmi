@@ -1,0 +1,70 @@
+Inizio: 16:03
+
+Esercizio 1
+Sequenza: 55 37 22 49 52 46 60 35
+
+a)            37 - 49
+        22 - 35  46  52 - 55
+      22 35 37  46 49   52 55 60
+
+b)            35 - 52
+        35              52
+    22     37       49      55
+  22 35   37 46    49 52   55 60
+
+Esercizio 2
+Sequenza: 35 50 37 22 49 52 46 60 55
+
+a) 50 37 55 49 52 46 60 35 22
+b) 22 35 37 50 49 52 46 60 55
+c) 60 50 52 55 49 37 46 22 35
+d) 22 35 37 50 49 52 46 60 55
+
+FINE PRIMA PARTE 11 minuti
+
+Esercizio 3
+per trovare la baita ideale semplicemente si va a prendere la riga x e la colonna x e sommare tutto, chi ha il numero
+minore è la baita migliore.
+
+il metodo migliore per formalizzare il problema è con un grafo orientato e pesato che associ il peso in base al tempo da
+percorrere per arrivare da una baita da un'altra. 
+
+G(V,E,w) è il grafo, V è l'insieme dei vertici non altro che le altre baite, E è l'insieme delle strade che collegano le
+varie baite e w è il peso associato a ciascuna di queste strade, intendendolo come il tempo da impiegare per andare da una 
+all'altra.
+
+L'algoritmo che utilizzerei io è quello di FLOYD-WARSHALL perchè da la possibilità, data in ingresso una matrice con indici
+i vertici del grafo, ovvero le baite, di calcolare i cammini minimi che sono necessari per passare da un vertice ad un altro
+tendendo tutto come unica struttura la matrice di partenza. L'algoritmo base comunque non basterebbe per risolvere il problema,
+pertanto bisogna modificarlo nei seguenti modi: aggiungere una coppia di for annidati che diano la possibilità di eseguire
+somme sulla matrice, in particolare di eseguire la somma di quando le colonne e righe con indice uguale, per esempio sommare 
+i pivot della riga due e della colonna 2 insieme per ottenere il tempo totale per dandare dalla baita 2 a tutte le altre
+così facendo si trovano le baite o la baita con tempo minore da tutte le altre.
+
+PSEUDOCODICE
+
+ALGORITMO FLOYD-WARSHALL(matrice T) -> int
+  FOR k <- 1 TO n DO
+    FOR j <- 1 TO n DO
+      FOR i <- 1 TO n DO
+        IF T[i,k] + T[k,j] < T[i,j] THEN
+          T[i,j] <- T[i,k] + T[k,j]
+
+  Creazione di un array ausiliario di supporto nome: array
+  FOR i <- 1 TO n DO
+    FOR j <- 1 TO n DO
+      IF i != j THEN
+        array[i] <- array[i] + T[i,j]
+        array[i] <- array[i] + T[i,j]
+
+  min <- Ricerca del minimo ed estrazione del suo indice
+  RETURN min
+
+il tempo di calcolo totale impiegato è:
+  - O(n^3) per i primi cicli annidati
+  - O(n^2) per i secondi cicli annidati
+  - O(n) per la ricerca del minimo e l'estrazione del suo indice
+
+prendere in ingresso la lista di adiacenza e tramite un algoritmo convertirla in una matrice. non si capisce la richiesta
+
+TEMPO TOTALE UTILIZZATO: 40 minuti seconda parte 29 minuti

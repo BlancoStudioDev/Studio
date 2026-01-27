@@ -1,0 +1,92 @@
+14:10 - 14:52 (Fatta con tranquillità)
+
+Esercizio 1
+Sequenza: 21 23 29 46 18 44 22 16 17
+a)
+                17
+          17          23
+    16        18  22      29 44
+  16 17    18 21 22 23   29 44 46
+
+b)
+                44
+          21            46
+    17          23
+16      18  22      29
+
+Esercizio 2
+Sequenza: 15 21 23 29 12 18 44 22 16 17
+
+a) 12 15 23 29 21 18 44 22 16 17
+b) 44 29 23 22 17 18 15 21 16 12
+c) 12 15 18 16 17 23 44 22 29 21
+d) 29 16 18 21 17 23 44 22 15 12
+
+
+TEMPO PRIMA PARTE: 20 minuti
+
+----------------------------------------
+
+Esercizio 3
+a) Un albero nell'ambito dei grafi è definito come un grafo non orientato che rispetta contemporaneamente le seguenti due 
+condizioni:
+  - Essere aciclico ovvero non avere cicli al suo interno
+  - Essere connesso, nel caso in cui questo non fosse connesso si parlerebbe di foresta di alberi e non più di albero singolo
+
+b) Un albero ricoprente, dato un grafo non orientato G=(V,E), è un sottografo G=(V,E') che rispetta le seguenti condizioni:
+  - Avere un numero di vertici corrispondente al grafo originale
+  - Essere un albero connesso e aciclico
+
+c) Dei grafi non connessi non possono avere un albero ricoprente poichè come condizione di esistenza di un grafo vi è la
+connessione di quest'ultimo.
+
+d) Un albero ricoprente minimo soddisfa le stesse condizioni dell'albero ricoprente ma la somma dei pesi dei cammini del grafo
+è la minima.
+
+e) v1    v4
+    |   /
+   5| 4/
+    | /
+    v2----v3
+        7
+
+questo è un albero ricoprente, ma non minimo
+      2
+   v1----v4
+        /|
+      4/ | 2
+      /  |
+    v2   v3
+questo è invece l'albero ricoprente minimo
+
+PSEUDOCODICE
+
+ALGORITMO KRUSKAL(G=(V,E,w)) -> albero
+  Ordina in ordine non decrescente per peso l'insieme degli archi E
+  T <- (V,0)
+  Sia P una partizione inizialmente vuota
+  FOR EACH v in V DO P.makeset(v)
+  FOR EACH (x,y) in E in ordine di peso DO
+    tx <- P.find(x)
+    ty <- P.find(y)
+    IF tx != ty THEN
+      aggiungi l'arco (x,y) a T
+      P.union(tx,ty)
+
+  RETURN T
+
+Grafo non orientato pesato
+
+l'albero dei camminimi minimi è il seguente:
+      2
+   v1----v4
+   |     |
+  5|     | 2
+   |     |
+   v2    v3
+
+i due alberi non combaciano poichè uno prende il minimo di tutti i cammini che collegano tutto l'arco, il secondo invece
+prende tutti gli archi che fanno raggiungere più velocemente due vertici partendo da un vertice iniziale
+
+
+

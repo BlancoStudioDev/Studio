@@ -1,0 +1,88 @@
+Inizio: 9:55
+
+Esercizio 1
+Sequenza: 24 17 43 14 12 26 39 34 16
+
+a) 24 14 39 12 17 26 43 16 34
+b) un albero è perfettamente bilanciato se la differenza in modulo tra i nodi dei sotto alberi destro e sinistro è al 
+massimo 1
+
+Esercisio 2
+Sequenza: 24 17 43 14 12 26 39 34 16
+
+a) 12 17 16 14 24 26 39 34 43
+b) 17 14 12 24 26 34 16 39 43
+c) 14 34 26 17 12 16 24 39 43
+d) 12 14 26 16 17 43 39 34 24
+
+FINE PARTE 1: 15 minuti
+
+Esercizio 3
+Area centrale -> d <= 1/2 r dal centro
+Area periferica -> d > 1/2 r dal centro
+Centro città: vertice s
+r -> massima distanza dal centro all'ultimo vertice del grafo
+
+Svolgimento
+Per risolvere il problema bisogna applicare l'algoritmo di Dijkstra modificato a compiere le funzioni richieste dal
+problema, in particolare si dovà creare una serie di cicli for each per analizzare il massimo percorso possibile dal
+centro fino ad arrivare alla fine del grafo e poi sulla base di quello si avrà la distanza massima ovvero r, una volta
+fatto questo potremo applicare il vero e proprio algoritmo di Dijkstra con la modifica del fatto che se un vertice soddisfa
+la condizione di avere la distanza dal centro minore o uguale a 1/2 r allora lo si mette in un'array chiamato centro se
+invece è maggiore di 1/2 r non si prende, poichè la richiesta non chiede di tener conto dei vertici nell'area periferica.
+
+PSEUDOCODICE
+
+ALGORITMO DIJKSTRA(Grafo G(V,E,w), vertice s) -> array
+  Sia D un vettore con indici in V
+  Sia Centro un array
+  r <- 0
+  D[s] <- 0
+  FOR EACH v in V - {s} DO D[v] <- infitito
+  C <- V
+  WHILE C != 0 DO
+    u <- elemento di D[u] minimo
+    C <- C - {u}
+    FOR EACH (u,v) in E DO
+      IF D[u] + w(u,v) < D[v] THEN
+        D[v] <- D[u] + w(u,v)
+  FOR EACH v in V DO
+    IF D[v] > r THEN
+      r = D[v]
+  k <- 0
+  FOR EACH v in V DO
+    IF D[v] <= 1/2 r THEN
+      Centro[k] <- v
+      k <- k + 1
+  RETURN Centro
+
+
+ALGORITMO CON STRUTTURE DATI
+
+ALGORITMO DIJKSTRA(Grafo G(V,E,w), vertice s) -> array
+  Sia D un vettore con indici in V
+  Sia C una coda con priorità
+  Sia Centro un array
+  r <- 0
+  D[s] a- 0
+  FOR EACH v in V - {s} DO D[v] <- 0
+  FOR EACH v in V DO C.insert(v, D[v])
+  WHILE C != 0 DO
+    u <- C.deleteMin()
+    FOR EACH (u,v) in E DO
+      IF D[u] + w(u,v) < D[v] THEN
+        D[v] <- D[u] + w(u,v)
+        C.changeKey(v,D[v])
+  FOR EACH v in V DO
+    IF D[v] > r THEN
+      r = D[v]
+  k <- 0
+  FOR EACH v in V DO
+    IF D[v] <= 1/2 r THEN
+      Centro[k] <- v
+      k <- k + 1
+
+  RETURN Centro
+
+Il tempo di computazione del seguente algoritmo è dato principalmente dai cicli di Dijkstra, ovvero il FOR EACH v in V DO
+che porta via m tempo, che per grafi molto connessi significa m = n^

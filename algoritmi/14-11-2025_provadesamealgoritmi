@@ -1,0 +1,60 @@
+INIZIO: 15:13
+
+Esercizio 1
+
+Sequenza: 30 21 18 24 34 27 29 35
+
+a) 30 21 34 18 24 35 27 29
+b) 29 24 34 21 27 30 35 18
+
+Esercizio 2
+
+Sequenza: 21 18 24 63 35 34 27 29
+
+a) 18 21 24 29 35 34 27 63
+b) 63 35 34 29 21 24 27 18
+c) 27 29 34 18 21 24 35 63
+d) 18 21 24 34 27 29 35 63
+
+FINE PARTE 1: 15:30 => Tempo: 17 minuti (mi sono messo a parlare con furla)
+
+Esercizio 3
+
+a) Un albero nell'ambito dei grafi, dato un Grafo G, è un sottografo che presenta simultaneamente
+   le seguenti condizioni:
+     * Essere connesso
+     * Essere Aciclico, il che vuol dire non avere cicli al suo interno
+
+b) Un albero ricoprente è invece un albero, quindi rispetta le condizioni di albero, e dato un grafo G(V,E,w)
+   un albero ricoprente è un sottografo di G, chiamato G'(V,E') che ha lo stesso insieme di vertici V = {1, ... , n}
+   e un insieme E' che è contenuto o uguale a E, il che vuol dire che ha meno o gli stessi archi di G, infine l'insieme
+   dei pesi è lo stesso, il che vuol dire che gli archi presi hano gli stessi pesi di G in G'
+
+c) Un albero ricoprente minimo è un albero ricoprente che ha come insieme di archi, l'insieme degli archi con peso minore
+   che congiungono due vertici, che se presi non creano nell'albero dei cicli.
+
+d/e) Ordiniamo l'insieme degli archi E' = {(V4,V5), (V1,V6), (V1,V2), (V2,V6), (V2,V5), (V6,V5), (V2,V3), (V3,V4)}
+   per creare l'albero ricoprente minimo andiamo a prendere da quelli con peso minore gli archi fino a quando non ne
+   posso più prendere se non facendo cicli:
+   T1 <- (V4,V5), (V1,V6), (V1,V2), (V2,V3), (V6,V5)
+   T2 <- (V4,V5), (V1,V6), (V1,V2), (V3,V4), (V2, V5)
+   Questi sono di que alberi ricoprenti minimi, che non sono uguali agli alberi dei cammini minimi, pertanto di questi ne
+   possono anche esistere due a patto che il numero di cammini sia uguale e con gli stessi pesi, come nel nostro esempio.
+
+f) già risposto mille volte come fare l'algoritmo di kruskal con le unionfind
+
+g) La rappresentazione opportuna del grafo sarabbe una rappresentazione con liste di archi, ovvero un array di strutture,
+   così composte: 'struct Arco {vertice_x, vertice_y, peso}', questo di darebbe due vantaggi: l'ordinamento risulta più
+   veloce se fatto con una struttura già esistente, il secondo motivo è l'accesso alla struttura tramite for, che risulta
+   più veloce poichè è una struttura già costruita e conosciuta.
+
+h) Se sapessimo che la nostra struttura già presenta degli interi per caratterizzare lo scorrimento degli archi, potremmo
+   utilizzare degli algoritmi di sorting più efficienti come il bucket sort, il radix sorto o l'integer sort, che riducono,
+   quasi a tempo lineare la complessità.
+
+i) E' = {(V4,V5), (V1,V6), (V1,V2), (V2,V3), (V3,V4)}, la differenza tra un albero ricoprente minimo e un albero dei cammini
+   minimi è che un albero ricoprente minimo non ha un vertice di partenza e pertanto si può applicare un algoritmo come kruskal,
+   mentre l'albero dei cammini minimi è un albero che ha un vertice di partenza e pertanto si può applicare l'algoritmo di Dijkstra
+   per trovarlo. Questa differenza fa in modo che nel primo caso si prendano solamente gli archi con peso minimo in tutto il grafico
+   e pian piano si vada a creare con questi archi un albero, mentre nel secondo caso si va a creare l'albero sulla base della distanza
+   minima che passa dal vertice di inizio fino al vertice attuale.

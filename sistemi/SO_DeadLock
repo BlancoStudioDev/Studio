@@ -1,0 +1,79 @@
+Domanda:
+Il deadlock in un sistema di elaborazione monoprocessore: se ne dia la definizione, si descrivano le
+condizioni sotto le quali si verifica, e si indichino le principali tecniche per il suo trattamento,
+evidenziandone le caratteristiche, vantaggi e limiti.
+
+
+Il DeadLock è un uno stallo che avviene nell'esecuzione di processi e consiste in processi che attendono potensialmente
+all'infinito le risore. I processi normalmente hanno un ciclo sulle risorse che usano così suddiviso:
+  - Richiesta
+  - Uso
+  - Rilascio
+
+Questo ciclo di azioni permette ai processi di usare una risorsa e poi una volta che ha finito di liberarsene, non sempre
+però questo è possibile, pensiamo a questo esempio, esempio anche visto a lezione ed espresso sul libro, abbiamo 5 filosofi
+ad un tavolo ed ogni filosofo ha la possibilità al tavolo di mangiare o di pensare. Questi 5 filosofi non interagiscono con
+gli altri ne mentre pensano ne mentre mangiano, ma per mangiare devono usare le bacchette e sul tavolo sono presenti solo
+5 bacchette, una a destra e sinistra di ogni filosofo. Quando un filosofo deve mangiare guarda alla sua destra e alla sua 
+sinistra se ci sono le bacchette e se ci sono allora mangia, se no deve aspettare. I filosofi non possono rubare dalle
+mani degli altri filosofi le bacchette. Questo crea un possibile esempio di DeadLock poichè si rischia di mandare in
+starvation un filosofo e a catena tutti gli altri. Per fare si che si verifichi un DeadLock bisogna che si verifichino
+contemporaneamente le seguenti 4 condizioni:
+  - mutua esclusione -> almeno una risorsa è non condivisibili nel sistema
+  - attesa circolare -> si intende che ogni processo Pi in un insieme di processi Pn attende una risorsa in uso da un altro
+    processo Pj con j < i
+  - possesso e attesa -> un processo deve essere in possesso di una risorsa ed attenderne l'utilizzo di altre
+  - assenza di prelazione -> una risorsa non può essere rilasciata prima che venga terminato il suo utilizzo
+
+Per descrivere queste condizioni possiamo usare un grafo di assegnazione delle risorse, un insieme di vertici V contenente
+risorse e processi, e un insieme E di archi che connette questi vertici.
+
+Gestione delle situazioni di stallo
+Per la gestione degli stalli ci sono diverse pratiche:
+  - Prevenzione ed Evitamento
+      * Prevenzione del problema
+        ** Mutua Esclusione -> si fa in modo di averre nel sistema solamente risorse condivisibili come per esempio la
+                               lettura dei file, ma questo porta a dei problema poichè esistono dei file che non possono
+                               essere sempre in modalità condivisibile
+        ** Attesa Circolare -> Si assegna un ordine all'utilizzo delle risorse in modo da non avere un ciclo
+        ** Assenza di Prelazione -> si fa in modo che funzioni la prelazione delle risorse e quindi che il sistema
+                                    possa liberare le risorse prima che il processo abbia terminato il suo utilizzo
+        ** Possesso e attesa -> si impoche che un processo non possa richiedere risorde in anticipo o che possa richiederle
+                                se ne possiede già un'altra in utilizzo
+      * Evitamento
+        ** Utilizzo dello stato sicuro e no nsicuro del sistema. Uno stato sicuro è una sequenza di processi tali per cui
+           il processo Pi in un insieme Pn dipende solamente dalle risorse presenti nei processi Pj con j < i.
+        ** Algoritmo con grafo di assegnazione delle risorse, in questo grafo, che si basa sul grafo di assegnazione
+           si aggiunge anche un arco per la richiesta di una risorsa, in particolare se aggiungendo questo arco di richiesta
+           si ha un ciclo allora si avrà anche un DeadLock, se invece aggiundendo questo arco non si hanno cicli non si ha
+           nessun DeadLock
+  - Ignorare il problema
+  - lasciare che avvenga e poi intervenire
+      Per far ciò ci sono due metodi:
+        * Fare in modo di terminare un processo alla volta fino a quando non si risolve il DeadLock interrompere
+          l'esecuzione di tutti i processi simultaneamente e bloccare la DeadLock
+        * utilizzo di un algoritmo che quando la CPU scende sotto un certo consumo o ogni n frequenza
+
+Schema domanda:
+  Definizione
+    Storia processi
+    DeadLock(filosofi)
+    4 condizioni
+    Grafo di assegnazione
+  Gestione dello stallo
+    prevenzione ed evitamento
+      Prevenzione
+        mutua esclusione -> utilizzare solamente risorse condivisibili come la lettura dei file, ma esistono risorse che non
+        sono condivisibili
+        attesa circolare -> imporre un ordine all'utilizzo delle risorse
+        possesso e attesa -> imponendo che un processo
+        assenza di prelazione
+      Evitamento
+        stato sicuro
+        algoritmo con grafo di assegnazione
+    ignorarlo
+    lasciare che avvenga e poi risolverlo
+      terminazione dei processi
+      algoritmo per la risoluzione del deadlock che si avvia solamente ogni frequenza n o qualora l'uso della cpu scenda
+
+

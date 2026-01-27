@@ -1,0 +1,151 @@
+Risposta sincronizzazione:
+
+La sincronizzazione tra i processi in un'architettura, soprattutto monoprocessore, è fondamentale, poichè permette a processi cooperanti di prendere leggere e scrivere
+nelle risorse di cui hanno bisogno senza incappare in problemi di race condition o di starvation di una risorsa. Per prima cosa possiamo definire due tipi di processi per capire
+meglio come funzionano queste problematiche, esistono i processi cooperanti o concorrenti che utilizzano le risorse in sharing con altri processi e hanno la possibilità di
+scambiare informazioni e risorse con altri processi, esistono anche i processi indipendenti che invece non influenzano e non sono influenzati da altri processi. Quelli che portano
+queste problematiche di starvation e race condition sono chiaramente i processi cooperanti, poichè influenzano e sono influeati da altri processi e pertanto dipendono da essi
+sia per accesso alle risorse sia per passaggio di informazioni o delle stesse risorse. Questa race condition si verifica per un problema in particolare ovvero la cosiddetta
+sezione critica, ovvero una parte di codice in cui un processo va a scrivere all'interno della memoria ed un momento in cui quest'ultimo non può essere interrotto poichè se no
+si avrebbero problemi nella memoria. Questo protocollo della sezione critica deve garantire le seguenti condizioni: Mutua esclusione, progresso e attesa limitata, la prima la conosciamo
+anche dalla deadlock, le altre due si riferiscono a: un accesso immediato o quasi appena la SC (sezione critica) è libera per la seconda e la decisione di chi far accedere alla SC deve
+avvenire il prima possibile. Per questo motivo si sono sviluppate diverse tecniche di sincronizzazione tra i processi come: i semafori, l'uso dell'hardware, l'uso delle flag, l'uso
+dei monitor e l'uso dei lock mutex. 
+Verranno analizzate partendo dall'ultima per complessità, ovvero l'uso dell'hardware, siccome sono gli interrupt che portano alle race condition allora noi prima della SC li
+disabilitiamo e li riabilitiamo subito dopo la SC, così da non avere problemi durante l'accesso alle risorse evitando conflitti tra processi o race condition tra interrupt e
+processo ce accede alla memoria.
+
+Un'altra possibile implementazione per la sincronizzazione tra processi è quella di usare delle variabili lato software come delle flag per vedere quale processo ha bisogno
+di entrare grazie alla variabile flag. Per fare ciò si usano una serie di variabili flag che identificano quando un processo è pronto per entrare nella SC e delle variabili
+turn per validarne il suo accesso o validare l'accesso di un altro processo in essa.
+
+Un'altra implementazione per garantire la sincronizzazione tra processi è quella tramite Lock Mutex che permettono di proteggere le risorse dall'accesso illegale da parte di altri 
+processi, quando queste ultime sono utilizzate. Per prendere possesso di una risorsa, un processo, ha due funzioni da poter chiamare: acquire() e release(), la prima permette di 
+aquisire la risorsa se quest'ultima è libera, mentre release() libera la risorsa e setta la variabile lock su 'aperta', ovvero che da la possibilità agli altri processi di 
+eseguire la funzione acquire() e quindi di prendere la risorsa e usarla per il loro scopo. La differenza principale tra i lock mutex e le variabili locali è che con i lock mutex 
+si ha la possibilità di addormentare il processo mentre si trova in attesa della risorsa, mentre con le variabili locali questo non avviene e il processo continua ad occupare calcolo 
+della CPU perchè continua a fare richiesta di accesso alla risorsa di dui ha bisogno.
+
+Un'altra implementazione che è possibile eseguire per garantire la corretta sincronizzazione tra processi è quella mediante Semafori, questi permettono tramite una variabile S
+che può essere incrementata o decrementata tramite le funzioni di Wait() che decrementa la variabile e la funzione di Signal() che la incrementa, quando la variabile S è a 0
+vuol dire che non è più possibile utilizzare la risorsa a cui è associata e bisogna aspettare, quando è maggiore di 0 allora si può ancora assegnare S processi a quella risorsa.
+Prendiamo per esempio una stampante che ha la possibilità di avere in coda più processi, per esempi 3 processi, questo numero viene assegnato alla variabile S, a questo punto S = 3
+e tre processi vogliono usare la stampante, quindi chiamano la funzione di wait() che ha S >= 0 e allora assegna a questi tre processi l'uso della risorsa e decrementano S che
+diventa uguale a 0, a questo punto un altro processo richiede l'accesso alla risorsa, ma S = 0 e quindi viene messo in attesa, quando un processo che sta usando la risorsa la libera
+allora si chiama la funzione Signal() che decrementa S e da la possibilità al nuovo processo di usare la risorsa e quindi chiamare wait() per decrementare S e usare la risorsa.
+
+Infine l'ultima implementazione per garantire la corretta sincronizzazione è l'utilizzo dei Monitor, questi meccanismi funzionano tecnicamente come dei semafori, con le funzioni
+di wait e signal, ma operano non liberi nel codice utente, ma all'interno di "capsule" che contengono queste funzioni, questo accade perchè se un programmatore dovesse dimenticarsi
+di scrivere una signal, il sistema andrebbe in deadlock e questo chiaramente comporta un grandissimo problema, per questo motivo se dovesse avvenire una cosa del genere all'interno
+di un monitor si potrebbe semplicemente spegnere il monitor. All'interno dei monitor operano un processo alla volta, se un altro processo volesse entrare nel monitor e quest'ultimo
+dovesse essere occupato da un altro processo, il processo che chiede l'accesso verrà messo in coda dallo scheduler.
+
+
+Risposta DeadLock:
+
+Il deadlock non è altro una uno stallo che si presenta all'interno del sistema. Questo stallo è causato da diversi problemi presenti nell'architettura, come per esempio il fatto che
+due processi cerchino di accedere alla stessa risorsa. Prima di andare ad analizzare questi problemi parliamo del ciclo che porta un processo ad avere la risorsa da poter utilizzare
+infatti quando un processo è in esecuzione potrebbe avere bisogno di qualche risorsa, per ottenerla passa per i seguenti step:
+  * Richiesta della risorsa
+  * Utilizzo della risorsa
+  * Rilascio della risorsa
+
+All'interno del primo step viene riciesta la risorsa da parte del processo, se questa risorsa è disponibile allora la li da in concessione al processo che avrà la possibilità di usa
+rla e modificarla e poi rilasciarla o in anticipo attraverso un meccanismo di pre emption o appena ha terminato il suo utilizzo. Per spiegare meglio questo ciclo di utilizzo delle
+risorse e della possibilità che si verifichi un deadlock presenterò un problema, chiamato dei 5 filosofi, il quale spiega in modo abbastanza esaustivo questi concetti: ad un tavolo
+abbiamo 5 filosofi che possono svolgere due azioni: mangiare o pensare, in ogni caso non interagiscono con altri filosofi; sul tavolo sono presenti 5 bacchette una a destra e l'altra
+a sinistra di ogni filosofo, un filofoso può mangiare solamente se entrambe le bacchette sono libere ed utilizzabili. Questo è un problema che porta a possibile starvation e di
+conseguenza a possibile deadlock nel caso in cui ci sia un'attesa circolare tra i filosofi.
+
+Le condizioni per cui si verifica un deadlock sono 4 e se tutte e 4 non sono verificate non vi sarà un deadlock, in particolare le condizioni sono:
+  * Mutua Esclusione -> implica che ci sia almeno una risorsa non condivisibile in uso nel sistema, come per esempio un file in sola scrittura
+  * Attesa circolare -> esiste un insieme dei processi tale che P0 attende P1, P1 attende P2 .... Pn attende P0, questo crea un ciclo vizioso tra le risorse.
+  * Possesso e attesa -> un processo deve essere in possesso di una risorsa e contemporaneamente attenderne l'utilizzo di un'altra
+  * Assenza di prelazione -> con assenza di prelazione si intende quella condizione in cui non vi è la possibilità di liberare le risorse prima che un processo abbia finito di usarle
+
+Queste condizioni sono necessarie per far verificare un deadlock.
+Esistono dei metodi per fare in modo che questo deadlock si possa gestire, in particolare i metodi sono i seguenti:
+  * Ignorare il problema e pensare che non esista:
+      Questo metodo consiste nel trattare il deadlock come se non esistesse e fare in modo che l'utente, in presenza di questo deadlock riavvi la macchina o il programma o la serie
+      di processi che ha portato alla generazione del deadlock, questa strategia risolutiva ha dei vantaggi ovvero che non si perde tempo nel capire se sta avvenendo un deadlock
+      nel sistema e non si perde tempo neanche nel risolverlo, allo stesso tempo si ha un grossissimo problema che è quello di costringere l'utente a terminare l'esecuzione di processi
+      e parti di codice, cosa non fattibile per processi di scrittura su disco per esempio
+
+  * Prevenire l'avvenimento del problema:
+      Per evitare che un deadlock avvenga bisogna in primis chercae di evitare che si verifichino una delle 4 condizioni principali del deadlock, come la mutua esclusione, l'attesa
+      circolare, il possesso e attesa o l'assenza di prelazione. Nella prossima spiegazione capiremo come evitare questi problemi.
+        * Mutua Esclusione -> per evitare che si verifichi questa condizione si va a imporre al sistema di utilizzare solamente risorse condivisibili, ciò tuttavia non è sempre
+          possibile, poichè esistono delle risorse come la scrittura in file che non può essere resa condivisibile e questo rappresenta uno svantaggio di questa implementazione.
+
+        * Assenza di prelazione -> fare in modo che il sistema, o la CPU, abbiano la possibilità di terminare l'utilizzo della risorsa da parte di un processo, facendo così in modo
+          che il sistema possa liberare una risorsa anche prima che un processo abbia finito di usarla rendendo così questa condizione di deadlock non verificabile, questo non è sempre
+          possibile farlo poichè se si tenta di terminare un processo che scrive in memoria si rischia di avere dei file corrotti in memoria illeggibili da parte dell'utente.
+
+        * Attesa circolare -> si fa in modo che tutti i processi abbiano un ordine di esecuzione e che non possano funzionare se non all'interno di questo ordine. Questo evita che
+          processi che prima erano concatenati lo siano ancora e creiino deadlock, allo stesso tempo si rischia che due processi che non creavano deadlock e che erano concatenati
+          vengano disgiunti e quindi non riescano più ad operare.
+
+        * Possesso e Attesa -> per impedire quest'ultima condizione si fa in modo che tutti i processi debbado dichiarare di che risorse hanno bisogno e quindi che non possano
+          richiedere risorse nel caso in cui essi non abbiano già liberato quella che posseggono.
+  * Evitare il problema:
+      Per evitare che un deadlock avvenga ci sono due metodi:
+        * Istituire uno stato sicuro, uno stato si dice sicuro se esiste una sequenza sicura che è così creata: dato un insieme di processi P = {1, ... , n} il processo Pi dipende
+          solamente dai processi Pj con i > j, il che vuol dire che solamente i processi precedenti possono influenzare i processi futuri, senza andare a pescare informazioni da pro
+          cessi che non sono ancora stati eseguiti. Per risolvere questo problema si fa riferimento all'algoritmo del banchiere.
+        * Il secondo approccio si basa sulla creazione di un grafo di assegnazione, il quale permette di vedere tutti i processi che ci sono e le risorse che ci sono sotto forma di vertici
+          e gli archi che li collegano sono le richieste che devono essere fatte, se all'interno di questo grafo sono presenti dei cicli allora ci sarà un deadlock, in tal caso di fa
+          riferimento a un algoritmo di risoluzione del deadlock. 
+  * Lasciare che avvenga e poi risolverlo -> per fare ciò si fa avvenire il deadlock e dopodichè si vanno a terminare i processi o in blocco o singolarmente, questo permette di terminare
+      il deadlock andando a terminare i processi che lo causano, questo può però portare a grandissimi problemi dal momento che si interrompono processi come la stampa o la scrittura
+      in memoria si rischia di avere un gran numero di problemi. Un altro modo per risolvere il problema del deadlock è quello di applicare un meccanismo di rollback, che consente al
+      sistema di tornare indietro a prima del deadlock. 
+
+Risposta Comunicazione:
+
+In una CPU monoprocessore la Comunicazione tra i processi è molto importante e stabilita attraverso molteplici sistemi.
+Prima di addentrarci nel mondo della comunicazione tra processi, bisogna capire che cosa sono i processi cooperanti e indipendenti,
+comprendere queste definizioni serve soprattutto per capire quali tipi di processi comunicano e quali no, infatti i processi
+cooperanti, come dice la parola stessa, cooperano con altri processi, influeanzandone il flusso e facendosi influenzare da
+altri processi, per questo motivo questi processi devono sicuramente comunicare tra di loro, a differenza di questi ultimi
+i processi indipendenti operano separatamente, senza influenzare o essere influenzati da altri processi, rendendo così per
+loro la comunicazione una funzione superflua. Per comunicare e scambiare risrs o informazioni i processi utilizzano un
+protocollo chiamato IPC, o inter process communication, che permette di scambiare messaggi, byte, file e molto altro.
+Per faer questo vengono adoperate diverse tecniche come per esempio la memoria condivisa o dei sistemi di scambio di messaggi
+veri e propri.
+
+I sistemi a memoria condivisa sono sistemi in cui i processi condividono parti di memodia per scambiare al loro interno
+informazioni, questo sistema non è gestito dalla CPU, ma viene gestito dagli stessi processi che hanno la possibilità
+di sincronizzarsi per scambiare informazioni. Nonostante questo vi è un problema importante, ovvero quello del produttore
+e consumatore, immaginiamo per esempio che una macchina scriva in una memoria condivisa e un altra macchina legga da
+questa memoria condivisa per poi usare i dati, se la macchina che legge, legge troppo lentamente, questo può portare a
+impossibilità di caricare nuovi dati da parte del produttore. Per questo si implementano dei buffer di scrittura e lettura
+i quali possono essere limitati, illimitati o vuoti, vuoti chiaramente non hanno la possibilità di prendere dati, nel caso
+di limitati si ha un buffer di dimensione limitata che porta il produttore a dover aspettare tempo per poi scriverci dentro,
+nel caso degli illimitati invece non c'è problema poichè il buffer è infitito.
+
+Un altro possibile metodo di comunicazione sono i sistemi a scambio di messaggi, i quali permettono tramite funzioni specifiche
+come send(message) e receive(message) di mandare o ricevere messaggi, i messaggi che vengono mandati possono essere a lunghezza
+fissa o variabile, e questo permette di non adoperare la memoria condivisa per comunicare. Per scambiare questi messaggi
+i processi devono avere un canale logico che li colleghi e che gli dia la possibilità di mandare o ricevere dei messaggi, qui
+si entra nel mondo della comunicazione diretta o indiretta e sincrona o asincrona. In particolare nella comunicazione per
+scambio di messaggi io posso scambiare messaggi facendo il cosiddetto naming, ovvero nominare nel mio invio del messaggio
+a chi lo sto mandando. Per fare questo ci sono due tipi di comunicazione ovvero diretta e indiretta, nel primo io nomino
+il ricevente e il ricevente nomina il mandante, nel secondo io ricevente nomino una mailbox a cui arriverà il messaggio in
+cui c'è il processo ricevente, ma io mandante non so chi sia il ricevente. Un altro metodo di scambio messaggi è quello
+della sincronizzazione tra i processi, i processi possono essere sincroni o asincroni, due processi sincroni inviano e
+ricevono i messaggi sincerandosi che l'invio sia stato eseguito e il ricevente si blocca fino a quando non arriva un
+nuovo messaggio dal mandante, nel procesi asincroni il processo mandante evoca la funzione send e il ricevente continua
+ad evocare la funzione receive per prendere il messaggio. Un ultimo esempio di comunicazione tra messaggi è quello della
+comunicazione tramite code di messaggi, in questa implementazione i messaggi risiedono in delle code tempnon hanno la oranee da dove
+i processi riceventi hanno la possibilità di prenderle, queste code possono essere code a dimensione zero, a dimensione
+limitata o a dimensione infinita. Quella a dimensione zero il mandante deve fermarsi fino a quando il ricevente non ha
+preso il messaggio, in quella da dimensione limitata, se la coda è piena il mandante deve aspettare fino a quando la coda
+no si libera, inveca in quelle a dimensione illimitata si ha la possibilita di scambiare infiniti messaggi.
+
+Esistono altri tipi di comunicazione che sono quelli tramite socket, e quelli tramite pipe, nelle socket lo scembio di
+messaggi avviene attraverso pacchetti che possono essere trasmessi con protocolli come il TCP, UDP o il multicast, a
+indirizzi locali o indirizzi esterni alla rete locale grazie alla rete internet.
+Nelle comunicazioni tramite pipe si utilizza un bus in cui i si scamiano informazioni, spesso tra due processi padre e 
+figlio per la creazione del secondo, questa è una comunicazione unidirezionale e permette lo scambio di messaggi solamente
+verso una direzione, le pipeline Named invece hanno la possibilità di essere bidirezionali e i processi che la usano devono
+chiamare il ricevente.

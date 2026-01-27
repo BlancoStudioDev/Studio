@@ -1,0 +1,52 @@
+INIZIO 11:53
+
+Esercizio 1
+
+Sequenza: gallina gabbiano gufo pecora leone tigre bue lince
+
+h(ratto) = 12 g(ratto) = 5
+
+0
+1 gabbiano
+2 pecora
+3
+4 bue
+5
+6 gallina
+7 lince
+8 leone
+9
+10
+11 gufo
+12
+13 tigre
+14
+15
+
+Esercizio 2
+
+Sequenza: 22 27 39 41 4 1 11
+
+a)
+          27
+        4     39
+      1   22      41
+         11
+
+b)             11 27
+     4 1        22        39
+    4 1 11     22 27     39 41
+
+FINE PARTE 1 12:00 -> Tempo: 7 minuti (uno di controllo correttezza)
+
+Esercizio 3
+
+Un cammino da x a y è un insieme di nodi per cui è necessario passare per giungere dal vertice x fino al vertice y
+Un cammino minimo è un cammino per cui la somma dei pesi degli archi che congiungono i nodi visitati per andare da x
+a y è minima rispetto a tutto il resto dei cammini attraversabili nel grafo.
+
+L'algoritmo di Djikstra da la possibilità di trovare un vettore con all'interno tutti i cammini minimi da un vetrici a
+tutti gli altri vertici del grafo. Per esempio si può usare se dovessi determinare tutte le case che distano 200 metri
+in raggio da un punto centrale detto vertice S
+
+

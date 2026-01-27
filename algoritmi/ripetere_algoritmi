@@ -1,0 +1,124 @@
+ALGORITMO FLOYD-WARSHALL(G(V,E,w)) -> matrice
+  Sia D una matrice nxn con vertici V={v1,v2, ... ,vn}
+  FOR i <- 1 TO n DO
+    FOR j <- 1 TO n DO
+      IF i == j THEN D(i,j) <- 0
+      ELSE IF (Vi,Vj) in E THEN D(i,j) <- w(Vi,Vj)
+      ELSE D(i,j) <- infinito
+
+  FOR k <- 1 TO n DO
+    FOR j <- 1 TO n DO
+      FOR i <- 1 TO n DO
+        IF D(i,k) + D(k, j) < D(i,j) THEN
+          D(i,j) <- D(i,k) + D(k,j)
+
+  RETURN D
+
+
+ALGORITMO DIJKSTRA(G(V,E,w), vertice s) -> vettore
+  Sia D un vettore con indici in V
+  Sia C una coda con priorita inizialmente vuota
+  D(s) <- 0
+  FOR EACH v in V-{s} DO D(v) <- infinito
+  FOR EACH v in V-{s} DO C.insert(v,D(v))
+  WHILE C != 0
+    u <- C.deleteMin()
+    FOR EACH (u,v) in E DO
+      IF D(u) + w(u,v) < D(v) THEN
+        D(v) <- D(u) + w(u,v)
+        C.changeKey(v,D(v))
+
+  RETURN D
+
+
+ALGORITMO KRUSKAL(G(V,E,w)) -> albero ricoprente minimo
+  Ordina l'insieme E in ordine non decrescente in base ai pesi
+  T <- (V,0)
+  Sia P una partizione inizialmente vuota
+  FOR EACH v in V DO P.makeset(v)
+  FOR EACH (x,y) in E secondo l'ordine DO
+    tx <- P.Find(x)
+    ty <- P.Find(y)
+    IF tx != ty THEN
+      P.Union(tx,ty)
+      aggiungi a T l'arco (x,y)
+  
+  RETURN T
+
+ALGORITMO KRUSKAL(G(V,E,w)) -> albero
+  Ordina l'insieme E in ordine non decrescente in base ai pesi
+  T <- (V,0)
+  FOR EACH (x,y) in E in base all'ordine DO
+    IF x e y non sono connessi THEN
+      aggiungi a T l'arco (x,y)
+
+  RETURN T
+
+
+ALGORITMO DIJKSTRA(G(V,E,w)) -> vettore
+  Sia D un vettore con indici in V
+  D(s) <- 0
+  FOR EACH v in V-{s} DO D(v) <- infinito
+  C <- V
+  WHILE C != 0
+    u <- elemento di C con D(u) minima
+    C <- C - {u}
+    FOR EACH (u,v) in E DO
+      IF D(u) + w(u,v) < D(v)
+        D(v) <- D(u) + w(u,v)
+
+  RETURN D
+
+
+ALGORITMO KRUSKAL(G(V,E,w)) -> albero
+  Ordina l'insieme E in modo non decrescente secondo i pesi
+  T <- (V,0)
+  FOR EACH (x,y) in E secondo l'ordine DO
+    IF x e y non sono connessi in T DO
+      aggiungi a T l'arco (x,y)
+
+  RETURN T
+
+
+ALGORITMO KRUSKAL(G(V,E,w)) -> albero
+  Ordina l'insieme E in modo non decrescente in base ai pesi
+  T <- (V,0)
+  Sia P una coda di priorità inizialmente vuota
+  FOR EACH v in V DO p.makeset(v)
+  FOR EACH (x,y) in E secondo l'ordine DO
+    tx <- P.Find(x)
+    ty <- P.Find(y)
+    IF tx != ty THEN
+      P.Union(tx,ty)
+      aggiungi a T l'arco (x,y)
+
+  RETURN T
+
+
+14 19 23 11 45 18 43 52
+
+19 23 52 45 18 43 14 11
+
+
+Esercizio Tabelle Hash
+
+c(i,k) = (h(k) + i*g(k)) mod 16
+
+Sequenza: salmone, tonno, rombo, aringa, cernia, aragosta, totano, ostrica, nasello, palombo
+
+0 aringa
+1 aragosta
+2 cernia
+3
+4 nasello
+5
+6
+7 ostrica
+8 tonno
+9
+10 totano
+11 palombo
+12 rombo
+13 salmone
+14
+15

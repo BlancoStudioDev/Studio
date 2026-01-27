@@ -1,0 +1,94 @@
+INIZIO 11:44
+
+Esercizio 1
+Sequenza: 28 11 4 55 33 60 5
+
+a) 28 5 55 4 11 33 60
+b) (11-33) (4-5) 28 55 4 5 11 28 33 55 60
+
+Esercizio2
+Sequenza: 227 315 47 108 439 6 115 459
+
+a) 6 115 47 108 227 439 315 459
+b) 459 439 115 315 227 6 47 108
+c) 227 315 47 108 439 6 115 459
+   47 227 315 108 439 6 115 459
+d) 6 108 315 115 227 349 47 459
+
+
+FINE PARTE1 12:05
+
+Esercizio 3
+a) Per soddisfare il seguente problema sarà necessario costuire un algoritmo che identifichi i cammini minimi
+nella città in base all'attuale rete stradatle che verrà usata per la posatura della stessa fibra ottica. Per rappresentare
+questo problema sarà necessario indicare la città come un grafo non orientato pesato, definito come segue:
+G(V,E,w) dove G è il grafo, V è l'insieme dei vertici del grafo ovvero l'insieme degli incroci stradali, E è l'insieme
+degli archi del grafo ovvero l'insieme delle strade della città e w è il peso assegnato a ciascun arco che collega due
+vertici, quindi la distanza che bisogna percorrere per posare un cavo da x a y con x e y due vertici direttamente
+connessi. Per risolvere il seguente problema sarà necessario costruire un grafo ricoprente minimo tramite l'algoritmo di
+Kruskal e utilizzarlo per decidere quali vertici avranno la fira ottica, tutti gli archi che non rientrano nel grafo
+ricoprente minimo saranno quelli dove bisogna posare il cavo normale e non di fibra ottica.
+
+b) PSEUDOCODICE
+    ALGORITMO KRUSKAL(G(V,E,w)) -> lista, lista
+      Ordino l'insieme E in ordine non decrescente secondo il peso
+      T <- (V, vuoto)
+      FOR EACH (x,y) in E secondo l'ordine DO
+        IF x e y non sono connessi THEN
+          aggiungi a T l'arco (x,y)
+          aggiungi a lista_fibra l'arco (x,y)
+        ELSE
+          aggiungi a lista_cavo_normale l'arco (x,y)
+    RETURN lista_fibra, lista_cavo_normale
+
+L'algoritmo che stiamo utilizzando è l'algoritmo di Kruskal che funziona nel seguente modo:
+    viene ordinato l'insieme degli archi in base al loro peso, sulla base di questo si va a fare un for che cerca in tutti
+    gli archi in base ad esso. Prende gli archi di peso minimo e li aggiunge all'albero T che è stato precedentemente creato
+    vuoto, se l'arco che stiamo per andare ad aggiungere crea un ciclo all'interno dell'albero T allora non lo prendiamo,
+    questo è espresso nella condizione: IF x e y non sono connessi, poichè la seguente condizione dice che se due vertici
+    generici non sono ancora connessi, ne direttamente ne indirettamente, allora li si congiunge in T con un arco (x,y).
+    La nostra implementazione aggiunge due strutture dati lista_fibra e lista_cavo_normale che servono, quando riempite
+    ad avere una lista delle strade in cui stendere la fibra ottica e quelle in cui il cavo normale. Queste liste vengono
+    riempite nello stesso IF in cui si decide che archi aggiungere all'albero ricoprente minimo.
+
+c) PSEUDOCODICE
+    ALGORITMO KRUSKAL(G(V,E,w)) -> lista, lista
+      Ordino l'insieme E in ordine non decrescente secondo il peso
+      T <- (V,vuoto)
+      Sia P una partizione inizialmente vuota
+      FOR EACH v in V DO P.makeset(v)
+      FOR EACH (x,y) in E secondo l'ordine DO
+        Tx <- P.find(x)
+        Ty <- P.find(y)
+        IF Tx != Ty THEN
+          Aggiungi a T l'arco (x,y)
+          P.Union(Tx,Ty)
+          Aggiungi a lista_fibra l'arco (x,y)
+        ELSE
+          Aggiungi a lista_cavo_normale l'arco (x,y)
+
+Tempo di calcolo:
+Ordinamento -> O(mlogm = 2n^2log n)
+Primo For Each -> O(n)
+Find se si usa un algoritmo di Quick Find O(1) e Union = O(log n)
+Se no, se si usa Quick Union, al contrario Find O(log n) Union O(1)
+In totale comunque O(m log m) = O (2n^2 log n)
+
+d) PSEUDOCODICE
+    ALGORITMO KRUSKAL(G(V,E,w)) -> lista
+      Ordino l'insieme E in ordine decrescente secondo il peso
+      T <- (V,vuoto)
+      Sia P una partizione inizialmente vuota
+      FOR EACH v in V DO P.makeset(v)
+      FOR EACH (x,y) in E secondo l'ordine DO
+        Tx <- P.find(x)
+        Ty <- P.find(y)
+        IF Tx != Ty THEN
+          Aggiungi a T l'arco (x,y)
+          P.Union(Tx,Ty)
+          Aggiungi a lista_fibra l'arco (x,y)
+        ELSE
+          Aggiungi a lista_cavo_normale l'arco (x,y)
+    RETURN lista_fibra
+
+FINE PROVA 12:34 -> Tempo totale 50 minuti

@@ -1,0 +1,103 @@
+INIZIO 9:27
+
+Esercizio 1
+
+Sequenza: 28 42 17 15 36 25 32 20
+
+a) 28 17 36 15 25 32 42 20
+b) 17 28    15    20 25     32 36     15 17     20 25 28      32 36 42
+
+Esercizio 2
+
+Sequenza: 28 42 17 15 36 25 32 20 44
+
+a) 25 20 17 15 28 36 32 42 44
+b) 36 42 44 32 28 25 15 20 17
+c) 44 42 32 28 36 25 17 20 15
+d) 15 20 17 28 36 25 32 42 44
+
+FINE PARTE 1 9:39 => Tempo 12 min
+
+Esercizio 3
+
+a) Il seguente problema può essere descritto tramite grafi, in particolare con un grafo pesato non orientato G(V,E,w).
+   Il seguente grafo è così composto: G è il nome del grafo, V è l'insieme di tutti i vertici presenti nel grafo
+   V = {1, ... , n} che rappresentano nel nostro problema gli incroci e le strade senza uscita, rappresentate anch'esse
+   con un incrocio come descritto nel problema e quindi con un vertice, E è l'insieme degli archi presenti nel grafo
+   che collegano due vertici insieme, in particolare l'insieme E = {(x,y)} e nel nostro problema rappresenta la strada
+   che congiunge due incroci, infine w, ovvero il peso per arco, è un valore associato all'arco che ne determina il peso
+   nel nostro problema questo si traduce nella lunghezza della strada. Per risolvere il nostro problema andremo ad utilizzare
+   l'algoritmo di Kruskal che crea un grafo ricoprente minimo, ovvero un grafo G'(V,E',w) che ha gli stessi vertici di G
+   e gli stessi pesi di G sugli archi, ma non prende tutti gli archi bensì quelli che hanno il peso minore all'interno del
+   grafo G di partenza e che se presi non creano cicli all'interno del nuovo grafo G'. Facendo questo abbiamo la possibilità
+   di trovare l'insieme delle strade minime da prendere, che collegano tutti gli archi e che hanno il peso minore in tutta
+   la città, senza però avere dei cicli all'interno del grafo finale. Inoltre andremo a prendere la differenza tra i gli archi
+   presenti nei due grafi e con essi andremo a comporre un array di archi contenente quindi tutti quegli archi che non fanno
+   parte dell'albero ricoprente minimo. Il primo array ci serve per determinare tutte quelle strade in cui mettere un
+   tapis rullant, ovvero le strade principali, mentre il secondo array ci permette di trovare tutte quelle strade dove
+   non deve essere messo il tapis rullant, ovvero le strade secondarie.
+
+b) L'algoritmo descritto sommariamente in precedenza verrà ora descritto nel dettaglio andandone ad analizzare ogni sua
+   parte: L'istanza dell'algoritmo è un grafo G che rappresenta la mappa della città in analisi, la soluzione dell'algoritmo
+   sono due diversi array contenenti uno l'insieme degli archi, delle strade in cui mettere i tapis rullant e l'altro
+   rappresenta l'insieme delle strade in cui non mettere niente, ovvero le strade secondarie. L'algoritmo è così composto:
+   Ordinamento dell'insieme degli archi del grafo in base al peso w, creazione di un albero T inizialmente vuoto, per gli
+   archi e l'insieme V dei vertici inizializzato uguale all'insieme dei vertici di G, un ciclo FOR EACH che scorra l'insieme
+   degli archi in ordine in base al peso, un if che determina se i vertici x e y non sono connessi e in tal caso aggiunge
+   a T l'arco (x,y) e lo stesso arco lo aggiunge anche ad array_primarie, in caso contrario invece non aggiunge niente a T,
+   ma aggiunge l'arco (x,y) ad array_secondarie, infine si fa il RETURN di array_primarie ed array_secondarie.
+
+   PSEUDOCODICE
+   ALGORITMO KRUSKAL(G(V,E,w)) -> array_primarie, array_secondarie
+     Ordino in ordine non decrescente l'insieme e in base al peso w
+     T <- (V,vuoto)
+     FOR EACH (x,y) secondo l'ordine DO
+       IF x e y non sono connessi in T THEN
+         aggiungi a T l'arco (x,y)
+         aggiungi all'array array_primarie la coppia (x,y)
+       ELSE
+         aggiungi all'array array_secondarie la coppia (x,y)
+     RETURN array_primarie, array_secondarie
+
+c) Strutturando il tutto con una lista di adiacenza il tempo di accederci sarà O(n+m), mentre per quanto riguarda le
+   strutture di supporto si potrebbe utilizzare una Partizione P, in modo da utilizzare Union Find epr ottimizzare i tempi
+   e lo spazio usato, in particolare:
+   PSEUDOCODICE
+   ALGORITMO KRUSKAL(G(V,E,w)) -> array_primarie, array_secondarie
+     Ordino in ordine non decrescente l'insieme e in base al peso w
+       T <- (V,vuoto)
+       Sia P una partizione inzialmente vuota
+       FOR EACH v in V DO P.makeset(v)
+       FOR EACH (x,y) secondo l'ordine DO
+         Tx <- P.Find(x)
+         Ty <- P.Find(y)
+         IF Tx != Ty THEN
+           aggiungi a T l'arco (x,y)
+           aggiungi all'array array_primarie la coppia (x,y)
+           P.Union(x,y)
+         ELSE
+           aggiungi all'array array_secondarie la coppia (x,y)
+       RETURN array_primarie, array_secondarie
+
+   I tempi che per questo algorimo risultano essere i seguenti:
+    * Ordinare l'array in ordine crescente => O(mlogm) con m asintotico a n^2 numero di vertici
+    * Creazione dell'albero T => O(1) per il criterio del costo unitario
+    * Creazione di una partizione inizialmente vuota => O(1) sempre per il teorema del costo unitario
+    * Riempimento con makeset della Partizione => O(n) poichè devo scorrere n vertici
+    * Se si usa un algoritmo di Quick Find le find costano O(1) e la Union costa O(log n)
+    * Se si usa un algoritmo di Quick Union la Union costa O(1) mentre la Find cosa O(log n)
+    * L'if => O(1) per il criterio del costo unitario
+    * aggiungere a T l'arco (x,y), aggiungere all'array array_primarie l'arco (x,y) e aggiungere all'array array_secondarie
+      l'arco (x,y) costa sempre O(1) sempre per il criterio del costo unitario.
+    * Il FOR EACH esterno costa sempre O(m) poichè scorro m archi, con m asintotico a n^2
+
+    Per questo motivo e sommando tutti i costi si avrà che il costo totale del suddetto algoritmo risulta essere:
+    O(mlog n) = O(n^2 log n)
+
+d) Per risolvere questo nuovo problema io non utilizzerei los stesso algoritmo descritto nel punto b, ma userei un
+   l'algoritmo di DijKstra che ci permette di fissare un punto centrale e descrivere tramite un vettore tutti quegli
+   archi minimi con cui posso arrivare da quel punto centrale a tutti gli altri, per esempio nel raggio di tot.
+
+FINE PARTE 2: 10:31 => Tempo: 52 minuti
+
+FINE PROVA 10:31 => Tempo: 1:04 minuti

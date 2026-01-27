@@ -1,0 +1,88 @@
+DOMANDA:
+La schedulazione dei processi in un sistema di elaborazione monoprocessore: si descrivano le
+principali tecniche per realizzare la schedulazione dei processi in un sistema monoprocessore,
+evidenziandone le caratteristiche.
+
+Risposta:
+Per prima cosa dobbiamo dire che siccome ci troviamo in un sistema monoprocessore verrà eseguito un solo processo alla
+volta, vengono usati diversi metodi per schedulare i processi e fare in modo che vengano eseguiti nell'ordine migliore
+per abbassare il tempo medio di esecuzione. Ci sono diverse componenti che sono cruciali all'interno di questo ciclo di
+vita per un processo e della sua schedulazione, che sono: le queue e i PCB. Le queue non sono altro che delle code in cui
+vengono inseriti i processi che devono essere abilitati all'esecuzione, successivi al processo che ora è in esecuzione.
+Il PCB, o process controll block, non è altro che una struttura che contiene tutte le informazioni che riguardano un
+determinato processo e gli danno la possiilità di avere uno stato di avanzamento nella sua esecuzione; grazie a questa
+struttura abbiamo la possibilità nel caso in cui un processo si interrompa di riprenderlo dallo stato in cui si è bloccato.
+Le queue somo identificate in diverse parti tra cui la ready queue che non è altro che l'insieme dei processi in coda in
+stato di ready, pronti per essere abilitati all'esecuzione. Un altro componente principale nelle architetture schedulate
+è il dispatcher, modulo che passa il controllo dela CPU al processo scelto dallo scheduler a breve termine. Lo scheduler
+a breve termine prende le informazioni direttamente dalle code, senza andare a prendere processi dalla memoria. Il dispatcher
+serve quindi per fermare ed avviare i processi.
+
+Algoritmi di scheduling:
+  * FCFS First Come First Served
+  * SJF Shortest Job First
+  * Scheduling con priorità -> viene assegnata una priorità in base al loro tempo di esecuzione, si può scegliere in precedenza
+                               il numero da dare in base al numero di priorità assegnato
+  * Scheduling Circolare -> algoritmo Round Robin => Ogni processo usa la CPU per un determinato tempo, uguale per tutti,
+                            se questo tempo non basta per l'esecuzione di quel processo comunque si fa preemption e
+                            la possiilità di usare la CPU viene data ad un altro processo.
+  * Scheduling con code multilivello -> le ready queue sono divise in diversi livelli in base alla loro priorità e si vanno
+                                        ad eseguire prima i processi che si trovano nella coda con maggior priorità
+  * Scheduling con code multilivello e retroazione -> uguale alle code multilivello, ma i processi possono spostarsi di coda
+                                                      in modo da poter essere eseguiti prima o dopo. Per determinare il
+                                                      loro spostamento si usano degli algoritmi che ne determinano la
+                                                      priorità.
+
+
+
+RISPOSTA FATTA BENE:
+In un sistema di elaborazione monoprocessore, essendo presente una sola CPU, può essere eseguito un solo processo alla 
+volta. Di conseguenza, il sistema operativo deve stabilire quale processo assegnare alla CPU e in quale ordine, tramite
+meccanismi di schedulazione dei processi, con l’obiettivo di ottimizzare le prestazioni del sistema, riducendo il tempo 
+medio di attesa, migliorando il tempo di risposta e garantendo equità tra i processi.
+
+Durante il ciclo di vita di un processo, alcune componenti risultano fondamentali per la schedulazione, in particolare
+le queue e il PCB (Process Control Block). Le queue sono strutture dati che contengono i processi in attesa di essere 
+eseguiti o di accedere alla CPU. Tra queste, la ready queue raccoglie tutti i processi nello stato di ready, ovvero 
+pronti per essere eseguiti ma non attualmente in esecuzione.
+
+Il PCB è una struttura dati associata a ciascun processo e contiene tutte le informazioni necessarie alla sua gestione, 
+come lo stato del processo, il contesto della CPU, i registri, le informazioni di schedulazione e le risorse utilizzate. 
+Grazie al PCB, il sistema operativo è in grado di effettuare il context switch, permettendo di sospendere un processo e 
+riprenderne l’esecuzione dal punto in cui era stato interrotto.
+
+La scelta del processo da eseguire è effettuata dallo scheduler a breve termine, che seleziona il prossimo processo 
+dalla ready queue. Successivamente interviene il dispatcher, il cui compito è assegnare la CPU al processo selezionato, 
+salvando lo stato del processo precedente e avviando l’esecuzione del nuovo processo.
+
+I principali algoritmi di schedulazione utilizzati nei sistemi monoprocessore sono i seguenti:
+
+First Come First Served (FCFS): algoritmo non preemptive in cui i processi vengono eseguiti nell’ordine di arrivo.
+È semplice da implementare, ma può portare a tempi di attesa elevati e al fenomeno del convoy effect, soprattutto in
+presenza di processi con tempi di esecuzione lunghi.
+
+Shortest Job First (SJF): algoritmo che assegna la CPU al processo con il tempo di esecuzione più breve. Minimizza il 
+tempo medio di attesa, ma richiede una stima della durata dei processi e può causare starvation dei processi più lunghi.
+Nella versione preemptive prende il nome di Shortest Remaining Time First (SRTF).
+
+Scheduling con priorità: a ogni processo viene assegnata una priorità e la CPU viene assegnata al processo con priorità
+più alta. Può essere preemptive o non preemptive e, in assenza di meccanismi correttivi, può portare a starvation dei
+processi a bassa priorità.
+
+Round Robin: algoritmo preemptive utilizzato nei sistemi time-sharing, in cui a ogni processo viene assegnato un
+intervallo di tempo fisso detto time quantum. Se il processo non termina entro tale intervallo, viene interrotto
+e rimesso in coda, garantendo equità e una buona reattività del sistema.
+
+Scheduling a code multilivello: la ready queue è suddivisa in più code, ciascuna caratterizzata da una diversa priorità
+e da una propria politica di schedulazione. I processi appartenenti alle code con priorità più alta vengono eseguiti per
+primi. In questo modello, i processi non possono spostarsi da una coda all’altra.
+
+Scheduling a code multilivello con retroazione (feedback): estensione delle code multilivello in cui i processi possono
+cambiare coda in base al loro comportamento e all’utilizzo della CPU. Questo consente una gestione più flessibile e 
+riduce il rischio di starvation.
+
+Un problema comune negli algoritmi basati su priorità e nelle code multilivello è il fenomeno della starvation, ovvero
+l’attesa indefinita di alcuni processi. Per evitare questo problema viene utilizzata la tecnica dell’aging.
+Lo aging consiste nell’aumentare progressivamente la priorità di un processo in funzione del tempo trascorso in attesa
+nella ready queue. In questo modo, anche i processi inizialmente a bassa priorità ottengono prima o poi l’accesso alla CPU.
+Le code con aging utilizzano quindi priorità dinamiche, migliorando l’equità e l’efficienza complessiva del sistema.

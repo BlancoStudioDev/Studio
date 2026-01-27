@@ -1,0 +1,73 @@
+Esercizio 1
+a) Sequenza: 18 43 52 27 11 14 19 23
+
+          18
+      14      43
+    11      27  52
+           19 23
+
+b)
+
+          19
+    14          17
+11/14 18/19 23/27 43/52
+
+Esercizio 2
+
+Sequenza: 14 19 23 11 45 18 43 52
+a) 11 14 23 19 45 18 43 52
+b) 43 19 23 52 45 18 14 11
+c) 23 19 43 11 14 18 45 52
+d) 14 18 19 23 11 43 45 52
+
+Esercizio 3
+Per risolvere il problema utilizzerei una verione modificata dell'algoritmo di FLOYD-WARSHALL, in particolare togliendo
+la parte di costruzione della matrice iniziale, non necessario poichè la matrice che si andrebbe a creare è già passata
+come argomento. Inoltre per soddisfare le richieste bisogna creare due strutture di supporto, due array, inizializati
+all'inzio dello pseudocodice e poi utilizzati andandoli a riempire con un doppio for per lo scorrimento della matrice
+e degli if che controllano, uno se la riga è la 1, poi la 2 poi la 3 poi la 4 e su quelle righe si prende il massimo
+andando a scorrerle, e l'altra serie di if farà la stessa cosa sulle colonne.
+
+PSEUDOCODICE
+
+ALGORITMO FLOYD-WARSHALL-MODIFICATO(Matrice M nxn) -> array, array
+  Sia MaxA un array inizialmente vuoto
+  Sia MaxDa un array inizialmente vuoto
+  FOR k <- 1 TO n DO
+    FOR j <- 1 TO n Do
+      FOR i <- 1 TO n DO
+        IF M(i,k) + M(k,j) < M(i,j) THEN
+          M(i,j) <- M(i,k) + M(k,j)
+
+  FOR i <- 1 TO n DO
+    FOR j <- 1 TO n DO
+      IF M(i,j) > MaxA[i]
+        MaxA[i] = M(i,j)
+      
+      IF M(i,j) > MaxDa[j]
+        MaxDa[j] = M(i,j)
+
+
+RETURN MaxDa, MaxA
+
+O(n^3)
+
+ALGORITMO FLOYD-WARSHALL-MODIFICATO(Matrice M nxn) -> array, array
+  Sia elenco un array inizialmente vuoto
+  FOR k <- 1 TO n DO
+    FOR j <- 1 TO n Do
+      FOR i <- 1 TO n DO
+        IF M(i,k) + M(k,j) < M(i,j) THEN
+          M(i,j) <- M(i,k) + M(k,j)
+  
+  FOR i <- 1 TO n DO
+    FOR j <- 1 TO n DO
+      IF M(i,j) != 0
+        elenco[k] <- (i,j,w)
+        k <- k+1
+
+  elenco <- HeapSort(elenco sulla base dei w)
+
+RETURN elenco
+
+

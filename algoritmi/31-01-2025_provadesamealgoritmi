@@ -1,0 +1,154 @@
+La strategia da implementare per la risoluzione del problema è quella di creare il grafo sotto forma di grafo non orientato
+che collega le varie stazioni ovvero i nodi/vertici del grafo non orientato. Ciascun arco descrive il collegamento tra le
+varie stazioni, con il peso di ciascun arco che rappresenta il costo necessario per andare dalla prima all'altra. Per la
+risoluzione del problema si utilizzerà l'algoritmo di Floyd Warshall che permette, tramite input di un grafo, di restituire
+una matrice contenente i pesi minimi, se parliamo dell'algoritmo base, e massimi invece se creaiamo un algoritmo
+ad ok per questo problema, come richiesto.
+
+PSEUDOCODICE
+
+ALGOITMO FLOYD-WARSHALL(Grafo G(V,E,w)) -> matrice
+  Sia D una matrice nxn con indici i vertici V = {v1, v2, ... , vn}
+  FOR i <- 1 TO n DO
+    FOR j <- 1 TO n DO 
+      IF i == j THEN D(i,j) <- 0
+      ELSE IF (Vi, Vj) in E THEN D(i,j) <- w(Vi, Vj)
+      ELSE D(i,j) <- infinito
+
+max <- 0
+stazione di partenza <- 1
+stazione di arrivo <- 1
+
+  FOR k <- 1 TO n DO 
+    FOR j <- 1 TO n DO 
+      FOR i <- 1 TO n DO 
+        IF D(i, k) + D(k, j) < D(i,j) THEN
+          D(i,j) <- D(i,k) + D(k,j)
+        
+        IF k == n THEN
+          IF D(i,j) > max THEN
+            stazione di partenza <- i
+            stazione di arrivo <- j
+
+  RETURN (stazione di partenza, stazione di arrivo)
+
+
+Per calcolare il Tempo massimo impiegato dall'algoritmo bisogna scomporlo in parti:
+
+  - Creazione della matrice:
+      
+      "Sia D una matrice nxn con indici i vertici V = {v1, v2, ... , vn}"
+
+    Tempo impiegato: n^2
+    poichè sono necessari due cicli for per la sua Creazione
+
+  - Ciclo per il primo riempimento della matrice:
+      
+      Per il criterio del costo unitario possiamo assumere che i confronti e gli assegnamenti impieghino tempo O(1)
+      per questo motivo il peso dei due cicli for sul tempo totale è di O(n^2)
+
+  - Cicli per i confronti intramatriciali, per il riempimento matriciale e assegnamento delle variabili "stazione di 
+    partenza" e "stazione di arrivo":
+      
+      Essi hanno come costo maggiore il costo dei cicli stessi e quindi un costo O(n^3) poichè come prima gli assegnamenti
+      e i confronti hanno come peso O(1)
+
+Sommando i Tempi di tutti i passaggi troviamo che il tempo totale impiegato da questo algoritmo dipende principalmente
+dal costo, in tempo, dei tre cicli for annidati, portando il tempo totale ad:
+
+                                                        O(n^3)
+
+
+Per trovare tutte le stazioni le si potrebbe inserire all'interno di una lista di coppie che conterrà le coppie delle stazioni x e y 
+che hanno tariffe maggiori, per ilmplementare questa strategia semplicemente si può creare un nuovo ciclo che andrà
+a leggere nella matrice e cercare se c'è un'altra coppia con il peso tra i due vertici uguale a quella del massimo e 
+poi aggiungerà anche questa coppia alla lista di coppie:
+
+PSEUDOCODICE
+
+ALGOITMO FLOYD-WARSHALL(Grafo G(V,E,w)) -> matrice
+  Sia D una matrice nxn con indici i vertici V = {v1, v2, ... , vn}
+  FOR i <- 1 TO n DO
+    FOR j <- 1 TO n DO 
+      IF i == j THEN D(i,j) <- 0
+      ELSE IF (Vi, Vj) in E THEN D(i,j) <- w(Vi, Vj)
+      ELSE D(i,j) <- infinito
+
+  max <- 0
+  stazione di partenza <- 1
+  stazione di arrivo <- 1
+
+  FOR k <- 1 TO n DO 
+    FOR j <- 1 TO n DO 
+      FOR i <- 1 TO n DO 
+        IF D(i, k) + D(k, j) < D(i,j) THEN
+          D(i,j) <- D(i,k) + D(k,j)
+
+        IF k == n THEN
+          IF D(i,j) > max THEN
+            stazione di partenza <- i
+            stazione di arrivo <- j
+
+  lista_massimi <- lista_vuota
+
+  FOR i <- i TO n DO 
+    FOR j <- 1 TO n DO 
+      IF D(i,j) == max THEN
+        aggiungi (i,j) a lista_massimi
+
+  RETURN (stazione di partenza, stazione di arrivo), lista_massimi
+
+Per il calcolo del tempo totale:
+
+  - creazione della matrice O(n^2)
+  - prima serie di cicli O(n^2)
+  - seconda serie di cicli O(n^3)
+  - terza serie di cicli O(n^2)
+
+Creao un nuovo algoritmo che trova il minimo tra tutta la lista di archi. Usando l'algoritmo tua madre troia. Tempo il tempo che io vengo dentro tua madre.
+
+
+
+Sequenza: 57 33 28 23 77 26 36 11
+
+            57
+        33
+    28
+
+            33
+        28      57
+      23          77
+    26
+
+            33
+         26    57
+       23  28 36 77
+    11
+
+che è la stessa cosa ma più veloce di fare:
+11 23 26 28 33 36 57 77
+
+poi prendo quello centrale 28 o 33 e poi costruisco l'albero come se fosse un frattale:
+
+            33
+        26      57
+      23  28  36  77
+    11
+
+perfettamente bilanciato: ogni nodo ha differenza di altezza massima di 1 in modulo
+
+            28
+        23      57
+      11  26  46  77
+             36
+
+Sequenza: 26 36 11 16 33 28 23 77
+
+min-heap: 11 16 23 36 33 28 26 77
+max-heap: 77 36 28 26 33 11 23 16
+
+con 33 posizionato correttamente sequenza: 11 26 28 23 16 33 36 77
+
+Bubble Sort stessa sequenza:
+26 11 16 33 28 23 36 77 
+11 16 26 28 23 33 36 77

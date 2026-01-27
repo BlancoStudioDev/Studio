@@ -1,0 +1,41 @@
+Domanda:
+La comunicazione tra processi in un sistema di elaborazione monoprocessore: si descrivano le
+principali tecniche per realizzare la comunicazione tra processi in un sistema monoprocessore,
+evidenziandone le caratteristiche.
+
+
+I processi in un sistema operativo possono essere i due tipi
+  - indipendenti -> se non influisce su altri processi o subirne il loro influsso
+  - cooperanti -> influenza o può essere influenzato da altri processi
+
+I processi cooperanti necessitano quindi si un meccanismo di comunicazione chiamato IPC interprocess communication.
+Per comunicare esistono due metodi principali: scambio di messaggi e memoria condivisa.
+
+La memoria condivisa permette a più processi di accedere a indentici indirizzi di memoria, con scrittura e lettura della
+stessa. Esempio di utilizzo della memoria condivisa è quello di produttore e consumatore, questo problema per esempio
+può essere risolto dall'utilizzo di un buffer di scrittura e lettura comune, esistono due tipi di bufer, illimitato e
+limitato. Nel buffer illimitato è possibile scrivere all'infinito, mentre nel buffer limitato il produttore deve aspettare 
+che il buffer sia libero per poter scrivere di nuovo.
+
+Lo scambio di messaggi permette ad uno o più processi di scambiarsi informazioni e messaggi senza dover usare uno spazio di
+memoria condiviso. per far si che i due processi possano comunicare si necessita di un canale di comunicazione nel quale i
+processi possano mandare i segnali di send(message) e receive(message) per fare in modo che gli altri processi ricevano
+o inviino degli altri messaggi. Per fare ciò ci sono diversi metodi:
+  - comunicazione diretta o indiretta
+  - comunicazione sincrona o sincrona
+  - gestione automatica o esplicità del buffer
+
+Comunizazione diretta -> ogni processo deve nominare esplicitamente il ricevente, comunicazione 1 a 1 con un canale o
+uno a molti con un processo che specifica un ricevente, ma i riceventi non specificano il mandante (entrambi hanno
+limitata modularità)
+Comunicazione infiretta -> si utilizzano porte o mailbox per comunicare, la mailbox è un oggetto in cui i processi possono 
+mandare o ricevere messaggi. Più di due processi possono accedere alla mailbox e usarla, mentre il sistema decide chi riceve 
+il messaggio. 
+L'invio di messaggi può essere sincrono e asincrono, sia in invio che in ricezione.
+Esistono anche delle code di messaggi:
+ * Capacità zero -> non ci sono messaggi in attesa
+ * Capacità limitata -> ci sono messaggi in attesa, ma limitati e deve essere prima rivecuto un messaggio per svuotare
+ * Capacità illimitata -> il trasmittente non si ferma mai
+Comunicazione client server, socket orientate alla connessione (TCP), senza connessione (UDP) e invio simultaneo di molti
+pacchetti da diversi destinatari.
+RPC -> chiamate a funzioni remote eseguite su un altro server/computer.

@@ -1,0 +1,148 @@
+Domanda: La sincronizzazione tra processi in un sistema di elaborazione monoprocessore: si descrivano le
+principali tecniche per realizzare la sincronizzazione tra processi in un sistema monoprocessore,
+evidenziandone le caratteristiche.
+
+Per capire come funziona la sincronizzazione tra processi bisogna prima spiegare la differenza tra processi cooperanti
+e processi individuali, il primo rappresenta un processo che coopera con altri processi e quindi necessita di un metodo
+per comunicare e necessita soprattutto della sincronizzazione tra se stesso e gli altri processi per operare, il secondo
+invece opera da solo senza dipendere da altri processi e quindi non ha bisogno di sincronizzarsi con altri processi.
+Con i processi concorrenti/cooperanti vi sono le cosiddette race condition che possono portare i processi a "gareggiare"
+per una risorsa o per l'utilizzo di una parte di memoria. 
+Un altro concetto fondamentale da capire è quello della sezione critica che rappresenta una parte di tempo in cui il
+processo ha la facoltà di modificare le cose in memoria per esempio, in questa sezione il processo è intoccabile.
+Per fare in modo che in questa sezione critica ci siano due processi contemporaneamente si utilizzano degli stratagemmi
+che andremo a mostrare in seguito:
+  * Peterson -> utilizza un algoritmo che riesce a capire tra il processo in esecuzione attualmente e quello futuro, quale
+                dei due ha maggior priorità e quindi quale eseguire per primo
+
+  * Sincronizzazione tramite Hardware -> con una variabile di Lock, applicata sulle risorse, decido chi vi può accedere,
+                impostandole a true o false
+
+  * Lock Mutex -> a differenza delle altre questa permette ai processi di decidere chi accede o no alla sezione critica
+                usando delle funzioni di acquire() e release() per permettere di entrare o no ad usare una risorsa.
+
+  * Semafori -> è una variabile intera a cui si può accedere con due funzioni: wait e signal, le seguenti due funzioni
+                danno la possibilità di incrementare o decrementare la variabile intera. Esistono due tipi di semafori:
+                interi o a contatore
+
+
+
+La Sincronizzazione tra Processi in Sistemi Monoprocessore
+
+La sincronizzazione è l’insieme di meccanismi volti a coordinare l’accesso a risorse condivise da parte di processi
+concorrenti (o cooperanti), al fine di garantire la coerenza dei dati.
+1. Presupposti: Processi Indipendenti vs Cooperanti
+
+    Processi Indipendenti: Operano in isolamento. L’esecuzione di uno non influenza quella degli altri; 
+    non condividono dati e non richiedono sincronizzazione.
+
+    Processi Cooperanti: Collaborano per un obiettivo comune o condividono risorse (memoria, file, variabili). 
+    Questi necessitano di sincronizzazione per evitare che l'accesso disordinato causi corruzione dei dati.
+
+2. Il Problema della Sezione Critica e le Race Condition
+
+Quando due o più processi tentano di modificare lo stesso dato simultaneamente, si verifica una Race Condition 
+(corsa critica): il risultato finale dipende dall'ordine arbitrario con cui avvengono gli accessi. Per evitare 
+ciò, si definisce Sezione Critica (SC) la porzione di codice in cui un processo accede a una risorsa condivisa.
+Un protocollo di sincronizzazione deve garantire:
+
+    Esclusione Mutua: Un solo processo alla volta nella SC.
+
+    Progresso: Se la SC è libera, la decisione su chi entra non deve essere rinviata indefinitamente.
+
+    Attesa Limitata: Un processo non deve attendere all'infinito l'ingresso nella SC.
+
+3. Tecniche di Sincronizzazione
+
+Le soluzioni si dividono in base al livello di implementazione:
+A. Soluzioni Software (Algoritmo di Peterson)
+
+L'algoritmo di Peterson è una soluzione classica per due processi. Utilizza due variabili: una serie di flag ready 
+(per indicare l'intenzione di entrare) e una variabile turn (per indicare a chi spetta il turno).
+
+    Caratteristiche: Non richiede supporto hardware speciale, ma utilizza il Busy Waiting (attesa attiva), ovvero 
+    il processo consuma cicli di CPU controllando continuamente una condizione in un ciclo while.
+
+B. Soluzioni Hardware (Inibizione Interrupt e Istruzioni Atomiche)
+
+In un sistema monoprocessore, la concorrenza è data dalle interruzioni che causano il cambio di contesto.
+
+    Disabilitazione Interruzioni: Il processo disabilita gli interrupt prima della SC e li riabilita dopo.
+
+        Pro: Molto semplice.
+
+        Contro: Pericoloso se usato da processi utente (possono bloccare il sistema).
+
+    Istruzioni Atomiche (Test-and-Set): Istruzioni CPU speciali che leggono e modificano una variabile di lock 
+    in un unico passaggio non interrompibile.
+
+C. Mutex e Semafori (Supporto del Sistema Operativo)
+
+Sono strumenti di astrazione offerti dal kernel per evitare il consumo inutile di CPU (Busy Waiting).
+
+    Lock Mutex: Un oggetto binario (disponibile/occupato). Un processo esegue acquire() per entrare e release() per 
+    uscire. Se il lock è occupato, il processo viene sospeso (messo in coda).
+
+    Semafori: Variabili intere gestite dalle funzioni atomiche wait() (o P) e signal() (o V).
+
+        Semafori Binari: Simili ai mutex.
+
+        Semafori a Conteggio: Il valore indica il numero di unità di una risorsa disponibili (es. posti in un buffer).
+
+D. Monitor (Alto Livello)
+
+Costrutti forniti dai linguaggi di programmazione (es. Java). Un Monitor incapsula variabili condivise e procedure.
+
+    Caratteristica: L'esclusione mutua è automatica: il compilatore garantisce che un solo thread alla volta possa
+    eseguire un metodo all'interno del monitor. Utilizza variabili di condizione per gestire la sospensione dei processi.
+
+
+
+
+
+
+
+
+
+
+Risposta sincronizzazione:
+
+La sincronizzazione tra i processi in un'architettura, soprattutto monoprocessore, è fondamentale, poichè permette a processi cooperanti di prendere leggere e scrivere
+nelle risorse di cui hanno bisogno senza incappare in problemi di race condition o di starvation di una risorsa. Per prima cosa possiamo definire due tipi di processi per capire
+meglio come funzionano queste problematiche, esistono i processi cooperanti o concorrenti che utilizzano le risorse in sharing con altri processi e hanno la possibilità di
+scambiare informazioni e risorse con altri processi, esistono anche i processi indipendenti che invece non influenzano e non sono influenzati da altri processi. Quelli che portano
+queste problematiche di starvation e race condition sono chiaramente i processi cooperanti, poichè influenzano e sono influeati da altri processi e pertanto dipendono da essi
+sia per accesso alle risorse sia per passaggio di informazioni o delle stesse risorse. Questa race condition si verifica per un problema in particolare ovvero la cosiddetta
+sezione critica, ovvero una parte di codice in cui un processo va a scrivere all'interno della memoria ed un momento in cui quest'ultimo non può essere interrotto poichè se no
+si avrebbero problemi nella memoria. Questo protocollo della sezione critica deve garantire le seguenti condizioni: Mutua esclusione, progresso e attesa limitata, la prima la conosciamo
+anche dalla deadlock, le altre due si riferiscono a: un accesso immediato o quasi appena la SC (sezione critica) è libera per la seconda e la decisione di chi far accedere alla SC deve
+avvenire il prima possibile. Per questo motivo si sono sviluppate diverse tecniche di sincronizzazione tra i processi come: i semafori, l'uso dell'hardware, l'uso delle flag, l'uso
+dei monitor e l'uso dei lock mutex. 
+Verranno analizzate partendo dall'ultima per complessità, ovvero l'uso dell'hardware, siccome sono gli interrupt che portano alle race condition allora noi prima della SC li
+disabilitiamo e li riabilitiamo subito dopo la SC, così da non avere problemi durante l'accesso alle risorse evitando conflitti tra processi o race condition tra interrupt e
+processo ce accede alla memoria.
+
+Un'altra possibile implementazione per la sincronizzazione tra processi è quella di usare delle variabili lato software come delle flag per vedere quale processo ha bisogno
+di entrare grazie alla variabile flag. Per fare ciò si usano una serie di variabili flag che identificano quando un processo è pronto per entrare nella SC e delle variabili
+turn per validarne il suo accesso o validare l'accesso di un altro processo in essa.
+
+Un'altra implementazione per garantire la sincronizzazione tra processi è quella tramite Lock Mutex che permettono di proteggere le risorse dall'accesso illegale da parte di altri 
+processi, quando queste ultime sono utilizzate. Per prendere possesso di una risorsa, un processo, ha due funzioni da poter chiamare: acquire() e release(), la prima permette di 
+aquisire la risorsa se quest'ultima è libera, mentre release() libera la risorsa e setta la variabile lock su 'aperta', ovvero che da la possibilità agli altri processi di 
+eseguire la funzione acquire() e quindi di prendere la risorsa e usarla per il loro scopo. La differenza principale tra i lock mutex e le variabili locali è che con i lock mutex 
+si ha la possibilità di addormentare il processo mentre si trova in attesa della risorsa, mentre con le variabili locali questo non avviene e il processo continua ad occupare calcolo 
+della CPU perchè continua a fare richiesta di accesso alla risorsa di dui ha bisogno.
+
+Un'altra implementazione che è possibile eseguire per garantire la corretta sincronizzazione tra processi è quella mediante Semafori, questi permettono tramite una variabile S
+che può essere incrementata o decrementata tramite le funzioni di Wait() che decrementa la variabile e la funzione di Signal() che la incrementa, quando la variabile S è a 0
+vuol dire che non è più possibile utilizzare la risorsa a cui è associata e bisogna aspettare, quando è maggiore di 0 allora si può ancora assegnare S processi a quella risorsa.
+Prendiamo per esempio una stampante che ha la possibilità di avere in coda più processi, per esempi 3 processi, questo numero viene assegnato alla variabile S, a questo punto S = 3
+e tre processi vogliono usare la stampante, quindi chiamano la funzione di wait() che ha S >= 0 e allora assegna a questi tre processi l'uso della risorsa e decrementano S che
+diventa uguale a 0, a questo punto un altro processo richiede l'accesso alla risorsa, ma S = 0 e quindi viene messo in attesa, quando un processo che sta usando la risorsa la libera
+allora si chiama la funzione Signal() che decrementa S e da la possibilità al nuovo processo di usare la risorsa e quindi chiamare wait() per decrementare S e usare la risorsa.
+
+Infine l'ultima implementazione per garantire la corretta sincronizzazione è l'utilizzo dei Monitor, questi meccanismi funzionano tecnicamente come dei semafori, con le funzioni
+di wait e signal, ma operano non liberi nel codice utente, ma all'interno di "capsule" che contengono queste funzioni, questo accade perchè se un programmatore dovesse dimenticarsi
+di scrivere una signal, il sistema andrebbe in deadlock e questo chiaramente comporta un grandissimo problema, per questo motivo se dovesse avvenire una cosa del genere all'interno
+di un monitor si potrebbe semplicemente spegnere il monitor. All'interno dei monitor operano un processo alla volta, se un altro processo volesse entrare nel monitor e quest'ultimo
+dovesse essere occupato da un altro processo, il processo che chiede l'accesso verrà messo in coda dallo scheduler.
