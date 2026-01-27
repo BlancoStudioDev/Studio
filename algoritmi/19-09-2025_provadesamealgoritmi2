@@ -1,0 +1,74 @@
+INIZIO 22:13
+
+Esercizio 1
+
+Sequenza: 28 25 16 14 56 29 26 48
+
+a) 28 25 56 14 26 29 48 14
+b) per essere un albero AVL deve avere la differenza di alteza per ogni nodo di massimo 1, mentre per essere un albero
+   bilanciato deve avere la differenza tra il numero di nodi sempre minore o uguale a 1.
+   25 16 29 14  28 56 26 48
+
+Esercizio 2
+
+Sequenza: 25 16 14 13 48 56 29 26
+
+a) 13 16 14 25 48 56 29 26
+b) 26 13 16 48 25 56 14 29
+c) 25 16 29 13 16 14 48 56
+d) 13 14 16 25 48 56 29 26
+
+FINE PARTE 1: 22:24 => Tempo: 11 minuti
+
+INIZIO PARTE 2: 22:25
+
+Esercizio 3
+
+a) Dato un grafo G(V,E) e w una funzione che associa a ogni arco di G un peso, un cammino da x a y è l'insieme dei vertici
+   che collegano x e y, in particolare dato l'insieme V = {1, ..., n} il cammino darà dato da una sottoparte di V che consente
+   di andare da x a y. Un cammino minimo è invece un cammino la cui somma di pesi degli archi passanti per i vertici del
+   cammino è minima rispetto a tutti gli altri cammini presenti.
+
+b) Il problema risolto dall'algoritmo di DIJKSTRA è quello di trovare e porre all'interno di un vettore, tutti i cammini minimi
+   partendo da un vertice s in V e arrivando a qualsiasi altro punto del grafo. L'istanza dell'algoritmo è il grafo G con
+   V come insieme di vertici, E come insieme degli archi e w è la funzione di peso che associa ad ogni arco un peso.
+   I vincoli per questo algoritmo sono che non devono essere presenti pesi negativi, il grafo può essere sia orientato che
+   non. Infine la soluzione dell'algoritmo è un vettore al cui interno sono presenti i cammini minimi per andare da s
+   a tutti gli altri vertici del grafo.
+
+c) Presentazione dello PSEUDOCODICE DI DIJKSTRA
+
+d1) la linea numero 7, siccome è una ricerca dell'elemento minimo costa solamente come ricerca lineare, infatti per estrarre
+    il minimo è necessario scorrere l'array di C, che ha n elementi nel caso peggiore ovvero nel primo caso e poi da quello
+    estrarre il minimo che si fa andando a confrontare con un if, che ha peso O(1), per il criterio del costo unitario.
+    Per questo motivo questa riga costa O(n+1) = O(n).
+
+d2) Sommando tutte le linee che vengono eseguite all'intero del WHILE si ottiene che quella linea viene eseguita n volte,
+    portando così il costo totale della riga 7 nel while ad un costo di O(n^2)
+
+e1) Il for each di riga 9 verrà eseguito m volte, con m che è asintotico a n^2 poichè in un grafo fortemente connesso si ha la
+    possibilità che ogni vertice sia connesso a tutti gli altri, portando così il numero di archi ad essere: [n(n-1)]/2,
+    all'interno del for poi troviamo un if che ha costo O(1) per il criterio del costo unitario e anche la somma, sempre
+    per il criterio del costo unitario avrà costo O(1), potando così il for each ad avere costo O(m) = O(n^2). 
+
+e2) Il costo totale per il for nel while è di O(n^2*n) = O(n^3)
+
+e3) Per ottimizzare il tempo di calcolo possiamo rappresentare il grafo come una lista di adiacenza, questo ci permette di
+    scorrere con il for each solamente i vicini del vertice, portando il costo totale a n^2 + m.
+
+f)
+Algoritmo Dijsktra (grafo pesato G = (V, E, ω), vertice s) → vettore distanze
+  Sia D un vettore con insieme di indici V
+  Sia C una coda co priorità inzialmente vuota
+  D[s] ← 0
+  foreach v ∈ V \ {s} do D[v] ← ∞
+  foreach v in  \ {s} do C.insert(v,D[v])
+  while C != ∅ do
+    u <- C.deleteMin()
+    foreach (u, v) ∈ E do
+      if D[u] + ω(u, v) < D[v] then
+        D[v] ← D[u] + ω(u, v)
+        C.changeKey(v,D[v])
+  return D
+
+
