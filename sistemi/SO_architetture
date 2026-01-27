@@ -1,0 +1,40 @@
+INIZIO 21:16
+
+Domanda: Architettura dei sistemi operativi per sistemi di elaborazione monoprocessore: si presentino le
+principali architetture dei sistemi operativi, descrivendone caratteristiche, vantaggi e limiti.
+
+
+Risposta:
+
+Le architetture sono spesso composte in diverse parti e fatte per soddifare diversi bisoni strutturali o dell'utente
+che vi opera al di sopra. Per questo motivo negli anni ne sono state sviluppate diverse e con diverse caratteristiche.
+Una delle prime sviluppate fu quella monolitica, dal nome si comprende che l'architettura è sviluppata come un grande
+blocco unico, infatti al suo interno i servizi principali come Scheduler, memoria e CPU si trovano nello stesso blocco,
+questa implementazione porta a diversi benefici come l'elevata velocità di trasmissione dati e la bassa dispersione di
+informazioni e risorse all'interno del sistema, allo stesso tempo però ha dei grandi svantaggi a livello di espansione,
+pressoche impossibile, avendo tutti i componenti in un unico punto e anche la manutenzione risulta particolarmente difficile.
+Un'altra implementazione dell'architettura è quella a microkernel, essa è sviluppata racchiudendo le funzioni principali
+all'interno di un blocco, chiamato microkernel, tutti i processi, i servizi e i client comunicano tra di loro usando
+mailbox e scambi di messaggio gestiti dal kernel. I vantaggi di questa implementazione sono: massima separazione tra i
+meccanismi, alta facilità di modifica e alta affidabilità, se qualche servizio fallisce il resto del sistema rimane attivo,
+i limiti principali sono però ch si rischia di avere un sovraccarico di gestione dovuto alla gestione anche dei messaggi.
+Un'altra implementazione è quella gerarchica e strutturale, essa si basa sull'organizzazione delle funzioni di sistema in
+base a livelli funzionali, ogni livello implementa un componente tramite una funzione ed ha la possibilità di usare tutte
+le funzioni che a livello gerarchico si trovano sotto di lui, il livello più basso è l'harware e quello più alto è il
+client utente. Questo porta ad un fantaggio implementativo e una facilità di sviluppo comportanto però un lento utilizzo
+da parte degli utenti che per accedere a funzioni che usano l'hardware devono scorrere tutte le funzioni dal client in
+giù fino alla funzione che gestisce l'hardware.
+Un'altra implementazione di una possibile architettura è la struttura modulare, questa combina la struttura a microkernel
+aggiungendo però dei moduli esterni ad essa, questi moduli sono dunioni che servono ad implementare servizi per l'utente
+o per l'architettura stessa. Questa implemenetazione fornisce grandissima modularità e allo stesso tempo la possibilità di
+avere prestazioni migliorate e una grande facilità nel debug e nel fixing dei problemi dell'architettura. L'unico problema
+è che le prestazioni non superano comunque quelle dell'architettura monolitica. Infine l'ultima implementazione è quella
+tramite VM ovvero tramite macchine virtuali, tramite esse si ha la possibilità di costruire, lato software, un sistema
+operativo totalmente funzionante che usa l'ISA della macchina per convertire le istruzioni del sistema operativo che si
+va a runnare sopra. I vamtaggi di questa implementazione sono la grandissima facilità di esecuzione e la possibilità di
+operare su macchine con sistema operativo windows con un sistema operativo linux senza dover cambiare direttamente sistema
+operativo o switchare di partizione disco, allo stesso tempo ha degli svantaggi perchè calano le prestazioni dell'architettura
+essendo che ogni richiesta ed istruzione deve essere tradotta nell'ISA del sistema operativo ospitante.
+
+
+
