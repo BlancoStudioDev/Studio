@@ -1,0 +1,60 @@
+INIZIO 11:40
+
+Domanda: La comunicazione tra processi in un sistema di elaborazione monoprocessore: si descrivano le
+principali tecniche per realizzare la comunicazione tra processi in un sistema monoprocessore, evidenziandone le
+caratteristiche.
+
+Risposta:
+
+La comunicazione all'interno delle architetture è fondamentale e permette ai sistemi operativi e all'architettura
+stessa di scambiarsi messaggi, parti di filee dati indispensabili per l'effettivo funzionamento del sistema. Coloro
+che di solito hanno bisogno di comunicare sono i processi veri e propri, in particolare si possono distinguere due tipi
+di processi, quelli indipendenti e quelli cooperanti, i processi indipendenti sono dei processi che non sono influenzati
+e non influenzano processi esterni diversi da se stessi, i processi cooperanti invece come dice anche il nome influenzano
+o/e sono influenzati da altri processi, per questo moditivo i processi cooperanti sono coloro che hanno effettivamente
+bisogno di avere delle strutture di comunicazione tra di loro per scambiare dati e file, in modo da poter operare al
+massimo delle loro prestazioni. La comunicazione tra i processi è gestita da un protocollo che si chiama IPC, ovvero
+interprocess communication che appunto permette il passaggio di dati in modo sicuro tra un processo e l'altro.
+Le tecniche di comunicazione che ci sono tra i processi sono le seguenti: Comunicazione tramite messaggi (code di messaggi,
+diretta, indiretta, sincrona, asincrona), Comunicazione tramite memoria condivisa, Socket e pipe. Partiamo dal primo
+per la sua analisi.
+La comunicazione tramite messaggi avviene tramite delle funzioni specifiche richiamate direttamente dei processi stessi
+infatti i processi utilizzano funzioni come receive e send per mandare o ricevere messaggi. Questo permette ai processi
+di scambiare informazioni semplicemente inviando con send(message) il messaggio che devono inviare e poi il ricevente
+usando la funzione dei recieve(message) si occuperà di leggere il messaggio. Questo però non permette ai processi di nominare
+il ricevente, rischiando così che ci siano problemi nella ricezione, per questo sono state ideate nuove tecniche di comunicazione
+chiamate per esempio comunicazione diretta e indiretta, in questo tipo di comunicazione vengono sviluppati due diversi
+approcci, il primo (diretta) permette di inserire nel batch del messaggio anche l'id del processo che dovrà ricevere il
+messaggio e la stessa cosa vale per il ricevente, il qualee dovrà verificare che sia lui il ricevente tramite l'id, nel
+secondo caso ovvero (indiretta) non viene associato un id al messaggio bensi una mail box a cui inviarlo, per esempio
+send(A, message) e così facendo si invia alla mailbox A il messaggio, a questa mailbox A fanno riferimento diversi processi
+tra cui il ricevente del messaggio che vedendolo in mailbox lo prenderà e lo utilizzerà. Un altro meccanismo sviluppato
+per la comunicazione per messaggio è quello della comunicazione sincrona e asincrona, con comunicazione sincrona si intende
+che fino a a quando il mandante non è sicuro che il ricevente abbia ricevuto il messaggio non si stacca dal canale di
+comunicazione e quindi non perde la connessione garantendon se necessario il reinvio dell'informazione al ricevente, la
+comunicazione asincrona invece non segue questo protocollo e permette di comunicare con messaggi di send e receive senza
+aspettare una risposta. Con le code di messaggi invece vengono utilizzate delle vere e proprie code come per esempio le
+code FIFO, che servono per immettere messaggi nella coda del ricevente il quale li leggerà, queste code possono essere
+limitate o illimitate e permettono l'ingresso di informazioni in base alla loro dimensione, se una cosa dovesse essere
+piena si aspetterà che si svuoti e poi la si potrà ripopolare con messaggi da parte del mandante.
+La Comunicazione tramite memoria condivisa permette ai processi di scrivere all'interno dello stesso spazio di memoria,
+questo garantisce maggior velocità all'interno della comunicazione, ma allo stesso tempo può portare, se applicata in
+determinati ambiti, a problemi, immaginiamo per esempio una stampante con memoria condivisa che riceve un ordine di scrittura
+al suo interno mentra sta stampando, questo causerebbe un grosso problema nella stampa e non andrebbe bene chiaramente.
+Un altro problema è quello del produttore e consumatore, per esempio io sono un produttore di messaggi e li mando nella
+memoria condivisa, ma il consumatore o ricevente non legge abbastanza veloce come li produco io, questo porta la memoria
+a riempirsi, per questo sono stati introdotti i buffer a dimensioni limitate illimitate o zero, nel caso di buffer a dimensione
+zero non si può scrivere dentro e si scriverà direttamente nella memoria, in caso di buffer a dimensione limitata si avrà
+un problema quando il buffer si riempie e nei casi di buffer a dimensione illimitata si potrà scrivere quando si vuole.
+La comunicazione tramite socket permette ai processi di scambiarsi informazioni internamente alla stessa macchina tramite
+indirizzi di lookup come 127.0.0.1 indicando la porta del processo a cui si manda il messaggio, ma si possono mandare dati
+ed informazioni anche ad altre macchine usando le funzioni RPC che permettono tramite dei protocolli di passare informazioni
+alle altre macchine. Questi protocolli sono per esempio il TCP che permette al mandante di verificare se il dato è arrivato
+al ricevente e nel caso contrario di rimandarlo, l'UDP che permette di avere una connessione molto più veloce a discapito
+della precisione, qui infatti vengono mandati migliaia di pacchetti senza curarsi della ricezione e infine il protocollo
+multicast che permette di mandare da una macchina a tutte le altre macchine.
+Infine un altro metodo di comunicazione è quello tramite pipe, una pipe viene creata per esempio quando un processo padre
+deve generare con una fork un figlio, per farlo utilizzerà una pipe di comunicazione per mandargli tutte le specifiche
+su cosa dovrà fare e come dovrà farlo in base a come era il padre.
+
+FINE: 12:10 => Tempo: 30 minuti
