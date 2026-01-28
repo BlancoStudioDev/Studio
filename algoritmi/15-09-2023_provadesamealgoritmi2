@@ -1,0 +1,96 @@
+INIZIO: 14:10
+
+Esercizio 1
+
+Sequenza: geo lepre gatto capre gufo leone pecora panda
+
+0  gufo
+1
+2  capra
+3
+4
+5  panda
+6  geco
+7
+8  lepre
+9  pecora
+10
+11 gatto
+12
+13 leone
+14
+15
+
+Esercizio 2
+
+Sequenza: 54 62 11 70 24 31 32 12
+
+a) 70 11 31 62 32 12 54 24
+b) 70 62 32 54 24 31 11 12
+c) 11 12 31 62 24 54 32 70
+d) 11 24 31 62 37 54 32 70
+
+FINE PARTE 1: 14:16 => 6 minuti
+
+INIZIO PARTE 2: 14:17
+
+a) Per risolvere tale algoritmo andremo ad utilizzare un algoritmo chiamato algoritmo di FLOYD-WARSHALL, questo algoritmo
+   permette, con istanza un grafo non orientato, di avere come soluzione una matrice contenente i pesi dei cammini minimi
+   presenti nel grafo per collegare tutte le coppie vertici del grafo. Per risolvere il nostro problema andremo a modifica
+   re il nostro algoritmo nel seguente modo, per prima cosa non abbiamo bisogno del doppio for iniziale per inizializzare
+   e riempire la matrice, poichè la possediamo già e che segue anche le condizioni di FLOYD-WARSHALL. Inoltre necessitiamo
+   di inizializzare una struttura, come un array di coppie, che avrà al suo interno tutte le coppie di archi che hanno come
+   peso un numero uguale a K. Per determinare il massimo sarà necessario scorrere una volta la matrice e per estrarre tutte
+   le coppie con peso dell'arco uguale a K sarà necessario scorrerla una seconda volta, infine si restituirà l'array di
+   coppie contenente tutte le coppie di vertici con peso uguale a K.
+
+b)
+ALGORITMO FLOYD-WARSHALL(matrice M) -> array_coppie
+
+  FOR k <- 1 TO n DO
+    FOR j <- 1 TO n DO
+      FOR i <- 1 TO n DO
+        IF M[i,k] + M[k,j] < M[i,j] THEN
+          M[i,j] <- M[i,k] + M[k,j]
+  max <- 0
+  FOR i <- 1 TO n DO
+    FOR j <- 1 TO n DO
+      IF max < M[i,j] THEN
+        max <- M[i,j]
+  K <- max
+  FOR i <- 1 TO n DO
+    FOR j <- 1 TO n DO
+      IF M[i,j] == K THEN
+        Aggiungi ad array_coppie (i,j)
+  RETURN array_coppie
+
+c) Per fornire una stima del tempo di calcolo utilizzato scomponiamo l'algoritmo per capire meglio come funziona ed analizzare
+   ogni sua singola parte:
+   * All'interno del triplo ciclo for i quali ognuno itera su n elementi sappiamo che c'è un IF e al suo interno una
+     somma ed un assegnamento, queste due operazioni hanno tutte e due complessità di O(1) per il criterio del costo
+     unitario, di conseguenza il triplo for avrà complessità di O(n^3) data solamente dal triplo ciclo for.
+
+   * L'inizializzazione di max ha complessità di O(1) sempre per il criterio del costo unitario
+
+   * Il doppio for per l'estrazione del massimo ha costo di O(n^2) dato dallo scorrimento da 1 a n della matrice, al suo
+     interno troviamo un IF e un assegnamento al suo interno, questo come detto anche in precedenza portano la complessità
+     ad essere O(1+1) = O(1) e quindi il doppio for avrà complessità O(n^2)
+
+   * L'assegnamento di K uguale a max ha come complessità O(1) sempre per il criterio del costo unitario
+
+   * Il doppio for per l'estrazione delle coppie che hanno cammino uguale al massimo ha costo di O(n^2) dato dallo
+     scorrimento da 1 a n della matrice, al suo interno troviamo un IF e un assegnamento al suo interno, questo come
+     detto anche in precedenza portano la complessità ad essere O(1+1) = O(1) e quindi il doppio for avrà complessità
+     O(n^2)
+   La complessità totale è quindi dettata dal triplo ciclo for, portandola a O(n^3)
+
+d) Per creare l'algoritmo necessario basta avere solamente un ciclo for e non più due coppie di cicli, infatti basta
+   scorrere la martice come se fosse un array, dato che ne dobbiamo scorrere solamente la riga 1, per questo motivo
+   basta fare un for che tiene i = 1 e scorre j con un if all'interno di questo tipo: IF M[1,j] > max THEN max <- M[i,j]
+   e poi un altro for che scorre la stessa cosa con all'interno del for un if di questo tipo: IF M[1,j] == max THEN
+   aggiungi a array di coppie (i,j). La complessità totale dell'algoritmo non andrà a cambiare perchè comunque la parte
+   impattante del triplo for rimane invariata e quindi la complessità sarà O(n^3). Se invece, dato che stiamo andando
+   ad analizzare un solo vertice di partenza che arriva poi a tutti gli altri vertici del grafo, possiamo usare l'algoritmo
+   di DIJKSTRA, il quale porta la complessità da O(n^3) a O(n log n) o O(n^2).
+
+FINE PARTE 2: 14:41 => Tempo 24 minuti
