@@ -1,0 +1,53 @@
+INIZIO: 15:38
+
+Domanda: La sincronizzazione tra processi in un sistema di elaborazione monoprocessore: si descrivano le
+principali tecniche per realizzare la sincronizzazione tra processi in un sistema monoprocessore,
+evidenziandone le caratteristiche.
+
+Risposta:
+La sincronizzazione tra i processi è necessaria per fare in modo che i processi riescano a scambiarsi efficientemente i dati
+e le informazioni senza incappare in nessun problema legato per esempio alla memoria e alla scrittura simultanea su di essa,
+come per esempio potrebbe succedere con bad sync in un'architettura con memoria condivisa. I processi generalmente sono
+divisi in due tipologie, cooperanti e indipendenti, i primi cooperano influenzando e facendosi influenzare da e da altri
+processi, i secondi invece lavorano in proprio non utilizzando la sincronizzazine, di cui non hanno bisogno.
+
+Per quanto riguarda i meccanismi di sincronizzazione ne esistono diversi come per esempio le variabili flag, la sincronizzazione
+hardware, i lock mutex, i semafori e infine i monitor. La maggior parte di queste tecniche di sincronizzazione sono
+implementate grazie a sistemi software, ma partiamo subito ad analizzarle:
+  * La sincronizzazione tramite hardware permette di adottare delle tecniche per fare in modo che quando si presente un
+    interrupt questo viene saltato e non crea problemi di interruzione nel sistema
+
+  * La sincronizzazione mediante variabili flag permette di usare delle variabili flag e turn che decretano se dei processi
+    possono, poichè è libera ed è il loro turno, accedere alla risorsa, infatti la variabile flag, impostata su true da la
+    possibilità al processo di accedere alla sirorsa, mentre con la variabile si cerca di capire se chi ha il prossimo
+    turno ha già in uso la risorsa o se la deve usare, in tal caso dato che turn non è sul processo con flag true si passa
+    al prossimo processo e si continua così fino a quando non si ha la variabile turn settata su un processo con flag = true
+
+  * I lock mutex funzionano come dei caselli per le risorse, essi danno accesso alle risorse per i processi solamente usando
+    due funzioni, acquire e release, in particolare un processo chiama la funzione di acquire per richiedere una ricorsa,
+    e la riceve solo quando essa è libera, e una funzione di release per rilasciare la risorsa ad altri processi che ne
+    devono fare uso. A differenza dell'implementazione studiata precedentemente, questa mette in pausa il processo in attesa
+    mentre prima si ha una continua richiesta.
+
+  * I semafori funzionano come un lock mutex, ma ha la possibilità di tenere più processi ad operare su una singola risorsa
+    in particolare si utilizzano due funzioni, una di signal(s) e una di wait(s) che danno la possibilità di incrementare
+    o decrementare, rispettivamente, la variabile s, questo avviene quando un processo richiede una risorsa, se la variabile
+    s è = 0 allora non si potrà più richiedere risorse, se invece la variabile s >= di 0 allora si possono ancora richiedere
+    ricorse, per liberare uno spazio dalla risorsa invece si usa la funzione di signal(s) che invece incrementa la variabile s
+    e da la possibilità di liberare le risorse.
+
+  * I monitor infine è un'astrazione maggiore che viene fatta per quanto riguarda i semafori, se i semafori hanno la possibilità
+    di essere scritti liberamente all'interno del codice e se si dovessero fare errori si potrebbe andare in contro a un
+    deadlock, i monitor incapsulano il tutto, sia i processi che le risorse he essi devono usare, per questo se dovesse
+    succedere qualcosa si possono spegnere e non avere problemi. A basso livello essi funzionano esattamente come dei Semafori
+    descritti precedentemente con le funzioni di signal e di wait.
+
+Un problema risolvibile per esempio con i monitor è quello dei 5 filosofi, questo problema di sincronizzazione vede 5
+filosofi che sono seduti intorno ad un tavolo ed essi non possono interagire con altri filosofi, essi o pensano o mangiano
+per mangiare hanno bisogno di due bacchette, ma sul tavolo ce ne sono somalente 5 una a destra e una a sininstra di ognuno.
+Nel problema dei 5 filosofi risolto con i monitor, si evita il deadlock permettendo a un filosofo di passare allo stato
+EATING solo se entrambi i suoi vicini non stanno mangiando. Se le risorse non sono disponibili, il filosofo invoca la
+funzione self[i].wait(), che lo sospende all'interno del monitor finché un vicino, terminando il pasto tramite putdown(),
+non invoca una signal() per risvegliarlo.
+
+FINE: 15:59
