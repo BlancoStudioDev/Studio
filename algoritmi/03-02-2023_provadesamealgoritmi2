@@ -1,0 +1,114 @@
+INIZIO 11:47
+
+Esercizio 1
+
+Sequenza: 28 11 4 55 33 60 5
+
+a) 33 11 55 4 28 - 60 - 5
+b) 11 23    4 5     28    55     4 5 11     28 33      55 60
+
+Esercizio 2
+
+Sequenza: 227 315 47 108 439 6 115 459
+
+a) 6 115 47 108 227 439 315 459
+b) 459 439 115 315 227 6 47 108
+c) 47 227 315 108 439 6 115 459
+d) 6 108 315 115 227 439 47 459
+
+FINE PARTE 1 11:57 => Tempo: 10 minuti
+
+INIZIO PARTE 2 12:04
+
+a) Per risolvere questo problema bisogna creare un albero ricoprente minimo, il quale andrà a determinare dove va
+   posata la fibra. Un albero ricoprente minimo nella teoria dei grafi è un sottografo di G(V,E,w) che è connesso
+   e aciclico e la sommatoria dei pesi w nel nuovo albero è minima. Siccome bisogna anche sapere dove posare invece
+   il doppino di rame, o comunque il cavo che non è un cavo di fibra ottica, utilizzeremo una seconda condizione che
+   prende i tratti di strada che non sono nell'albero ricoprente minimo e li metteremo in un array. Formalizzando le
+   istanze del problema sappiamo che: G(V,E,w), dove G è un grafo, ovvero per noi la mappa della piccola cittadina,
+   V è l'insieme dei vertici appartenenti al grafo V = {1, ... , n}, E è l'insieme degli archi appartenenti al grafo
+   E = {(Vi,Vj)}, per noi sarebbero i tratti di strada che congiungono i due incroci ovvero i due vertici, e infine
+   w che è la funzione peso associata ad un arco, ovvero associa un peso ad ogni arco, il che rappresenta la lunghezza
+   della strada.
+
+b) L'algoritmo che andremo ad implementare è un algoritmo di Kruskal modificato per soddisfare le condizioni richieste,
+   in particolare l'algoritmo di Kruskal normale ha come soluzione un albero ricoprente minimo, che a noi non serve per
+   la risoluzione del problema, inoltre Kruskal ha come istanza un Grafo G, che noi manterremo. All'interno dell'algoritmo
+   sarà come prima cosa ordinato l'insieme degli archi in base al peso in ordine non decrescente, poi si andranno ad
+   inizializzare due array uno per i tratti di strada con la fibra ed il secondo per i tratti di strada senza fibra,
+   essi inizialmente sono vuoti e con potenzialmente n-1 elementi. Successivamente si andrà a creare un albero T, che
+   sarà il nostro albero ricoprente minimo. All'interno poi di un FOR EACH che scorre gli archi in base all'ordine in cui
+   sono stati messi all'inizio, andremo a vedere se i vertici dell'arco in oggetto in quel momento sono già connessi nello
+   albero T, se non lo sono allora li andremo a connettere con l'arco in esame in questo momento e si metterà il suddetto
+   arco nell'array_fibra, se invece sono già connessi, per evitare cicli, non si aggiunge l'arco all'albero T, ma lo si
+   aggiunge all'array_non_fibra. infine si ritorna array_non_fibra e array_fibra, in modo da avere nel primo tutte quelle
+   strade che non fanno parte dell'albero ricoprente minimo e nel secondo tutte quelle che ne fanno parte, rispettivamente
+   quelle dove non mettere la fibra e mettere il cavo normale e nell'altro quelle dove posare la fibra.
+
+PSEUDOCODICE
+ALGORITMO KRUSKAL(G(V,E,w)) -> array_fibra, array_non_fibra
+  Ordino in ordine non decrescente in base al peso w l'insieme E
+  Sia array_fibra un array inizialmente vuoto con n-1 elementi
+  Sia array_non_fibra un array inizialmente vuoto con n-1 elementi
+  T <- (V,vuoto)
+  FOR EACH (x,y) in E secondo l'ordine DO
+    IF x e y non sono connessi in T THEN
+      Aggiugni a T l'arco (x,y)
+      Aggiungi all'array_fibra la coppia d'archi (x,y)
+    ELSE
+      Aggiungi all'array_non_fibra la coppia d'archi (x,y)
+  RETURN array_fibra, array_non_fibra
+
+c) Una possibile rappresentazione del grafo in modo efficiente è quella tramite la lista di archi di adiacenza, questa
+   permette uno scorrimento più efficiente degli archi del grafo, portando ad una complessità di O(m+n) con m asintotico
+   a n^2, poichè in un grafo formetmente connesso c'è la possibilità che tutti i vertici siano connessi a tutti gli altri
+   portano così il numero di archi ad un possibile n^2-1. Le strutture di supporto utilizzate saranno quelle della partizione:
+
+PSEUDOCODICE
+ALGORITMO KRUSKAL(G(V,E,w)) -> array_fibra, array_non_fibra
+  Ordino in ordine non decrescente in base al peso w l'insieme E
+  Sia array_fibra un array inizialmente vuoto con n-1 elementi
+  Sia array_non_fibra un array inizialmente vuoto con n-1 elementi
+  Sia P una partizione inizialmente vuota
+  FOR EACH v in V DO P.makeset(v)
+  T <- (V,vuoto)
+  FOR EACH (x,y) in E secondo l'ordine DO
+    Tx <- P.Find(x)
+    Ty <- P.FInd(y)
+    IF Tx != Ty THEN
+      P.Union(Tx,Ty)
+      Aggiugni a T l'arco (x,y)
+      Aggiungi all'array_fibra la coppia d'archi (x,y)
+    ELSE
+      Aggiungi all'array_non_fibra la coppia d'archi (x,y)
+  RETURN array_fibra, array_non_fibra
+
+   Per discutere i tempi di calcolo dell'algoritmo lo andremo a suddividere in parti in modo da capire come vengono suddivisi
+   i tempi di calcolo per ogni parte:
+
+   * Ordinare inizialmente l'insieme E degli archi, con un algoritmo di ordinamento normalmente ci vorrebbe O(m log m),
+     poichè il numero degli archi è m in un grafo molto connesso
+   * Creare due array e la partizione ha complessità uguale a O(1) per il criterio del costo unitario
+   * Fare un for each per creare gli insiemi della partizione con makeset porterà via O(1) per la creazione dell'insieme e ripetuto
+     per n avrà complessità di O(n), questo perchè sia se si usa un algoritmo di Quick Find che di Quick Union la complessità della
+     makeset è sempre O(1)
+   * La creazione dell'albero avrà complessità O(1) sempre per il teorema del costo unitario
+   * Il FOR EACH ha al suo interno diverse parti:
+     + la ricerca tramite find degli elementi x e y se eseguita con algoritmo Quick Find bilanciato o non avrà complessità
+       pari a O(1), se fatto invece con un algoritmo di Quick Union bilanciato avrà complessità O(log n) e se fatto con
+       un algoritmo di Quick Union non bilanciato avrà complessità O(n),
+     + L'if per il criterio del costo unitario ha complessità O(1) stessa cosa per l'ELSE e per le operazioni di aggiunta agli
+       array e di aggiunta all'albero
+     + Diverso p per la Union che fatta con un algoritmo di Quikc Union bilanciato o non porta la complessità a O(1), mentre se
+       fatto con algoritmo di Quick Find bilanciato avrà complessità di O(log n) e se fatto con algoritmo di Quick Find non
+       bilanciato avrà complessità O(n)
+    * I costi di questo for si bilanciano sia che si decida di usare QUick Union o QUick find e per questo il costo totale del for è
+      O(m log n)
+  Il costo totale è quindi O (m log n)
+
+d) Per risolvere questa richiesta si andrà ad mantenere il medesimo algoritmo con la medesima istanza e la medesima
+   soluzione, ma specificando che la funzione peso non va a prendere la lunghezza della strada, ma il numero di famiglie
+   che risiedono in quella strada. Inoltre al posto che ordinare in ordine non decrescente l'insieme e lo si andrà ad ordinare
+   in ordine decrescente in modo da andare a prendere per prime nel FOR EACH quelle con peso maggiore.
+
+FINE PARTE 2 12:40 => Tempo: 36 minuti
