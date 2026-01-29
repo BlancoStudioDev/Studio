@@ -1,0 +1,76 @@
+INIZIO: 17:32
+
+Esercizio 1
+
+Sequenza: 13 46 23 11 4 19 32 12
+
+a) 19 12 32 11 13 23 46 4
+b) 23 12 32 11 13 - 46 4 - - 19
+
+Esercizio 2
+
+Sequenza: 13 46 23 11 4 19 32 12
+
+a) 11 12 4 13 23 19 32 46
+b) 46 13 32 12 4 19 23 11
+c) 13 11 4 19 23 12 32 46
+d) 4 13 19 32 12 46 23 11
+
+FINE PARTE 1: 17:38 => Tempo 6 minuti
+
+INIZIO PARTE 2: 17:39
+
+Esercizio 3
+a) Un albero nella teoria dei grafi è un sottografo di G che è connesso e aciclico.
+
+b) Un albero ricoprente di G è un sottografo di G e un albero, quindi aciclico e connesso che ha V' come insieme dei
+   vertici ovvero lo stesso numero e nomi dei vertici di G e come insieme E ha un sottoinsieme di E, E', che contiene o
+   è uguale all'insieme degli archi di G.
+
+c) Un albero ricoprente minimo è un albero ricoprente che ha come funzione insieme degli archi solamente quesgli archi
+   che permettono di avere un cammino da x a y con peso minimo in tutto il grafo, con (x,y) appartenente a E'.
+
+d) Per implementare una versione migliorata della condizione a riga 5 possiamo introdurre le partizioni, ovvero degli insiemi
+   di elementi. Per implementare una versione miliorata andremo a scrivere dell'if di riga 5 questo: Tx <- P.Find(x),
+   Ty <- P.Find(y) e l'IF che sarà: IF Tx != Ty THEN .....
+
+PSEUDOCODICE
+ALORITMO KRUSKAL(G(V,E,w)) -> albero
+  ordina l'insieme e in base ai pesi in modo non decrescente
+  T <- (V, vuoto)
+  Sia P una partizione inizialmente vuota
+  FOR EACH v in V DO P.MakeSet(v)
+  FOR EACH (x,y) in E secondo l'ordine DO
+    Tx <- P.Find(x)
+    Ty <- P.Find(y)
+    IF Tx != Ty THEN
+      P.Union(Tx,Ty)
+      aggiungi a T l'arco (x,y)
+  RETURN T
+
+e) L'implementazione migliore del grafo per fare in modo che si ottimizzi la complessità dell'algoritmo è quella tramite
+   lista d'archi, ovvero una lista o un array in cui sono elencati tutti i vertici del grafo. Perchè questa
+   è la rappresentazione migliore è dato dal fatto che per accedere alla lista d'archi ho bisogno di complessità pari a
+   O(m) il che porta la complessità a O(m) = O(n^2) per grafi fortemente connessi. Forniamo ora una stima del tempo di
+   calcolo:
+   * l'ordinamento inziale è possibile farlo con un algoritmo di sorting come l'heap sort che ha complessità base di
+     O(n log n), sapendo che deve iterare su m archi la complessità sarà O(m log m) che con m asintotico a n^2 avrà una
+     complessità di O(2n^2 log n) = O(m log n)
+   * Pe rquanto riguarda la creazione dell'albero e della partizioni, essendo operazioni elementari possiamo dire, anche per
+     il criterio del costo unitario che la complessità sarà O(1).
+   * Il for each per la creazione della partizione impone che per la makeset si faccia uso di O(1) essendo, come abbiamo visto in
+     classe un'operazione costante sia per Quick Find bilanciato o non che per Quick Union bilanciato o no
+   * Il for each ha invece delle sotto parti che hanno complessità diverse:
+     se implementiamo l'algoritmo di Union Find tramite un Quick Find Bilanciato o non, la Find avrà complessità O(1), mentre
+     la Union avrà complessità O(n) per il non bilanciato e O(log n) per il bilanciato in ogni caso la complessità interna
+     del for each risulta essere O(log n) nel caso migliore, se eseguita nel for each che scorre tutti gli archi otteniamo una
+     complessità di O(m log n)
+
+   Con queste stime possiamo dire che la complessità totale sarà O(m log n)
+
+f) Per implementare lo scorrimento di una matrice semplicemente si possono adoperare due cicli differenti per scorrere
+   la matrice, se trovo un valore che diverso da zero e da infinito allora lo metto all'interno dell'albero ricoprente
+   minimo, poichè con il riempimento del genere la matrice risulta con i cammini minimi all'interno di ogni entry di essa.
+   La complessità di questo algoritmo è quindi O(n^2 + m log n) -> O(n^2)
+
+FINE PROVA: 18:02
