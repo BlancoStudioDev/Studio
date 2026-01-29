@@ -1,0 +1,16 @@
+I semafori sono dei costrutti utilizzati per la sincronizzazione tra processi, possono essere di due tipi binari o a contatore,
+i primi funzionano per ingressi di singoli processi all'uso della risorsa, mentre invece quelli a contatore funzionano per più
+processi che cercano di accedere alle risorse. I semafori binari funzionano in modo molto simili ai lock mutex, mentre i semafori
+a contatore sfruttano due funzioni di wait e signal, che sono così costruite:
+wait (s) {
+    while (s <= 0);
+      s--;
+  }
+
+signal (s) {
+    s++;
+  }
+
+Il concetto di funzionamento è se il processo chiama wait e s è maggiore di 0 allora s viene decrementata e si garantisce l'accesso
+alla risorsa, nel caso in cui s sia <= di zero invece si entra in uno stato di attesa fino a quando non si ha s >= 0. Per far incrementare
+s quando un processo rilascia una risorsa chiama signal per incrementare s. 
