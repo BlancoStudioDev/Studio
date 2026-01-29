@@ -1,0 +1,41 @@
+INIZIO 16:25
+
+Domanda: La sincronizzazione tra processi in un sistema di elaborazione monoprocessore: si descrivano le
+principali tecniche per realizzare la sincronizzazione tra processi in un sistema monoprocessore,
+evidenziandone le caratteristiche.
+
+Risposta:
+
+La scincronizzazione in un sistema monoprocessore è chiave per diversi motivi, per esempio per il fatto che se i processi non riescono a coordinarsi nell'accesso in memoria
+o nell'uso delle risorse si incappa in grandi problemi di scrittura in memoria. Inianzitutto distinguiamo che processi hanno bisogno di essere sincronizzati, infatti, solamente
+i processi chiamati cooperanti hanno bisogno della sincronizzazione poichè, come dice il nome si influenzano a vicenda con altri processi, mentre quelli indipendenti vivono da
+soli senza andare a "parlare" con altri processi, il che garantisce loro a possibilità di non sincronizzarsi con altri processi. Questi processi cooperanti che quindi devono
+sincronizzarsi utilizzano diversi stratagemmi per farlo come per esempio i lock mutex, le variabili locali, i semafori, i monitor e certe volte anche la parte hardware.
+Partiamo analizzandoli dal primo all'ultimo:
+
+  * Lock Mutex -> questa strategia di sincronizzazione permette di utilizzare delle variabili di lock, sulle risorse, essi funzionano come dei caselli di ingresso ed uscita
+                  dei processi dall'uso delle risorse. Ad ogni risorsa è assegnato una variabile di lock la quale amministra l'ingresso o no dei processi all'uso della risorsa.
+                  Quando un processo non sta usando la risorsa, ma la risorsa è in uso e lui ne ha bisogno, i lock mettono in pausa il processo in modo da non farlo girare
+                  all'infinito alla richiesta della risorsa. Per richiedere una risorsa un processo esegue una funzione di acquire della risorsa e poi eseguirà anche la funziona
+                  release per rilasciare la risorsa a disposizione degli altri processi.
+  * Variabili Locali -> Le variabili locali operano in maniera simile ai loco ma con un concetto alla base differente, infatti esistono due variabili: turn e flag, la flag è una
+                  variabile booleana che serve per capire se la risosrsa è in uso o no, la turn invece è una variabile intera che serve per identificare un processo, nel caso in
+                  cui turn sia su 3, quindi il processo 3, e la variabile flag associata alla risorsa di cui ha bisogno 3 è su true allora il processo può usare la risorsa. Questo
+                  passaggio viene sempre fatto con le funzioni di acquire e release, in questo caso a differenza del lock il processo che rimande in wait continua a fare richieste
+                  sprecando computazione.
+  * Semafori -> I semafori funzionano in maniera totalmente diversa da quello che abbiamo visto fino ad ora, in particolare utilizzano due funzioni nuove: wait(s) e signal(s), queste
+                  funzioni incrementano o decrementano un contatore che idetifica per ogni risorsa quanti processi possono utilizzarla. la funzione di wait è fatta nel seguente modo
+                  wait (s) {
+                      while (s >= 0)
+                        S--;
+                    }
+
+                  signal(s) {
+                      s++;
+                    }
+
+  * Monitor -> sono delle astrazioni maggiori rispetto ai semafori, ma funzionano nella medesima maniera, in particolare funzionano come degli incapsulamenti delle funzioni dei semafori,
+                  questo garantisce a chi scrive il codice per esempio di non preoccuparsi troppo del fatto che non venga chiusa una variabile di release o di acquire, se questo avvenirre
+                  esempio nei semafori si avrebbero dei problemi poichè si rischierebe di andare in deadlock, con i Monitor questo non accade poichè è tutto racchiuso li dentro e già impacchettato.
+
+FINE 16:44
