@@ -54,6 +54,6 @@ gestione per capire come funzionano:
   * Lasciare che avvenga -> Per risolvere il problema post avvenimento si utilizzano diverse strategie, una delle più comuni è quella del terminare i processi che portano
                             a deadlock, per fare questo si possono terminare o uno alla volta o tutti insieme, questo porta però un problema enorme per l'utente che si vede
                             chiudere i processi senza motivo e quindi anche i programmi che sta usando. Un altro metodo per ripristinare lo stato pre deadlock è il roll back,
-                            che consente di tornare allo stato in cui si era verificato il deadlock e quindi di prevenirlo o di evitarlo.
+                            che consente di tornare allo stato in cui si era verificato il deadlock e quindi di prevenirlo o di evitarlo
 
 FINE: 10:57 => tempo 27 minuti
