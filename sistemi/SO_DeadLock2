@@ -1,0 +1,59 @@
+INIZIO: 10:30
+
+Domanda:
+Il deadlock in un sistema di elaborazione monoprocessore: se ne dia la definizione, si descrivano le
+condizioni sotto le quali si verifica, e si indichino le principali tecniche per il suo trattamento,
+evidenziandone le caratteristiche, vantaggi e limiti.
+
+Risposta:
+
+Il deadlock è uno stallo che si verifica all'interno del sistema per 4 diversi motivi, essi devono verificarsi tutti e 4 contemporaneamente
+affinche si verifichi un deadlock. Le condizioni sono le seguenti:
+  * Mutua Esclusione -> comporta che all'interno del sistema sia presente almeno una risorsa che viene utilizzata non condivisibile.
+  * Attesa Circolare -> Ogni processo segue il seguente schema, dato l'insieme Pn dei processi, P1 aspetta una risorsa che sta usando P0,
+                        P2 aspetta una risorsa che sta usando P1 e così via fino a Pn che aspetta una risorsa di Pn-1 e P0 che aspetta una
+                        risorsa di Pn.
+  * Possesso e Attesa -> Ogni processo deve avere in uso una risorsa e ne sta chiedendo un'altra
+  * Assenza di prelazione -> all'interno del sistema non vi è la possibilità di liberare una risorsa prima che il processo abbia finito di
+                             usarla, in sostanza non si ha un meccanismo di premption.
+
+Nel caso in cui queste quattro condizioni non si verificano contemporaneamente non si avrà un deadlock.
+Per rappresentare un sistema si utilizza un grafo, chiamato di assegnazione, il quale ha nei suoi vertici l'insieme delle risorse e dei processi e gli archi sono come
+un processo richiede una risorsa o come una risorsa viene usata da un processo.
+Per gestire questi deadlock ci sono diversi modi, per esempio si può far ricorso a meccanismi di prevenzione, di evitamento, oppure si può fare in modo che
+accada e poi si risolve oppure si può proprio si può ignorare e fare in modo che non esista. Successivamente andremo ad analizzare questi meccanismi di
+gestione per capire come funzionano:
+
+  * Ignorare il problema -> il deadlock è una condizione comunque rara all'interno di un sistema operativo, per questo motivo certi sistemi operativi
+                            implementano come metodo di sua gestione quello di ignorarlo, portando così l'utente a dover riavviare il sistema, questo
+                            porta a dei vantaggi implementativi e di velocità, dato che se non c'è una struttura per fare handling di questo problema
+                            sicuramente la velocità aumenta, allo stesso tempo si da un peso all'utente che ogni volta che accade deve riavviare il
+                            sistema.
+  * Prevenire il problema -> Per prevenire il problema si può fare in modo che una delle 4 condizioni non si verifichi insieme alle altre, per questo
+                             andiamo ad analizzare tutte le condizioni nel dettaglio e come si possono prevenire:
+                            * Mutua esclusione -> è possibile evitarla imponendo che il sistema contenga solamente risorse che siano condivisibili, questo
+                                                  potrebbe essere un problema perchè molte risorse non lo sono, pensiamo per esempio alla scrittura in un file
+                                                  se dovesse essere condivisibile si rischierebbe di avere overwriting della memoria, problema ben maggiore
+                                                  del deadlock.
+                            * Attesa Circolare -> Per evitare l'attesa circolare si può fare in modo di ordinare tutti i processi in modo che non possano arrivare
+                                                  prima di uno più avanti creando conflitti ed evitando cicli, questo però può portare a discrepanze nelle concatenazioni
+                                                  con cui i processi utilizzano le risorse.
+                            * Assenza di Prelazione -> Per evitare l'assenza di prelazione, si può affidare al sistema il compito di sganciare una risorsa da un processo
+                                                  anche se non ha ancora finito di usarla, il che potrebbe, per processi delicati come la scrittura in memoria o l'utilizzo
+                                                  banalmente di una stampante, portare a problemi di scrittura.
+                            * Possesso e Attesa -> Si fa in modo che ogni processo, se possiede già una risorsa non ne possa chiedere un'altra, ma debba prima lasciare
+                                                  quella risorsa e poi successivamente richiederne un'altra
+                            Per concludere i vantaggi sono che basta invalidare anche solo una delle seguenti contizioni per invalidare il deadlock, allo stesso momento
+                            però ci sono dei sistemi operativi che non permettono di invalidare certe condizioni, come citato sopra.
+  * Evitare il problema -> Per evitare il problema ci sono due implementazioni, intanto bisogna dire che evitando il problema semplicemente si va a togliere la possibilità
+                           di un processo di usare una risorda, per verificare se questo deve avvenire o no di usano que metodi:
+                            * Utilizzare uno stato sicuro, uno stato si dice sicuro se esiste una sequenza sicura, ovvero una serie di processi in cui il processo Pi richiede
+                              solamente le risorse presenti nei processi sotto di lui Pj con j < i. Finchè ci troviamo in questo stato sicuro la deadlock non si verifica.
+                            * Utilizzare un algoritmo, come quello del banchiere, che verifica in base al grafo di assegnazione se all'interno del sistema sono presenti dei
+                              cicli, in tal caso potrebbe verificarsi il deadlock e quindi si va a correggere il grafo.
+  * Lasciare che avvenga -> Per risolvere il problema post avvenimento si utilizzano diverse strategie, una delle più comuni è quella del terminare i processi che portano
+                            a deadlock, per fare questo si possono terminare o uno alla volta o tutti insieme, questo porta però un problema enorme per l'utente che si vede
+                            chiudere i processi senza motivo e quindi anche i programmi che sta usando. Un altro metodo per ripristinare lo stato pre deadlock è il roll back,
+                            che consente di tornare allo stato in cui si era verificato il deadlock e quindi di prevenirlo o di evitarlo.
+
+FINE: 10:57 => tempo 27 minuti
