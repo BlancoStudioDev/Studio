@@ -1,0 +1,100 @@
+INIZIO 11:24
+
+Esercizio 1
+
+Sequenza: gatto gufo leone capra pecora geco pitone lepre
+
+0  geco
+1
+2  capra
+3
+4
+5
+6  gatto
+7  pitone
+8  leone
+9  pecora
+10
+11 gufo
+12
+13 lepre
+14
+15
+
+Esercizio 2
+
+Sequenza: 44 63 22 77 10 88 55 33 85
+
+a) 10 33 22 44 77 88 55 63 85
+b)        44
+    63          22
+ 77     10   88     55
+33 85
+
+          10
+     33         22
+   44   63    88   55
+77 85
+
+10 33 22 44 63 88 55 77 85
+c) 10 22 63 77 44 88 55 33 85
+d) 22 44 10 63 55 33 77 85 88
+
+FINE PARTE 1: 11:33 => Tempo 9 minuti
+
+INIZIO PARTE 2: 11:34
+
+a) Per risolvere il seguente problema andremo a scrivere un Algoritmo modificato dell'algoritmo di DIJKSTRA, in modo che
+   oltre ad estrarre i cammini minimi per andare da s a tutti gli altri vertici ne faccia anche la media.
+
+PSEUDOCODICE
+  ALGORITMO DIJKSTRA(G, s) -> media
+    D[s] <- 0
+    FOR v in V DO D[v] <- infinito
+    C <- V
+    WHILE C != 0 DO
+      u <- elemento minimo D[u] in C
+      C <- C - {u}
+      FOR EACH (u,v) in E DO
+        IF D[u] + w(u,v) < D[v] THEN
+          D[v] <- D[u] + w(u,v)
+    FOR EACH v in V DO
+      somma <- somma + D[v]
+    media <- somma/n
+    RETURN media
+
+   Un'eventuale struttura di supporto è quella della coda con priorità sviluppata tramite MinHeap.
+
+PSEUDOCODICE con struttura
+  ALGORITMO DIJKSTRA(G, s) -> media
+    D[s] <- 0
+    FOR EACH v in V - {s} DO D[v] <- infinito
+    FOR EACH v in V - {s} DO C.insert(v,D[v])
+    WHILE C != 0 DO
+      u.deleteMin()
+      FOR EACH (u,v) in E DO
+        IF D[u] + w(u,v) < D[v] THEN
+          D[v] <- D[u] + w(u,v)
+          C.ChangeKey(v,D[v])
+    FOR EACH v in V DO
+      somma <- somma + D[v]
+    media <- somma/n
+    RETURN media
+
+b) Una lista di adiacenza è una lista che associa ad ogni vertice tutti gli archi uscenti da esso.
+   Una stima dei costi deve esser fatta andando ad analizzare parte per parte l'algoritmo, in particolare:
+     * la complessità dei due for each esterni è O(n)
+     * la complessità dell'assegnamento di D[s] <- 0 è O(1) per il criterio del costo unitario
+     * Il while viene eseguito n volte, al suo interno:
+       * u.deletemin() ha complessità O(log n) perchè si va a cercare il minimo in un MinHeap, il quale si trova
+         alla radice.
+       * il FOr EACH interno viene eseguito, con lista di adiacenza esso diventa deg(u)
+       * l'if interno per il criterio del costo unitario ha complessità O(1)
+       * l'assegnamento anche O(1)
+       * il changekey ha complessità O(log n) per un MinHeap
+       * il for each esterno ha complessità O(n) e al suo interno solamente O(1)
+   in totale la stima accurata della complessità è O((n+m)log n)
+c) Una matrice di adiacenza è una matrice che sulle righe e le colonne ha i vertici di V e associa 1 nella matrice
+   per ogni vertice collegato.
+
+d) 
