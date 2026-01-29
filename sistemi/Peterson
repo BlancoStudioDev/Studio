@@ -1,0 +1,4 @@
+L'utilizzo di variabili locali per tecniche di sincronizzazione tra processi funziona nel seguente modo:
+un processo richiama una funzione che gli permette di settare una variabile flag a false e una variabile turn
+a j, che è il pid di un altro processo. Un processo accede ad una risorsa solamente se la variabile flag == false
+o se turn == i, con i che è il pid del processo che vuole accedere alla risorsa.
