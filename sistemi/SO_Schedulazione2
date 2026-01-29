@@ -1,0 +1,46 @@
+INIZIO 12:08
+
+Domanda:
+
+La schedulazione dei processi in un sistema di elaborazione monoprocessore: si descrivano le
+principali tecniche per realizzare la schedulazione dei processi in un sistema monoprocessore,
+evidenziandone le caratteristiche.
+
+Risposta:
+La schedulazione in un sistema di elaborazione monoprocessore è importantissima poichè da all'utente che usa la macchina
+l'impressione di poter utilizzare molti programmi contemporaneamente, quando in realtà c'è un rapidissimo cambio tra ogni
+processo per fare in modo che sembri tutto fluido. Questo cambio tra un processo e un altro viene chiamato cambio di contesto
+e viene fatto qualora bisogna cambiare l'utilizzo della CPU da un processo ad un altro. Per far ciò viene adoperato una
+struttura dati chiamata PCB, ovvero process control block che contiene al suo interno tutte le informazioni che riguardano
+il processo, come per esempio il suo numero identificativo, il pid, o lo stato attuale del processo. Questa struttura è
+necessaria per il buon svolgimento del cambio di contesto essendo che ogni olta che avviene il cabmio di contesto si va
+ad analizzare il PCB per capire dove era rimasto a livello di esecuzione il processo ce si andrà ad immettere nella fase di
+esecuzione e per esempio di che risorse ha bisogno. Un processo ha una vita nel sistema di elaborazione che è così suddivisa:
+nuovo, pronto, esecuzione, attesa, terminazione. Ci occuperemo adesso di capire come i processi vengono Schedulati, ovvero
+in che modo vengono scelti per passare da stato di ready (pronto) a stato di esecuzione. Esistono diversi algoritmi di schedulazione
+il quale obbiettivo è quello di abbassare il tempo medio di attesa:
+
+  * FCFS -> first come first served, permette allo scheduler di scegliere come primi processi quelli che arrivano prima,
+            così facendo si rischia di creare starvation per i processi nel caso in cui un processo lungo blocchi per
+            tanto tempo la CPU.
+  * SJF -> Shortest Job First permette di avere lo scheduler che sceglie tra i processi che impiegano meno l'utilizzo della CPU
+           Questo è molto buon perchè abbassa il tempo medio, ma allo stesso tempo si rischia di avere starvation per
+           processi lunghi che in certe situazioni magari non verranno mai eseguiti.
+  * Round Robin -> E' un algoritmo con prelazione con time sharing, che permette al sistema, dopo un periodo di tempo
+                   definito, chiamato quanto di tempo, di togliere l'utilizzo della CPU al processo e di darlo al prossimo
+                   processo. Questo è uno degli algoritmi migliori perchè garantisce un tempo di attesa bassissimo e permette
+                   di avere pochissima starvation tra i processi.
+  * Scheduling con code di priorità -> Sono delle vere e proprie code che contengono i processi, lo scheduler a breve termine
+                                       prenderà da queste code con delle funzioni di POP per esempio in una coda FIFO, i processi
+                                       e li metterà in stato di esecuzione.
+  * Code multilivello -> sono code di priorità su più livelli esse permettono ai processi di avere priorità maggiore se si trovano
+                         in una coda con priorità maggiore rispetto ad un altro processo che si trova in una coda con priorità minore
+  * Code con retroazione -> sono uguali alle code multivello con priorità, ma permettono ai processi di passare da una coda all'altra
+                            runtime, in modo da cambiare la priorità del processo e fare in modo che nonsi verifichi mai starvation.
+
+Un'altra implementazione è quella che si basa sull'aging, questa tecnica consiste nell'utilizzare una variabile che tiene
+conto del tempo passato da parte di un processo all'interno di una coda o nello stato di ready e permette di aumentarne
+la priorità linearmente al suo tempo all'interno dello stato di attesa o di ready, questo permette di avere un maggiore controllo
+sui processi che potrebbero soffrire di starvation e prevenirla in questo modo.
+
+FINE 12:26
