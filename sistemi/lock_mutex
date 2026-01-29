@@ -1,0 +1,6 @@
+I lock mutex funzionano come dei meccanismi di sbarramento (simili a dei caselli) per garantire l'esclusione mutua. Si basano su
+una variabile booleana che indica se il lock è libero o occupato. I processi interagiscono con il lock tramite due funzioni atomiche:
+acquire() per richiedere l'accesso e release() per rilasciarlo. Se un processo esegue una acquire() su un lock già occupato, esso
+non rimane in attesa attiva (come accade nell'algoritmo di Peterson o negli spinlock), ma viene messo in stato di attesa (sleep).
+In questo modo, il processo viene sospeso dallo scheduler e non consuma cicli di CPU finché il lock non torna disponibile, migliorando
+l'efficienza complessiva del sistema.
