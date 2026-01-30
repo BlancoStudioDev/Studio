@@ -1,0 +1,53 @@
+INIZIO 15:42
+
+DOMANDA:
+La schedulazione dei processi in un sistema di elaborazione monoprocessore: si descrivano le
+principali tecniche per realizzare la schedulazione dei processi in un sistema monoprocessore,
+evidenziandone le caratteristiche.
+
+Risposta:
+
+In un'architettura monoprocessore è cruciale l'utlizzo di una tecnica di ciclazione dei processi efficiente
+per fare in modo che l'utente abbia l'illusione di poter utilizzare più processi/programmi e software contemporaneamente.
+Per eseguire questo compito si fa riferimento a un componente fondamentale per le architetture ovvero la schedulazione,
+questa tecnica consiste nell'avere un componente che si chiama scheduler, che si occupa della turnazione efficace tra
+i processi, in modo che questi ultimi si alternino in maniera efficace. Per fare questo viene utilizzata una tecnica
+chiamata cambio di contesto, che consente allo scheduler di passare da un processo ad un altro senza avere dei problemi
+poichè ogni volt che si stoppa un processo e se ne fa ripartire un altro una struttura chiamata PCB entra in gioco per
+far capire allo scheduler lo stato attuale del processo in esecuzione e per tenere traccia dello stato del processo messo
+in fase di attesa o di terminazione. I processi nella loro "Vita" passano diverse fasi, le più importanti sono quelle di
+pronto, essecuzione, terminazione e attesa. Lo scheduler a breve termine, quello che tratteremo noi, entra in gioco quando
+unn processo si trova nella fase di pronto, esecuzione e attesa e ha la possibilità di scegliere quale processo stoppare,
+quale far runnare e quale terminare, per farlo si serve di diversi algoritmi tra i quali i seguenti:
+
+  * FCFS -> first come first served, permette allo scheduler di scegliere dallo stato pronto i processi in base al loro ordine
+           di arrivo, i primi che arrivano saranno anche i primi ad essere eseguiti.
+           Il problema maggiore è che questo algoritmo porta ad un effetto chiamato effetto convoglio che causa l'ammassamento
+           dei processi. Non vi è starvation però.
+
+  * SJF -> Shortest Job First, permette allo scheduler di scegliere un processo che abbia il tempo di esecuzione minore come
+           primo processo e mano a manosalendo di tempo di esecuzione, il problema maggiore per questo algoritmo è la starvation
+           per i processi con tempo di esecuzione lungo.
+
+  * Round Robin -> questo algoritmo permette allo scheduler di fare una cosa ben precisa, ovvero dare in concessione la CPU ai
+           processi utilizzando una tecnica chiamata di time sharing, in particolare si definisce un quanto di tempo in cui un
+           processo può usare la CPU e quello è, ne di più ne di meno, se un processo non è terminato alla fine del quanto di
+           tempo allora verra messo in pausa e se invece è terminato allora verrà chiuso. Il problema sta nella scelta del
+           quanto di tempo, se questo è troppo alto si rischia di avere un algoritmo di FCFS, se
+           troppo basso si hanno processi che non finiranno mai la loro computazione.
+
+  * Scheduling con Code multilivello -> Lo scheduling con code permette allo scheduler di ammassare un certo numero di processi
+           all'interno di code, dove risiederanno prima di essere presi e messi in esecuzione. Queste code hanno delle priorità
+           e le code con priorità maggiore hanno processi con priorità maggiore che verranno eseguiti prima. I processi non possono
+           passare da una coda all'altra, ma sono bloccati in quella di partenza.
+
+  * Scheduling con code multilivello con retroazione -> sono come le code multilivello, ma i processi possono passare da una coda
+           all'altra nel caso in cui vi sia un problema di starvation per esempio.
+
+  * Scheduling con priorità -> permette di avere diversi livelli di priorità in basse ai processi, questo può portare a starvation
+           per i processi a bassa priorità.
+
+  Una meccanica fondamentale in questo sistema è quella dell'aging che permette ai processi di cambiare la loro priorità in base a
+  da quanto tempo stanno aspettando, così da evitare problemi seri di starvation.
+
+FINE 16:02
