@@ -1,0 +1,57 @@
+INIZIO 12:20
+
+Domanda: La sincronizzazione tra processi in un sistema di elaborazione monoprocessore: si descrivano le
+principali tecniche per realizzare la sincronizzazione tra processi in un sistema monoprocessore,
+evidenziandone le caratteristiche.
+
+Risposta:
+
+La sincronizzazione tra le risorse in un sistema operativo monoprocessore è chiave per la buona riuscita
+delle operazioni di sistema. All'interno di questi sistemi è presente un problema enorme che viene risolto
+tramite la sincronizzazione ovvero quello dell'accesso alla sezione critica, punto in cui un processo accede
+alla memoria e punto in cui il processo non può esser disturbato o interrotto poichè rappresenterebbe un
+problema di scrittura in memoria portando alla corruzione dei file. Per questo esistono dei meccanismi di
+sincronizzazione che permettono ai processi di non sovrapporsi nell'accesso alla sezione critica e di operare
+in uno stato sicuro per tutti. Questi meccanismi sono i seguenti:
+
+  * Variabili condivise -> Queste variabili sono le seguenti: flag e turn, un processo può accedere ad una risorsa
+                  solamente se possiede una delle seguenti due caratteristiche: o la variabile flag = false, o la
+                  variabile turn è uguale a se stesso, queste variabili vengono aggiornate durante l'esecuzione di
+                  un sistema secondo il seguente schema, ogni volta che un processo prova ad accedere ad una risorsa
+                  cambia la variabile flag su true e la variabile turn su j che è un altro processo diverso da se
+                  stesso. Questo garantisce un meccanismo di mutua esclusione tra i processi per l'accesso ad una
+                  medesima risorsa. Quando un processo vuole usare una risorsa, ma è già in uso da un altro processo
+                  il processo viene messo in stato di spinlock, il che occupa cicli della CPU.
+
+  * Lock Mutex -> I lock mutex funzionano con delle variabili di lock che vengono associate ad una risorsa, queste
+                  variabili garantiscono quando un processo fa una richiesta di accedere ad una risorsa con la funzione
+                  di acquire(s) allora la variabile di lock si invalida, garantendo così la mutua esclusione nei confronti
+                  degli altri processi. Quando una risorsa viene liberata, con la funzione di release(s) allora la variabile
+                  di lock viene impostata in modo che altri processi possano entrare nella sezione critica per usare la
+                  risorsa. Quando un processo vuole usare una risorsa, ma essa è già in uso da altri esso viene messo
+                  in stato di attesa.
+
+  * Semafori -> I semafori sono dei meccanismi che permettono la sincronizzazione tra processi di due tipi differenti,
+                  esistono i semafori binari che funzionano nello stesso modo dei lock mutex, oppure i semafori a
+                  contatore, i quali permettono di andare ad avere un numero, se pur limitato, di processi che possono
+                  usare la mia risorsa, questo viene fatto grazie a due funzioni: wait(s) e signal(s) che incrementano e
+                  decrementano questo contatore secondo questo metodo:
+                    wait(s) {
+                        while (s <= 0);
+                        s--;
+                      }
+                    
+                    signal(s) {
+                        s++;
+                      }
+                  In sostanza la funzione di wait o fa entrare il processo ad usare la risorsa oppure se tutti gli slot
+                  per usare quella risorsa sono presi il processo viene messo in stato di attesa all'interno del while.
+                  Un processo esce dallo stato di attesa solamente quando s non è più minore o uguale a 0 quindi quando
+                  viene richiamata la funzione signal che incrementa s togliendo dal ciclo while un processo.
+
+  * Monitor -> Infine i monitor sono l'astrazione più grande usata dai programmatori per interfacciarsi con la sezione
+                  critica e permettono di utilizzare le funzioni di acquire e release ad alto livello ed automaticamente
+                  garantendo quindi che il programmatore non si dimentichi di una funzione come release e quindi di mandare
+                  in deadlock l'intero sistema.
+
+FINE: 12:41
