@@ -1,0 +1,78 @@
+INIZIO 9:57
+
+Domanda:
+Il deadlock in un sistema di elaborazione monoprocessore: se ne dia la definizione, si descrivano le
+condizioni sotto le quali si verifica, e si indichino le principali tecniche per il suo trattamento,
+evidenziandone le caratteristiche, vantaggi e limiti.
+
+Risposta:
+
+La Deadlock è uno stallo che avviene all'interno del sistema di elaborazione monoprocessore quando i
+processi che operano al suo interno hanno un comportamento di attesa circolare, ovvero P1 aspetta una
+risorsa usata da P0 e così via fino a P0 che aspetta Pn.
+Ogni processo per utilizzare una risorsa passa per diversi step: richiesta utilizzo e termiazione, i
+quali si susseguono in un ciclio armonioso per i corretto svolgimento del sistema. Esistono però delle
+condizioni che se si verificano contemporaneamente portano ad un meccanismo di stallo, ovvero la deadlock,
+queste quattro condizioni sono:
+
+  * Mutua Esclusione -> La mutua esclusione comporta che all'interno del sistema ci sia almeno una risorsa
+                        che non è condivisibile, ovvero alla quale due processi non possono accedere insieme.
+
+  * Attesa circolare -> quella citata in precedenza, ovvero che i processi che sono all'interno del sistema
+                        sono all'interno di una catena di dipendenza che li comprende tutti, in particolare
+                        P1 aspett una risorsa che ha P0, P2 con P1 e così via fino a Pn che apetta Pn-1 e P0
+                        che aspetta Pn.
+
+  * Assenza di prelazione -> con assenza di prelazione si intende un meccanismo che porta la CPU o il sistema 
+                        a non rilasciare le risorse che i processi in esecuzione stanno usando, quindi i processi
+                        tenngono le risorse fino a quando non hann finito di usarle.
+
+  * Possesso e attesa -> con possesso e attesa si intende che ogni processo ha contemporaneamente in utilizzo una
+                        risorsa, ma allo stesso tempo anche in richiesta un'altra risorsa, come se ne stesse facendo
+                        il preorder essendo ancora impegnato con un'altra risorsa.
+
+Per risolvere questo problema ci sono diverse tecniche, alcune agiscono sui processi altre direttamente sulle risorse
+e sono le seguenti:
+
+  * Prevenzione ed Evitamento
+      * Prevenzione
+        Per prevenire questo problema una delle tecniche principali è quella di andare a eliminare per principio una
+        delle quattro possibii cause del deadlock, ma andiamo con ordine:
+          * Mutua esclusione -> per prevenire la mutua esclusione si fa in modo che all'interno del sistema non siano
+                            presenti delle risorse non condivisibili, questo è impossibile perchè non sempre esistono
+                            solo risorse condivisibili, un esempio può essere la scrittura su file, che non è condivisibile.
+
+          * Assenza di prelazione -> si può fare in modo che il sistema sia in grado di liberare una risorsa anche se il
+                            processo non ha ancora terminato la sua esecuzione. Questo per operazioni importanti come la
+                            scrittura in memoria però non ri può fare poichè porterebbe a problemi di corruzione dei file.
+
+          * Possesso e Attesa -> per evitare questo problema si fa in modo che tutti i processi debbano richiedere le
+                            risorse che andranno ad usare all'inizio della loro creazione, e che non possano richiederne
+                            se già ne posseggono altre. Questo però non è sempre prevedibile poichè un processo certe
+                            volte non conosce i dati che andrà ad usare e anche se li conoscesse diventerebbe pesante passarli
+                            tutti per verificarne il loro utilizzo.
+
+          * Attesa Circolare -> per evitare questa condizione si va a numerare i processi in modo che non ci siano processi
+                            che creano questa catena di dipendenza tra i processi. Questo approccio può essere vantaggioso
+                            se non ci sono processi cooperanti contigui per esempio, i caso contrario si avrebbe un problema.
+
+      * Evitamento
+        Per evitare il deadlock si va ad agire direttamente sulle risorse, in particolare si utilizza una rappredentazione
+        del sistema chiamato grafo di assegnazione, che permette di visualizzare le dipendenze tra risorse e processi, questo
+        viene creato e analizzato, nella sua analisi si va a vedere se vi sono dei cicli all'interno del grafo e in tal caso
+        vorrà dire che ci sarà un deadlock. Un altro metodo utilizzato è quello che implica l'utilizzo dell'algoritmo del banchiere
+        per funzionare, che anch'esso verifica la dipendenza tra risorse e processi e in caso di deadlock non assegna la risorsa
+        al processo.
+
+  * Lasciare che avvenga e risolverla -> per fare questo esistono due approcci, il primo che è quello di andare a terminare
+    i processi nel caso in cui si verifichi una deadlock, o tutti insieme o uno per volta, ma queso porterebbe a problemi per
+    l'utente che non vede più processi e programmi aperti. Un altro metodo è quello del rollback che consente al sistema di
+    tornare allo stato pre deadlock risolvendola di conseguenza con altre tecniche per esempio di prevenzione.
+    Queste due tipologie in generale hanno un vantaggio a lvello computazionale, poichè risparmiano sicuramente tempo nella
+    ricerca del deadlock, poichè si aspetta semplicemente che avvenga, ma allo stesso tempo se dovesse avvenire si perderebbe
+    tempo nel cercare di risolverlo.
+
+  * Ingorare il problema -> questa tecnica si basa principalmente sul fatto che il deadlock è una pratica molto rara in un
+    sistema e quindi si spera non avvenga mai, nel caso in cui avvenisse l'utente dovrà resettare il sistema.
+
+FINE: 10:28
