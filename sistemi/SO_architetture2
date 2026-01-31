@@ -1,0 +1,57 @@
+INIZIO 21:16
+
+Domanda: Architettura dei sistemi operativi per sistemi di elaborazione monoprocessore: si presentino le
+principali architetture dei sistemi operativi, descrivendone caratteristiche, vantaggi e limiti.
+
+Risposta:
+I sistemi negli anni si sono sviluppate per andare a risolvere moltissimi problemi, siamo partiti da avere
+sistemi di tipo monolitico, per poi passare ad sistemi di tipo gerarchico e su più livelli, per poi avere
+sistemi modulari, a micro kernel fino ad arrivare a creare sistemi operativi che si basano su altri sistemi
+operativi (le macchine virtuali). Ora li analizzeremo uno per uno andando a mostrarne le caratteristiche, i
+vantaggi e i limiti.
+
+  * Sistemi operativi Monolitici -> sono i primi sistemi operativi che sono stati creati, sono costruiti in
+                modo da avere una struttura centrale molto resistente contenente le funzioni principali come
+                per esempio le funzioni della memoria, lo scheduler e la CPU, il fatto che queste si trovino
+                nello stesso punto garantisce a questo sistema una grande robustezza nelle comunicazioni e
+                nello svolgimento di queste funzioni. Allo stesso tempo la manuntenzione di questo sistema
+                risulta super complessa e anche il debugging quasi impossibile per la grande compattezza delle
+                componenti al suo interno.
+
+  * Sistema a MicroKernel -> Questo sistema racchiude in un'unica parte tutte le funzioni principali mettendole
+                in comunicazione con altri servizi esterni tramite una mailbox e scambi di messaggi con il kernel.
+                La diversificazione della località dei servizi garantisce che il mantenimento dell'architettura
+                sia molto più facile rispetto ad un sistema monolitico, allo stesso tempo questa comunicazione
+                rischia di portare pesantezza e lentezza al sistema.
+
+  * Sistema Gerarchico -> E' ancora organizzato in un grande blocco di codice come i due precedenti, ma allo stesso
+                tempo le funzioni che sono al suo interno possono richiamare solamente quelle sottostanti. Il fatto
+                che il sistema non sia ancora diviso in moduli, ma sia ancora in un unico punti continua a permettere
+                l'interruzione dell'intero sistema nel caso del fallimento di qualche funzione. Il vantaggio maggiore
+                è però la gerarchia delle funzioni che garantisce una maggior stabilità e un debug maggior nel codice.
+
+  * Sistema Stratificato -> Questo sistema permette alle funzioni di risiedere non in livelli differenti ma in veri
+                e propri moduli differenti, i quali comunicano tra di loro passando l'uno dentro all'altro, ma senza
+                sapere effettivamente cosa ogni modulo fa, ogni modulo parla con l'interfaccia di un altro modulo,
+                senza effettivamente sapere cosa fa questo altro modulo. Gli svantaggi principali sono legati alla
+                sua lentezza nel dover passare da un modulo all'altro per forza senza poterli saltare, il modulo più
+                in alto sarà quello lato utente quello più in basso lato macchina, per passare da uno all'altro
+                l'informazione deve passare per tutti gli strati portando a una lentezza elevata. Allo stesso tempo i
+                moduli permettono una grande facilità nel debug.
+
+  * Sistema Modulare -> Il sistema modulare porta con se la parte di microkernel, permettendo di avere al proprio
+                interno le funzioni principali collegate, a differenza del microkernel, da moduli e non da servizi.
+                La differenza principale è che mentre i servizi si trovano all'esterno e se dovessere crashare quelli
+                non impatterebbero sul sistema generale, se nel sistema modulare dovesse crashare un servizio allora
+                questo crash si ripercuoterebbe anche sul resto del sistema, poichè questi moduli si trovano nel
+                kernel e non più lato utente come con il sistema microkernel, questo rappresenta uno svantaggio, ma
+                il grande vantaggio è che dato che i moduli sono all'interno del kernel la velocità di comunicazione
+                è massima.
+
+  * Sistema VM -> questo sistema operativo non si basa direttamente sull'architettura, ma passa prima per un altro
+                sistema operativo, per esempio ho una macchina con al di sopra il sistema operativo Windows, voglio
+                però usare un programma presente solo su linux, allora creo una virtual machine che mi permette di
+                emulare un sistema operativo non installato direttamente sul mio disco. QUesto comporta un grande
+                vantaggio lato programmazione, ma allo stesso tempo rappresenta un problema maggiore per la velocità
+                di trasmissione delle risorse poichè ogni istruzione andrebbe tradotta per essere capita dall'ISA
+                della macchina.
