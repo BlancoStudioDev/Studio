@@ -1,4 +1,4 @@
-INIZIO:
+INIZIO: 17:04
 
 Domanda:
 La schedulazione dei processi in un sistema di elaborazione monoprocessore: si descrivano le
@@ -6,5 +6,62 @@ principali tecniche per realizzare la schedulazione dei processi in un sistema m
 evidenziandone le caratteristiche.
 
 Risposta:
+La schedulazione è un meccanismo fontamentale che permette ai processi di turnarsi correttamente per l'utilizzo della CPU
+senza avere problemi di nessun tipo nella concorrenza o la starvation di essi. I punti fondamentali da rispettare per una
+buona schedulazione sono: non avere attesa indefinita (starvation), avere un tempo di attesa medio il più basso possibile,
+avere una produzione ilpiù possbile attiva, quindi un utilizzo della CPU quasi sempre massimo, un tempo di risposta più
+basso possibile e infine avere un tempo di completamento sufficientemente basso. Per garantire questo entrano in gioco due
+componenti principali, lo scheduler e il dispatcher, il primo può essere di diversi tipi, a breve, lungo o medio termine
+e serve, tramite degli algoritmi specifici, per selezionare dalle code di processi pronti, o dalla ram, o dal disco i
+processi che bisogna eseguire e in che ordine, il dispatcher invece si occupa del passaggio effettivo al processo dello
+utilizzo della CPU, questo viene fatto con il costrutto del PCB process control block. Come appena detto lo Scheduler
+si serve di diversi algoritmi per funzionare, di seguito andremo ad analizzarli per capirne il funzionamento e la loro
+efficienza.
 
+CONTENT SWITCH DEVO PARLARNE!!!!!!!!
 
+  * FCFS -> lo scheduling tramite algoritmo FCFS (First Come First Served) è un algoritmo che come dice il suo nome serve
+            prima i processi che arrivano per primi, andando a servir loro la CPU non appena si presentano, questo algoritmo
+            consente di non avere starvation, viene realizzato usando una coda di tipo FIFO, per tanto un funzionamento
+            first in first out, come cita anche il nome dell'algoritmo.
+
+  * SJF -> lo scheduling tramite algoritmo SJF (Shortest Job First) si basa su una tecnica che da la priorità di accesso
+            alla CPU a quei processi con tempo di computazione minore. Questo è possibile eseguirlo solamente se però si
+            conosce il tempo di computazione di ogni singolo processo, cosa difficile a priori e quindi ci si basa su una
+            stima fatta sulla lunghezza di computazione dei processi precedenti. Questa tecnica potrebbe portare a starvation
+            di processi lunghi. Nel caso di due processi con lunghezza simile si usa la tecnica di FCFS.
+
+  * Round Robin -> lo scheduling circolare o scheduling tramite algoritmo Round Robin si basa su una tecnica di scheduling con
+            time sharing, infatti viene definito a priori un quanto di tempo il quale permette al sistema di determinare
+            per quanto tempo un processo userà la CPU, nel casoin cui il processo, finito il quanto di tempo, non è ancora
+            terminato lo si andrà a togliere dalla CPU e mettere in attesa, questo porta l'algoritmo a basarsi su tecniche di
+            prelazione dei processi. Se il quanto di tempo scelto dovesse essere troppo alto si richierebbe di avere un
+            algoritmo di FCFS, se invece dovesse essere troppo basso la turnazione dei processi avverrebbe troppo velocemente
+            rischiando che nessun processo riesca a finire il suo lavoro in quel quando di tempo, garantendo quindi un tempo
+            di risposta troopo elevato.
+
+  * Scheduling con priorità -> lo scheduling con priorità assegna una priorità ai processi che si trovano in ready queue
+            e tramine questa priorità li va a selesionare e portare in stato di esecuzione nella CPU. Questo algoritmo
+            ha un grande difetto, ovvero quello che se un processo con bassa priorità ha davanti tanti processi ad alta
+            priorità rischierà di andare in starvation, per questo si è introdotta una tecnica di aging, ovvero più un
+            processo rimane in queue prima di essere portato in stato di esecuzione e più la sua priorità aumenta, questo
+            permette di ridurre la starvation per i processi con bassa priorità.
+
+  * Code multilivello -> lo scheduling tramite le code multilivello permette di dividere le ready queue in diverse queue con
+            priorità differente. In queste code i processi non si possono muovere e non possono per tanto cambiare livello
+            di coda. Ogni coda può avere al suo interno uno degli algoritmi citati in precedenza.
+
+  * Code multilivello con retroazione -> lo scheduling con code multilivello con retroazione funziona allo stesso modo di
+            quello con code multilivello normale, ma in questo caso i processi possono cambiare da una coda all'altra in
+            base alla loro priorità, per esempio se un processo fosse in starvation potrebbe cambiare coda per andare in
+            una coda con priorità più alta in modo da essere eseguito.
+
+In tutto questo non abbiamo comunque parlato di come viene strutturata generalmente un'esecuzione, prendiamo per esempio uno
+scheduler con algoritmo di FCFS, per prima cosa viene riempita la ready queue o coda pronta, in cui sono contenuti tutti
+quei processi che si trovano in stato di ready. Da questa coda con l'algoritmo FCFS vengono scelti i processi, siccome
+la nostra coda è stata implementata tramite coda FIFO, quest'operazione risulta essere abbastanza semplice, e per questo
+abbastanza veloce. Quindi il processo viene preso e messo in stato di esecuzione, il dispatcher di conseguenza prende il processo
+e gli assegna il privilegio dell'utilizzo della CPU, solo quando poi avrà finito si andrà a togliere il processo dallo
+stato di esecuzione e quindi di utilizzo della CPU e mettendolo in stato di terminazione.
+
+FINE: 17:30
