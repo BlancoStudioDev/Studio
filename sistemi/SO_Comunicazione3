@@ -1,0 +1,65 @@
+INIZIO: 17:40
+
+Domanda:
+La comunicazione tra processi in un sistema di elaborazione monoprocessore: si descrivano le
+principali tecniche per realizzare la comunicazione tra processi in un sistema monoprocessore,
+evidenziandone le caratteristiche.
+
+Risposta:
+
+La comunicazione tra processi è una tematica fondamentale per quanto riguarda i sistemi operativi, in particolare al
+loro interno troviamo dei componenti fondamentali per farli funzionare ovvero i processi, ne esistono di diversi tipi,
+ma in generale li possiamo raggruppare in due grandi macro aree, i processi cooperanti e i processi indipendenti, i primi
+sono processi che influenzano e sono influenzati da altri processi, i secondi invece rimangono completamente anonimi
+rispetto ad altri processi il che li porta anche a non aver bisogno di comunicazione. Abbiamo fatto questo preambolo per
+dire che non tutti i processi hanno bisogno di comunicare, bensi solamente quelli cooperanti, i quali per forza avranno
+prima o poi bisogno di scambiare informazioni tra di essi. Esistono diverse tecniche per eseguire questa pratica tra cui
+la comunicazione tramite messaggi, la comunicazione tramite memoria condivisa, la comunicazione tramite socket e tramite
+pipe. Di seguito analizzeremo questi tipi di comunicazione andando a spiegarli nel dettaglio:
+
+  * Comunicazione per Messaggi -> dettata dal protocollo di IPC (interprocess communication)
+      La comunizazione tramite messaggi impone ai processi di avere dei protocolli di comunicazione o comunque dei
+      metodi comuni a tutti per farlo e in modo che si possano capire i messaggi di tutti, il più generale è quello
+      di usare due funzioni: send e recieve. Per usare queste funzioni esistono diversi metodi come:
+        
+        * Naming -> Tramite il naming si va a nominare un processo nella fase di send(Message, ID) tramite il suo
+                    ID e anche nella fase di ricezione di ricevero tramite ID con la funzione di recieve(Message, ID).
+                    Questa tecnica si chiama naming poichè nomina direttamente sia il ricevente che l'emittente.
+
+        * Comunicazione diretta -> la comunicazione diretta obbliga sia il mandante che il ricevente a nominare l'altro.
+
+        * Comunicazione indiretta -> permette di nominare al posto che il processo ricevente e emittente di nominare
+                    la mailbox al quale questo processo fa riferimento, in particolare ogni processo fa riferimento
+                    a una mailbox differente a cui arrivano i messagi e usando la funzone send(A, message) io invio
+                    alla mailbox i A il messaggio e poi il processo eseguirà la funzione recieve(A, message) per
+                    leggerlo.
+
+        * Comunicazione sincrona -> si intende un tipo di comunicazione che quando il mandante manda un messaggio
+                    aspetta fino a quando il messaggio non è arrivato e gli è tornato indietro per poi staccarsi e
+                    usare il canale per comunicare cn altri processi.
+
+        * Comunicazione asincrona -> opposta rispetto alla comunicazione sincrona, si inviano i messaggi senza curarsi
+                    che il messaggio sia stato ricevuto.
+    In aiuto a questi meccanismi vengono anche le code che possono essere di tre diversi tipi: capacità zero che obbliga
+    i processi ad avere una comunicazione costante e pura, capacità limitata, una volta che il processo ha inviato un
+    numero abbastanza grande di messaggi non può più farlo fino a quando la coda non si svuota e infine a capacità
+    illimitata permette al produttore di inviare infiniti messaggi.
+
+  * Comunicazione Memoria condivisa -> La memoria condivisa permette di utilizzare una parte di memoria che i due processi
+      useranno per comunicare, tuttavia questo metodo non può essere adoperato per alcuni processi, basti pensare ad una
+      stampante con memoria condivisa. Un altro problema è quello del produttore e consumatore che fa riferimento a
+      quello che abbiamo citato in precedenza con i buffer a dimensione limitata, illimitata e zero.
+
+  * Comunicazione Socket -> questo tipo di comunicazione si utilizza prevalentemente per far comunicare architetture come
+      server e client, ma allo stesso tempo anche per processi interni alla stessa macchina o processi che si trovano
+      su macchine in sottoreti differenti tramite chiamate a funzioni dette RCP. Questo tipo di comunicazione, se ne
+      parliamo all'interno della stessa macchina, viene stabilito tra i processi in esecuzione andando ad usare l'ip di
+      lookup 127.0.0.1 e una porta dedicata a ciascun processo :porta (127.0.0.1:5000) il che serve a far comunicare
+      due processi uno per esempio che si trova sulla porta 5000 della stessa macchina. Questo tipo di comunicazione è
+      usato per esempio per chiamate API o chiamate a processi sulla stessa macchina o su macchine asestanti.
+
+  * Comunicazione Pipe -> La comunicazione pipe si stabilisce tramite un processo padre e un processo figlio a cui esso
+      deve tramandare i dati di esecuzione dopo una chiamata fork per esempio. Con questo tipo di comunicazione si
+      utilizza un canale diretto in cui i due processi si scambiano informazioni in modo molto veloce ed efficace.
+
+FINE: 18:06
