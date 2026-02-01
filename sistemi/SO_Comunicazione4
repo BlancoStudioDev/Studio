@@ -1,0 +1,70 @@
+INIZIO: 11:11
+
+Domanda:
+La comunicazione tra processi in un sistema di elaborazione monoprocessore: si descrivano le
+principali tecniche per realizzare la comunicazione tra processi in un sistema monoprocessore,
+evidenziandone le caratteristiche.
+
+Risposta:
+La comunicazione all'interno di un sistema operativo è una delle parti principali soprattutto quando si parla di processi
+concorrenti o cooperanti, i quali sono i primi ad ulitizzare questo meccanismo per comunicare poichè essi influenzano e
+sono influenzati da altri processi a differenza di quelli indipendenti. Per comunicare essi utilizzano un protocollo chiamato
+IPC: inter process communication. Esso definisce diversi metodi di comunicazione tra i processi come quelli che andremo ad
+analizzare di seguito:
+
+  * Comunicazione a memoria condivisa
+    Questo tipo di comunicazione permette ai processi di usare una parte della memoria come storage di dati per due o
+    più processi, questi processi utilizzano questo spazio di memoria per scrivere al suo interno andando a immettere
+    delle informazioni utili per altri processi che poi le useranno. Questo accade facendo in modo che due processi
+    superino una barriera importante dei sistemi operativi ovvero il fatto che un processo non possa accedere alla
+    memoria di un altro processo, ovvero ai suoi indirizzi di memoria. Facendo questi si entra in un meccanismo
+    che viene chiamato del produttore e del consumatore, in pratica un processo scrive nella memoria condivisa
+    e un altro processo va a leggerci dentro. Questo porta ad un inevitabile utilizzo di un buffer che possa essere
+    usato dal produttore per scrivere più informazioni possibili e dal produttore per leggerle, questo buffer può essere
+    di dimensioni limitate o illimitate.
+
+  * Comunicazione per messaggi
+    Questo tipo di comunicazione si basa su un meccanismo a noi molto familiare ovvero quello delle chat, in particolare
+    avremo un processo che sarà il mandante e un processo che sarà il ricevente. Per fare questo esiste un canale di comunicazione
+    e diverse tecniche che di seguito spiegheremo.
+      * Naming -> il naming è una tecnica che si suddivide in due sottoparti
+          * Comunicazione diretta -> questo tipo di comunicazione con naming funziona con due funzioni principali che sono quella
+                                     di nominare all'interno delle funzioni di send e receive il ricevente e il mandante,
+                                     per esempi send(Q,message) e receive(P,message) che vuol dire mando a Q e ricevo da P
+
+          * Comunicazione indiretta -> La comunicazione indiretta invece funziona tramite mail box, a queste mail box sono associate
+                                     diversi processi, questo processi comunicano solamente attraverso la mailbox, quindi quando
+                                     viene mandato un messaggio viene fatto alla mail box, con la funzione di send(A,message), dove
+                                     A è la mailbox di arrivo e invece per il receive i processi sono tutti connessi ad una singola mail
+                                     box, creando un grande problema nel caso in cui due processi vogliano collegarsi alla mail box per
+                                     ricevere un messaggio, ma chi lo prende?
+      * Comunicazione sincrona -> La comunicazione sincrona permette ai processi di comunicare in modo che quando viene inviata
+            una send il processo che sta comunicando deve anche aspettare il messaggio di send del processo ricevente
+            fino a quando non vede questo messagggio non si staccherà dalla comunicazione con questo processo
+      * Comunicazione asincrona -> questo tipo di comunicazione porta i processi a comunicare tramite le funzioni di
+            comunicazione descritte in precedenza, per tanto non hanno bisogno di rimanere in attesa della risposta del
+            processo, ma possono comunque continuare a comunicare anche senza aspettare la risposta.
+
+  * Comunicazione con Socket
+    La tecnica di comunicazione con socket è completamente diversa da quelle appena analizzate, infatti con questa comunicazione,
+    spesso utilizzata nei meccanismi client server, si ha un processo che comunica o con un altro processo sulla stessa
+    macchina o con un processo che sta su una mancchina differente, per fare questo si utilizzano diversi meccanismi, se
+    la comunicazione dovesse risiedere per sempre all'itnerno della stessa macchina si utilizza un meccanismo di ip di
+    lookback con le porte per comunicare, in particolare si usa un ip fisso che indica la macchina stessa: 127.0.0.1 e
+    associato con un :porta si specifica che porta andare a prendere dove probabilmente ci sarà un altro processo che è
+    in esecuzione e pronto a ricevere il messaggio, se invece questa comunicazione dovesse avvenire all'esterno della
+    stessa macchina si utilizza una funzione che permette al posto dell'indirizzo di lookback si utilizza l'indirizzo ip
+    pubblico dell'altra macchina, un esempio è 112.231.345:2344, sto quindi comunicando ad un indirizzo ip su una rete diversa
+    ad una porta specifica. Le funzioni RPC, remote procedure call
+
+  * Comunicazione con Pipe
+    Le pipe sono un meccanismo di comunicazione che ha due sottoparti, le pipe convenzionali e le pipe named, partiamo dalle
+    pipe convenzionali, queste pipe stabiliscono una comunicazione unidirezionale tra due processi, spesso padre e figlio,
+    che si devono scambiare delle informazioni, il padre facendo per esempio una funzione di fork per creare un figlio
+    crea anche la pipe e manda al figlio attraverso essa le informazioni necessarie per la sua creazione. Se per esempio si
+    dovesse creare una comunicazione bidirezionale con queste pipe si andrebbero a creare due pipe convensionali con direzione
+    differente. Qui sta la differenza principale con invece le pipe named, all'interno di queste pipe i processi possono
+    comunicare in modo bidirezionale e non vi è più bisogno di un rapporto padre e figlio tra i processi per comunicare al
+    loro interno.
+
+FINE 11:45
