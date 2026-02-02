@@ -6,3 +6,60 @@ condizioni sotto le quali si verifica, e si indichino le principali tecniche per
 evidenziandone le caratteristiche, vantaggi e limiti.
 
 Risposta:
+
+Il deadlock è uno stallo che si verifica all'interno del sistema operativo in seguito alla sbagliata turnazione dei
+processi e della loro richiesta delle risorse e del loro utilizzo, in particolare vi sono 4 condizioni che devono verificarsi
+per il verificarsi certo di un deadlock, queste condizioni sono:
+
+  * Mutua esclusione -> La condizione di mutua si verifica quando almeno una risorsa all'interno del sistema è di tipo
+                        non condivisibile, questo significa che questa risorsa puòessere assegnata solamente ad un processo e
+                        non a più processi.
+
+  * Attesa circolare -> L'attesa circolare è una condizione in cui ogni processo del sistema Pn = {P0, .... , Pn} è in attesa di
+                        un altro processo secondo questo schema: P1 attende P0, P2 attende P1, Pn attende Pn-1 e P0 attene Pn.
+
+  * Possesso e Attesa -> Il possesso e attesa è la condizione in cui i processi hanno una risorsa in possesso e ne stanno attendendo
+                        l'utilizzo di un'altra.
+
+  * Assenza di prelazione -> l'assenza di prelazione è una condizione in cui i processi non vengono terminati dal sistema quando
+                        sono ancora in esecuzione, quindi rimangono con la risorsa fino a quando non terminano.
+
+Se queste condizioni si verificano contemporaneamente si avrà una condizione di deadlock. Per rappresentare un sistema con i suoi
+processi si utilizza un grafo, chiamato grafo di assegnazione, che associa all'insieme V dei vertici tutti i processi e le risorse
+del sistema e all'insieme E l'insieme di tutti gli archi di collegamento tra assegnazione e rilascio delle risorse con i processi.
+Per gestire un deadlock, ovvero una condizione di stallo, vengono utilizzate diverse tecniche come:
+
+  * Prevenzione -> La prevenzione di un deadlock viene fatta tramite l'annullamento di una delle 4 condizioni che sono necessarie
+                per il verificamento di un deadlock, in particolare:
+                  * Mutua Esclusione -> per evitare la mutua esclusione basta andare a immettere nel sistema solamente delle
+                                        risorse che siano condivisibili, questo però non è sempre possibile dato che certi tipi
+                                        di risorse non sono condivisibil o comunque non possono essere trasformate in condivisibile.
+
+                  * Attesa circolare -> per invalidare l'attesa circolare si deve andare a dare un numero di esecuzione, quindi
+                                        un ordine ai processi che devono essere eseguiti, in modo che non ci siano possibili cicli
+                                        al suo interno o dipendenze che facciano creare deadlock.
+
+                  * Assenza di prelazione -> si fa in modo che il sistema operativo sia in grado di usare la prelazione e inoltre
+                                        si da l'obbligo ai processi di richiedere risorse solamente se questi ultimi non sono già
+                                        in possesso di altre risorse, e se vogliono altre risorse si vanno a rilasciare precedentemente
+                                        quelle che già possiede.
+
+                  * Possesso e Attesa -> per invalidare questa condizione si fa in modo che un processo debba richiedere tutte le
+                                        risorse prima che della sua esecuzione effettiva. Un altro modo è quello di rilasciare le
+                                        risorse che possiede prima di richiederne di nuove.
+  STATO SICURO !!!!!!!!!!!!!!!!!!!
+  * Evitamento -> la tecnica dell'evitamento va ad agire direttamente sull'utilizzo delle risorse da parte dei processi, in pratica si vanno
+                ad utilizzare due approcci differenti il primo consiste nell'utilizzo di un grafo di assegnazione modificato che va a dettare
+                come vengono utilizzate le risorse e di conseguenza quando il grafo poi viene messo in atto si vanno a vedere se ci sono dei
+                cicli e per tanto si vanno bloccare andando poi a risolvere il deadlock, il secondo metodo utilizza un algoritmo chiamato
+                del banchiere che va a prendere ed analizzare tutte le risorse e le dipendenze tra risorse, availability delle risorse, risorse
+                massime che un processo può richiedere e va ad analizzare in una sistuazione ipotetica se ci fossero dei cicli e delle dipendenze
+                in caso affermativo si va a risolvere.
+
+  * Ignorare -> questo è il metodo più semplcie di gestione deadlock poichè implica semplicemente l'ignorarla poichè il deadlock è una condizione
+                rara allora certe volte si decide di ignorarla. Questo permette di andare a risparmiare su computazione per eventuali algoritmi
+                o sistemi di rilevamento ma obbliga l'utente a resettare il sistema per farlo ripartire correttamente.
+
+  * Trovarlo e risolverlo -> una volta che il deadlock si è verificato si vanno a fare due possibili cose:
+                * Terminazione completa o sequenziale dei processi
+                * Rollback a condizione pre deadlock
