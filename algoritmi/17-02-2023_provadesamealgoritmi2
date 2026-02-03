@@ -97,4 +97,3 @@ b) Una lista di adiacenza è una lista che associa ad ogni vertice tutti gli arc
 c) Una matrice di adiacenza è una matrice che sulle righe e le colonne ha i vertici di V e associa 1 nella matrice
    per ogni vertice collegato.
 
-d) 
