@@ -1,0 +1,72 @@
+INIZIO: 12:26
+
+Esercizio 1
+
+Sequenza: gallina gabbiano gufo pecora leone tigre bue lince
+
+0
+1  bue
+2  pecora
+3
+4
+5
+6  gallina
+7  tigre
+8  leone
+9
+10
+11 gufo
+12 lince
+13 gabbiano
+14
+15
+
+Esercizio 2
+
+Sequenza: 22 27 39 41 4 1 11
+
+a)            27
+        4           39
+    1       22           41
+          11
+
+b)            11 - 27
+      1-4       22        39
+    1-4-11     22-27     39-41
+
+FINE PARTE 1: 12:34 -> Tempo: 8 minuti
+
+INIZIO PARTE 2: 12:34
+
+Esercizio 3
+
+a) Dato un grafo G(V,E) e la sua funzione di peso, un cammino da x a y è l'insieme dei vertici che bisogna percorrere
+   per passare dal vertice x fino ad arrivare al vertice y. Un cammino minimo da x a y è un cammino da x a y il cui la
+   somma del peso degli archi passanti per i vertici che collegano x a y è minima rispetto a tutti gli cammini del grafo.
+
+b) L'algoritmo di DIJKSTRA va a trovare come soluzione che è il vettore dei cammini minimi di un grafo partendo da un
+   vertice s centrale. L'istanza del problema sono un grafo G(V,E,w) e un vertice s appartenente ad E. I vincoli che
+   bisogna mantenere nel grafo sono quelli di non avere archi con peso negativo al proprio interno, in tal caso si potrà
+   usare un algoritmo come quello di bellanford.
+
+c) La stima del tempo di calcolo di questo algoritmo è suddivisa nei seguenti punti:
+    * Creazione del vettore O(n)
+    * Assegnazione di variabile O(1)
+    * for each per il riempimento di V O(n) essendo n vertici
+    * assegnamento di C O(1)
+    * WHILE contiene diverse parti:
+        - selezione dell'elemento minimo -> O(n) scorrere l'array
+        - eliminazione da C di u -> O(1)
+        - for each interno eseguito un numero di volte pari al numero degli archi uscenti dal vertice u
+    * quest parte avrà complessità O(m) dove m è il numero degli archi nel grafo.
+    tempo finale O(m) che in un grafo molto connesso sarà O(n^2)
+
+d) nellipotesi che venga utilizzata una struttura di lista di adiacenza, il tempo per accedervi e controllare i vertici
+   vicini ad u dipenderà dalla lunghezza di m, poichè scorrere la lista impiega tempo O(m+n). Quindi scorrerla nel while
+   impiegherà tempo O(n^2 + m)
+
+e) Si può utilizzare una struttura ausiliaria come la coda con priorità implementata tramite miniheap, questo aggiunge dei
+   costi come per esempio il riempimento, il deletemin e il chage key, tutti nell'ordine di log n, a parte il riempimento
+   che sarà O(1) e nel for suo avrà complessità O(n), in totale l'algoritmo avrà complessità: O((m+n)log n) quindi O(mlogn)
+
+FINE 12:49 -> Tempo: 23 minuti.
