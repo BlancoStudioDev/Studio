@@ -1,0 +1,88 @@
+INIZIO: 9:43
+
+Esercizio 1
+
+Sequenza: 24 12 36 22 15 44 27 10 5
+
+a) 24 15 36 10 22 27 44 5 12
+b) L'albero che osserviamo no nè perfettamente bilanciato poichè alla radice abbiamo un numero di nodi del
+sottoalbero sinistro di 5 e un numero di nodi del sottoalbero destro di 3. Un albero perfettaente bilanciato
+sarebbe il seguente: 17 12 24 10 15 22 36 5 - - - - - - 44
+
+Esercizio 2
+
+Sequenza: 24 12 36 22 15 44 27 10 5
+
+a) 10 12 5 22 15 24 27 44 36
+b) 44 22 36 12 15 24 27 10 5
+c) 12 15 22 24 10 5 27 36 44
+d) 15 24 12 36 22 44 27 10 5
+
+FINE PARTE 1: 9:55 => tempo: 12 minuti
+
+INIZIO PARTE 2: 9:55
+
+a) Per rispondere alla richiesta del primo punto possiamo considerare un algoritmo visto a lezione ovvero l'algoritmo
+   FLOYD-WARSHALL, questo algoritmo consente di avere come istanza un grafo, le condizioni per l'uso di questo algoritmo
+   sono che non devono essere presenti cicli negativi all'interno del grafo e come soluzioni ha una matrice dei cammini
+   minimi tra tutti i vertici del grafo. Siccome la nostra richiesta non viene soddisfatta dall'algoritmo base di
+   FLOYD-WARSHALL allora andramo a modificarlo nel seguente modo:
+
+PSEUDOCODICE
+
+ALGORITMO FLOYD-WARSHALL(M matrice) -> coppia
+  "inizion blocco 1"
+
+  FOR k <- 1 TO n DO
+    FOR j <- 1 TO n DO
+      FOR i <- 1 TO n DO
+        IF M[i,k] + M[k,j] < M[i,j] THEN
+          M[i,j] <- M[i,k] + M[k,j]
+
+  "fine blocco 1"
+  "inizio blocco 2"
+
+  max <- 0
+  coppia <- (vuota,vuota)
+
+  "fine blocco 2"
+  "inizio blocco 3"
+
+  FOR i <- 1 TO n DO
+    FOR j <- 1 TO n DO
+      IF max < M[i,j] THEN
+        max <- M[i,j]
+        coppia <- (i,j)
+
+  "fine blocco 3"
+
+  RETURN coppia
+
+b) Per stimare il tempo di calcolo di questo algoritmo possiamo andare a dividerlo in parti in modo da analizzarne una
+   per volta, in particolare il blocco 1 è composto da una tripletta di cicli for annidati i quali porterebbero di base
+   la complessità a O(n^3), all'interno di questi cicli annidati troviamo due operazioni elementari ovvero l'if e una
+   somma e assegnamento, queste due operazioni hanno complessità, per il criterio del costo unitario, O(1), quindi il
+   costo del blocco 1 sarà: O(n^3 * (1 + 1)) = O(n^3); il blocco 2 è caratterizzato solamente da operazioni elementari
+   ovvero due inizializzazioni di una variabile intera e una coppia di valori, avendo quindi sempre per il criterio del
+   costo unitario un costo di O(1) ciascuna, quindi O(2) come costo totale; infine il blocco 3 è composto da una coppia
+   di for annidati che di loro hanno complessità O(n^2), al loro interno troviamo tre operazioni elementari, un IF e
+   due assegnamenti, questo porta la complessità ad essere, all'interno dei for O(1+1+1) = O(3), moltiplicandola per i
+   cicli che vengono fatti all'interno dei for arriviamo ad avere: O(n^2 * (1 + 1 + 1)) = O(n^2). Il costo di questo
+   algoritmo totale sarù quindi: O(n^3 + n^2 + 2) = O(n^3) siccome prevale n^3 come costo maggiore.
+
+c) Per trovare una matrice dalla lista di adiacenza si dovrà scorrere la lista di adiacenza andando a immettere nella
+   matrice solamente valori di 1, poichè tutti i collegamenti tra i vetrici, diretti saranno 1, quindi saranno anche i
+   cammini minimi del grafo, non ci saranno cammini che andando a sommare 1+1 saranno minori di 1. quindi semplicemente
+   per andare a riempire la matrice servirà un doppio for che immetta nella matrice 1 a tutte le entrate, questo supponendo
+   che il grafo sia fortemente connesso, ovvero che ogni vertice sia connesso direttamente da un solo arco ad un altro
+   vertice.
+
+d) La stima del tempo di calcolo per questa parte aggiuntiva dipenderà solamente da n numero di vertici, poichè
+   bisogna scorrere la matrice in tutte le sue righe e colonne allora avremo come tempo di calcolo solamente questo
+   in aggiunta all'algoritmo precedente, portando così il peso di questa parte ad essere O(n^2), riempiendo la matrice
+   dobbiamo ricordarci di imporre la diagonale i == j a 0.
+
+e) Come citato nella risposta a questo algoritmo accetta archi con peso negativo, purchè non vi siano cicli con peso
+   negativo, questa è infatti l'unica condizione dell'algoritmo di FLOYD-WARSHALL.
+
+FINE: 10:18 => Tempo: 35 minuti fatta davvero con calma
