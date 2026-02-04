@@ -16,4 +16,7 @@ per farlo vengono utilizzati diversi strategemmi, il primo di questi è il numer
 pagina serve come indice della tabella delle pagine e l'offset invece serve per andare a cercare all'interno del frame fisico
 l'informazione che serve al processo.
 
-![Hardware Paginazione](hardware_paginazione.png)
+<p align="center">
+  <img src="hardware_paginazione.png">
+</p>
+
