@@ -1,0 +1,45 @@
+L'algoritmo base è il seguente:
+
+PSEUDOCODICE
+ALGORITMO DIJKSTRA (Vertice s, Grafo G(V,E,w)) -> vettore ordinato
+  Sia D un vettore con indici in V
+  D[s] <- 0
+  FOR EACH v in V DO D[v] <- infinito
+  C <- V
+  WHILE C != 0 DO
+    u <- minimo di D[u] in C
+    C <- C / {u}
+    FOR EACH (u,v) in E DO
+      IF D[u] + w(u,v) < D[v] THEN
+        D[v] <- D[u] + w(u,v)
+
+  RETURN D
+
+Questo algoritmo se il grafo è rappresentato secondo LISTA D'ARCHI ha complessità di: O(m*n)
+Questo algoritmo se il grafo è rappresentato secondo LISTA DI ADIACENZA ha complessità di: O(m+n^2)
+Questo algoritmo se il grafo è rappresentato secondo MATRICE DI ADIACENZA ha complessità di: O(n^2) data dallo
+scorrimento della matrice.
+
+
+
+L'algoritmo con strutture di supporto è il seguente:
+
+PSEUDOCODICE
+ALGORITMO DIJKSTRA (Vertice s, Grafo G(V,E,w)) -> vettore ordinato
+  Sia D un vettore con indici in V
+  D[s] <- 0
+  FOR EACH v in V DO D[v] <- infinito
+  Sia C una coda con priorità inizialmente vuota
+  FOR EACH v in V DO C.insert(v,D[v])
+  WHILE C != 0 DO
+    u <- C.deleteMin()
+    FOR EACH (u,v) in E DO
+      IF D[u] + w(u,v) < D[v] THEN
+        D[v] <- D[u] + w(u,v)
+        C.ChangeKey(v,D[v])
+
+  RETURN D
+
+Questo algoritmo se il grafo è rappresentato secondo LISTA D'ARCHI ha complessità di: O(m*n)
+Questo algoritmo se il grafo è rappresentato secondo LISTA DI ADIACENZA ha complessità di: O((n+m)log n)
+Questo algoritmo se il grafo è rappresentato secondo MATRICE DI ADIACENZA ha complessità di: O(n log n + n^2)
