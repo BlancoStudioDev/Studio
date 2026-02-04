@@ -1,0 +1,38 @@
+
+
+Domanda:
+La gestione della memoria paginata in un sistema di elaborazione monoprocessore: se ne dia la
+deﬁnizione e se ne presenti la realizzazione e la gestione, evidenziandone caratteristiche, vantaggi
+e limiti.
+
+Risposta:
+
+La paginazione è una tecnica di gestione della memoria che permette di allocare un processo in memoria fisica non
+contigua. Questo viene fatto tramite diverse tecniche come la memoria locgica e la memoria fisica. La prima è divisa
+in pagine e la seconda è divisa in frame. Queste due memorie operano in sincronia, in particolare la memoria logica viene
+utilizzata dai processi per operare e tutte le volte che un processo utilizza la memoria logica gli indirizzi che usa vengono
+tradotti in memoria fisica, quindi si passa da pagine a frame. Per fare questo entrano in gioco diversi meccanismi, in
+primis bisogna dire che il processo usa la memoria logica, da quella viene preso l'indirizzo logico, il quale è composto da
+una parte che identifica la pagina e una parte di offset, con la parte che identifica la pagina si va a cercare nella
+TLB (translation lookaside buffer) ovvero una cache che contiene li indirizzi, se questo indirizzo è già tradotto, in
+tal caso si andrà a chiamare la memoria fisica e si prenderà il frame corrispondente e con l'offset si andrà a prendere
+esattamente il dato che il processo sta cercando. Quando invece nella TLB non c'è l'indirizzo si fa la stessa cosa ma
+con la tabella delle pagine. Inoltre la memoria paginata supporta gli ASID ovvero gli address space identifiers che
+distinguono le pagine di processi diversi. Per l'accesso alla memoria vengono istituite diverse variabili di protezione
+e condivisione della memoria, in particolare vengono usate variabili come i lock per la sincronizzazione nell'accesso alla
+memoria, dei valid bit per vedere se l'informazione che abbiamo in TLB o in tabella delle pagine è correttamente allocata
+in RAM oppure no, in caso di no non potrà essere data al processo che ne necessità. Esistono anche altri bit, come il bit di
+protezione che permettono di capire come verrà utilizzato il dato. Si possono usare anche delle parti di pagina condivisa,
+questo viene fatto usando risorse condivisibili e rientranti ovvero che non mutano il codice nel tempo. Si vanno ad utilizzare
+frame di memoria fisica uguali per più processi, ma loro vi accedono usando indirizzi logici diversi, la tabella delle pagine
+punta tutti questi indirizzi logici agli stessi indirizzi in memoria fisica. (esempio dei 40 processi che chiedono di
+usare un text editor, risorsa rientrante e di usarlo con i loro dati, risorsa non rientrante, per farlo mettono il text
+edito in una parte di memoria fisica condivisa e i dati nella loro memoria normale). La struttura della tabella delle
+pagine è un altro grande tema, infatti esistono diverse implementazioni, la tabella delle pagine gerarchiche, la tabella
+delle pagine di tipo hash e la tabella delle pagine invertita. Per la prima vengono paginate le tabelle delle pagine, nel
+senso che propriamente si vanno a creare delle tabelle delle pagine sopra alle tabelle delle pagine attuali, questo crea
+grande tempo di computazione e quindi lentezza nell'utilizzo. Per la paginazione con hash viene usata una funzione di hashing
+che permette di tramutare l'indirizzo virtuale in in un hash che verrà usato per la ricerca all'interno della tabella delle
+pagine in cui sono contenuti indirizzi virtuali e fisici di frame e pagine. Per quanto riguarda la paginazione invertita,
+viene usata una sola tabella delle pagine, non più una per processo, all'interno di questa tabella gigante vengono cercati
+i processi tramite PID ovvero il process ID ed usati per entrare nella tabella delle pagine.
