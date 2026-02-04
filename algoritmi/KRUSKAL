@@ -1,0 +1,49 @@
+L'algoritmo base è il seguente:
+
+PSEUDOCODICE
+ALGORITMO KRUSKAL (Grafo G) -> albero ricoprente minimo
+  Ordino l'insieme degli archi E secondo w in modo non decrescente
+  T <- (v, vuoto)
+
+  FOR EACH (x,y) in E secondo ordine DO
+    IF x e y non sono connessi in T THEN
+      T <- T U {(x,y)} // aggiungi a T l'arco x,y
+
+  RETURN T
+
+Questo algoritmo se il grafo è rappresentato secondo LISTA D'ARCHI ha complessità di: O(m log m + m*n):
+  * questo avviene perchè se io vado a cercare, con l'if tutti gli archi non ancora connessi, devo farlo scorrendo
+    tutti i vertici, e per farlo nel caso peggiore devo scorrere n-1 vertici che comunque questo if sta nel for
+    each quindi porta il tutto ad avere una complessità di n*m + m log m = n*m.
+
+Questo algoritmo se il grafo è rappresentato secondo LISTA DI ADIACENZA ha complessità di: O(m*(n+m) + m log m):
+  * questo avviene per lo stesso motivo di prima, aggiungendo però il fatto che per scorrere la lista di adiacenza
+    devo fare n + m confronti a differenza della lista d'archi che semplicemente devo scorrere come un array.
+
+Questo algoritmo se il grafo è rappresentato secondo MATRICE DI ADIACENZA ha complessità di: O(n^2 + mlog m + m*n^2):
+  * questo avviene per l'estrazione dei valori dalla matrice n^2, per l'ordinamento m log m e per il controllo nei
+    cicli m * n^2 come citato prima solo che ora devo scorrere tutta la matrice quindi n^2
+
+
+L'algoritmo con struttura di partizione è il seguente:
+
+PSEUDOCODICE
+ALGORITMO KRUSKAL (Grafo G) -> albero ricoprente minimo
+  Ordino l'insieme degli archi E secondo w in modo non decrescente
+  Sia P una partizione inizialmente vuota
+  T <- (v, vuoto)
+
+  FOR EACH v in V DO P.makeset(v)
+
+  FOR EACH (x,y) in E secondo ordine DO
+    Tx <- P.Find(x)
+    Ty <- P.Find(y)
+    IF Tx != Ty THEN
+      P.Union(Tx,Ty)
+      T <- T U {(x,y)} // aggiungi a T l'arco x,y
+
+  RETURN T
+
+Questo algoritmo se il grafo è rappresentato secondo LISTA D'ARCHI ha complessità di: O(m log m)
+Questo algoritmo se il grafo è rappresentato secondo LISTA DI ADIACENZA ha complessità di: O((n + mlog n)
+Questo algoritmo se il grafo è rappresentato secondo MATRICE DI ADIACENZA ha complessità di: O(m log m + n^2)

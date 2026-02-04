@@ -1,0 +1,69 @@
+INIZIO: 10:10
+
+Esercizio 1
+
+Sequenza: 14 17 24 37 33 46 21 15
+
+a) 21 15 33 14 17 24 37 14 15 17 21 24 33 37 46
+b) 24 17 37 15 21 33 46 14
+
+Esercizio 2
+
+Sequenza: 12 14 17 24 2 33 46 21 15
+
+a) 2 12 17 24 14 33 46 21 15
+b) 46 24 33 21 2 12 17 14 15
+c) 2 12 17 15 14 33 46 21 24
+d) 21 14 17 15 24 33 46 12 2
+
+FINE PARTE 1: 10:19 => tempo 9 minuti
+
+Esercizio 3
+
+a) Per risolvere questo problema utilizzeremo l'algoritmo di dijkstra, questo algoritmo risolve in parte il problema che
+   ci è stato posto, in particolare ci permette di andare a leggere il grafo e un vertice centrale ed estrarre un vettore
+   contenente delle coppie di distanze di un vertice da un vertice centrale.
+
+PSEUDOCODICE
+ALGORITMO DIJKSTRA (Vertice s, Grafo G(V,E,w)) -> vettore ordinato
+  Sia D un vettore con indici in V
+  D[s] <- 0
+  FOR EACH v in V DO D[v] <- infinito
+  C <- V
+  WHILE C != 0 DO
+    u <- minimo di D[u] in C
+    C <- C / {u}
+    FOR EACH (u,v) in E DO
+      IF D[u] + w(u,v) < D[v] THEN
+        D[v] <- D[u] + w(u,v)
+
+  Ordina D in pase al peso
+
+  RETURN D
+
+b) Una rappresentazione del grafo è quella tramite lista di archi, ovvero un array contenente tutte le triple di:
+   vertice uscente, vertice entrante e peso associato a quell'arco. lo pseudocodice è il seguente per quando riguarda
+   questa implementazione e aggiungendo anche le strutture di supporto come le code con priorità implementate da
+   minheap.
+
+PSEUDOCODICE
+ALGORITMO DIJKSTRA (Vertice s, Grafo G(V,E,w)) -> vettore ordinato
+  Sia D un vettore con indici in V
+  D[s] <- 0
+  FOR EACH v in V DO D[v] <- infinito
+  FOR EACH v in V DO C.insert(v,D[v])
+  WHILE C != 0 DO
+    u <- C.deletemin()
+    FOR EACH (u,v) in E DO
+      IF D[u] + w(u,v) < D[v] THEN
+        D[v] <- D[u] + w(u,v)
+        C.ChangeKey(v,D[v])
+
+  Ordina D in pase al peso
+
+  RETURN D
+
+   Tempo di calcolo: creazione vettore O(n), for each O(n) * 2, while: delete min log n for each ripetuto in totale
+   con all'interno log n dato dal changekey che ripetuto per tutti gli archi uscenti da u avrà un costo di m log n, quindi
+   quindi in totale (m + n)log n. ordinare il vettore m log n -> quindi in totale (m + n)log n.
+

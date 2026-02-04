@@ -1,0 +1,30 @@
+INIZIO: 14:31
+
+Esercizio 1
+
+Sequenza: 37 22 49 52 46 60 35
+
+a) 49 37 52 22 46 - 60 - 35
+b) non è perfettamente bilanciato poichè la differenza tra il numero dei nodi di destra e di sinistra è maggiore di 1
+   46 35 52 22 37 49 60
+
+Esercizio 2
+
+Sequenza: 35 50 37 22 49 52 46 60 55
+
+a) 37 22 35 50 49 52 46 60 55
+b) 35 22 37 49 46 50 52 55 60
+c) 35 49 50 37 22 52 46 60 55
+d) 50 37 35 22    60 55 52 49 46
+
+FINE PARTE 1: 14:43 => Tempo 8 minuti
+
+Esercizio 3
+
+colonne dalle altre alla mia
+
+righe dalle altre alla mia
+
+Colonna Calamita
+
+
