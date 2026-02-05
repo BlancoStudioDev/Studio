@@ -1,7 +1,28 @@
 
 Domanda:
 La gestione della memoria segmentata in un sistema di elaborazione monoprocessore: se ne dia la
-deﬁnizione e se ne presenti la realizzazione e la gestione, evidenziandone caratteristiche, vantaggi
-e limiti.
+deﬁnizione e se ne presenti la realizzazione e la gestione, evidenziandone caratteristiche,
+vantaggi e limiti.
 
 Risposta:
+
+La memoria segmentata è una tecnica di gestione della memoria che suddivide lo spazio in blocchi di
+dimensione variabile detti segmenti. Ciascuno di questi segmenti corrisponde a una parte del
+programma in esecuzione, come per esempio la parte del codice, la parte della memoria o la parte
+dei dati globali. Questo tipo di implementazione della memoria a differenza di quella paginata
+porta a non avere problemi di frammentazione interna, poichè i segmenti vengono sempre riempiti
+tutti essendo creati appositamente di dimensione necessaria al processo/programma, allo stesso
+tempo vi è un problema di frammentazione esterna, dovuto al fatto che la memoria viene riempita in
+modo non contiguo andando semplicemente a mettere all'interno i segmenti, per questo motivo si
+andranno a creare delle parti di memoria che sono libere da segmenti, ma allo stesso tempo non ne 
+possono contenere di nuovi, per risolvere si può usare la tecnica di prendere tutti questi spazi e 
+usarli per creare un nuovo segmento di memoria non contigua. Il motivo per cui questo accade è dato
+dal metodo di inserimento dei dati nella memoria, questi sono: best fit, worst fit e first fit, il
+primo va a riempire la memoria con i segmenti che fittano meglio negli spazi liberi, i secondo con i segmenti che fittano peggio e il first fit invece ficca la roba dove capita per primo. Tutto
+ questo viene amministrato da un componente fondamentale la MMU (Memory Managemente Unit), questo  componente si occupadi prendere i dati dalla CPU passarli alla tabella dei segmenti dividendo i
+ l'indirizzo effettivo che va alla tabella dei segmenti, mentre l'offset skippa questa parte e
+ verrà usato dopo. Dalla tabella dei segmenti si estrapolano un indirizzo chiamato base ed un
+ numero che identifica la lunghezza del segmento. La lunghezza del segmento la MMU la confronta con l'offset e se l'offset è maggiore della lunghezza del segmento allora si avrà un hazard, nel caso in cui dovesse andare tutto bene allora si andrà a sommare l'indirizzo di base con l'offset e poi
+ a cercare questo indirizzo nella memoria fisica. C'è un altro step fondamentale non citato che è
+ quello del confronto in tabella dei segmenti dei bit di controllo, come i bit di validità.
+ QUesta implementazione permette una maggiore protezione e una maggiore condivisione della memoria infatti un segmento può essere condiviso tra più tabelle dei processi, questo permette ai processi di avere anche i permessi di scrrittura, lettura ed esecuzione. I vantaggi sono quindi una perfetta memoria per la multiprogrammazione, il supporto alla protezione e condivisione, allo stesso tempo gli svantaggi sono la frammentazione esterna poco risolvibile poichè comporta l'impiego di molto   tempo e maggior complessità rispetto alla paginazione.
