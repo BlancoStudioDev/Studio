@@ -27,7 +27,7 @@ Tempo: O(n log n)<br>
 Spazio: O(n) senza vettore ausiliario, O(log n) con vettore ausiliario
 
 <br>
-
+---
 **Quick Sort**
 
 Si sceglie un perno all'interno della sequenza e in base a quello si va ad ordinare l'array, i numeri
@@ -39,7 +39,8 @@ maggiori stanno a destra, quelli minori stanno a sinistra. Si chiama poi ricorsi
 
 * Caso Reale => Spazio Theta(n) -> questo perchè chiaramente devo chiamare n volte la chiamata ricorsiva facendo espandere lo stack per n volte.
 * Versione Migliorata => Spazio Theta(log n)
-
+<br>
+---
 **Heap Sort**
 
 Si eseguono operazioni su Max Heap e Min Heap per l'ordine crescente e decrescente, usando funzioni come creaHeap: O(n log n), risistemaHeap: O(h) e ricerca: O(log n). Lo spazio utilizzato da questo algoritmo è O(1) poichè opera in loco.
