@@ -2,41 +2,41 @@
 
 **Selection Sort**
 
-Tempo: O(n^2)
+Tempo: O(n^2)<br>
 Spazio: O(1)
 
 <br>
 
 **Insertion Sort**
 
-Tempo: O(n^2)
+Tempo: O(n^2)<br>
 Spazio: O(1)
 
 <br>
 
 **Bubble Sort**
 
-Tempo: O(n^2)
+Tempo: O(n^2)<br>
 Spazio: O(1)
 
 <br>
 
 **Merge Sort**
 
-Tempo: O(n log n)
+Tempo: O(n log n)<br>
 Spazio: O(n) senza vettore ausiliario, O(log n) con vettore ausiliario
 
 <br>
 
 ### Master Theoreme
 
-Ci sono 3 casi di questo teorema, ma si parte sempre da una formula comune:
+Ci sono 3 casi di questo teorema, ma si parte sempre da una formula comune:<br>
 
-T(n) = aT(n/b) + f(n)
+T(n) = aT(n/b) + f(n)<br>
 
-a => numero dei sottoproblemi
-b => quanto si riduce la dimensione
-f(n) => costo fuori dalla ricorsione
+a => numero dei sottoproblemi<br>
+b => quanto si riduce la dimensione<br>
+f(n) => costo fuori dalla ricorsione<br>
 
 ## Teorema Master (Casi)
 
