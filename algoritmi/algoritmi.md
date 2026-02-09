@@ -5,21 +5,21 @@
 Tempo: O(n^2)
 Spazio: O(1)
 
-\n
+
 
 **Insertion Sort**
 
 Tempo: O(n^2)
 Spazio: O(1)
 
-\n
+
 
 **Bubble Sort**
 
 Tempo: O(n^2)
 Spazio: O(1)
 
-\n
+
 
 **Merge Sort**
 
