@@ -1,12 +1,3 @@
-
-
-Domanda:
-La gestione della memoria paginata in un sistema di elaborazione monoprocessore: se ne dia la
-deﬁnizione e se ne presenti la realizzazione e la gestione, evidenziandone caratteristiche, vantaggi
-e limiti.
-
-Risposta:
-
 # Gestione della Memoria Paginata
 
 ## Domanda
