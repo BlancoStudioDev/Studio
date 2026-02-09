@@ -85,28 +85,36 @@ Spesso implementate con Min Heap e hanno le seguenti operazioni:
 * MAKESET -> O(log n)
 
 Con questa implementazione ho gli insiemi A e B, essi sono del tipo una radice e tutti gli elementi degli insiemi connessi ad essa, questo permette di avere sempre una find di complessità O(1), mentre la union impiega O(n) poichè devo scorrere tutti gli elementi per unirli, in particolare se faccio la UNION(A,B) vado ad attaccare ad A gli elementi di B, quindi sempre n elementi.
+
 <br>
+
 **Quick Find Bilanciata**
 * UNION -> O(log n)
 * FIND -> O(1)
 * MAKESET -> O(log n)
 
 Con questa implementazione si va ad utilizzare la stessa implementazione di prima, ma per fare la UNION si va a scegliere quale insieme andare ad attaccare a quale altro in base alla loro dimensione, quell più piccolo si attacca a quello più grande.
+
 <br>
+
 **Quick Union non Bilanciata**
 * UNION -> O(1)
 * FIND -> O(n)
 * MAKESET -> O(log n)
 
 Con questa implementazione si vanno ad usare alberi di diverse altezze, per fare la Union basterà semplicemente andare ad attaccare uno dei due alberi alla radice dell'altro albero. La find invece dipende dal numero di nodi e l'altezza dell'albero, che quindi diventa O(n). Questo accade perchè quando si fa la UNION non si controlla la dimensione degli alberi, quindi si rischia al massimo di avere n in altezza se ogni volta attacco l'albero più grande alla radice di quello più piccolo.
+
 <br>
+
 **Quick Union Binaciata**
 * UNION -> O(1)
 * FIND -> O(log n)
 * MAKESET -> O(log n)
 
 Con questa implementazione si fa la stessa cosa della precedente, ma nella UNION si va a vedere l'altezza degli alberi e ad attaccare sempre l'albero più piccolo a quello più grande, così che l'altezza rimanga sempre log n e quindi anche la find.
+
 <br>
+
 ### Master Theoreme
 
 Ci sono 3 casi di questo teorema, ma si parte sempre da una formula comune:<br>
