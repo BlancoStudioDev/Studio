@@ -40,6 +40,10 @@ maggiori stanno a destra, quelli minori stanno a sinistra. Si chiama poi ricorsi
 * Caso Reale => Spazio Theta(n) -> questo perchè chiaramente devo chiamare n volte la chiamata ricorsiva facendo espandere lo stack per n volte.
 * Versione Migliorata => Spazio Theta(log n)
 
+**Heap Sort**
+
+Si eseguono operazioni su Max Heap e Min Heap per l'ordine crescente e decrescente, usando funzioni come creaHeap: O(n log n), risistemaHeap: O(h) e ricerca: O(log n). Lo spazio utilizzato da questo algoritmo è O(1) poichè opera in loco.
+
 ## Strutture dati
 
 * Array -> Statica
