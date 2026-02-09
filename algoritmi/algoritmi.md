@@ -4,6 +4,7 @@
 
 Tempo: O(n^2)
 Spazio: O(1)
+
 <br>
 
 **Insertion Sort**
@@ -27,7 +28,7 @@ Spazio: O(n) senza vettore ausiliario, O(log n) con vettore ausiliario
 
 <br>
 
-###Master Theoreme
+### Master Theoreme
 
 Ci sono 3 casi di questo teorema, ma si parte sempre da una formula comune:
 
