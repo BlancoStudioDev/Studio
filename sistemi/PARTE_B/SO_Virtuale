@@ -5,3 +5,27 @@ deﬁinizione e se ne presenti la realizzazione e la gestione, evidenziandone ca
 e limiti.
 
 Risposta:
+
+E' una tecnica della gestione della memoria che permette ai processi l'illusione di avere infinita memoria di scrittura. Questa infinita memoria in realtà è limitata dalla dimensione del disco. Questa tecnica permette di separare lo spazio di indirizzamento fisico da quello di indirizzamento logico o virtuale. In un sistema monoprocessore ciò permette di eseguire processi che richiedono più memoria ram di quella disponibile effettivamente, questo viene fatto caricando in ram solamente una parte del programma che si deve eseguire e lasciando il resto del programma in memoria fisica, ovvero il disco, ma in una parte specifica chiamata swap area. In questa area risiedono quindi le parti dei processi che devono ancora essere eseguite e che stanno aspettando di essere chiamate in esecuzione dai processi. Per implementare questo meccanismo si utilizza una tecnica chiamata paginazione su richiesta, essa funziona grazie ad un sistema chiamato lazy swapper o pager, che permette di caricare in memoria ram solamente una parte del programma che deve essere eseguito, il resto del programma continua a risiedere nella memoria swap, da li poi quando il processo ne ha bisogno chiama il lazy swapper ed effettivamente rievoca il programma necessario. Il meccanismo funziona nel seguente modo:
+
+* Un processo richiede un pezzo di memoria o una parte di programma
+* La MMU prende in carico la richiesta e la passa alla TLB che cerca al suo interno l'indirizzo logico che viene usato dal processo, se questo indirizzo logico è presente allora lo si trasforma in indirizzo fisico e lo si prende dalla memoria, in caso contrario si cerca in tabella delle pagine.
+* Se in tabella delle pagine c'è allora lo si usa, se non è presente allora si manda l'interruzione di page fault o trap.
+* Con il page fault o trap si chiama il sistema operativo che si occupa di recuperare dalla memoria fisica, ovvero il disco l'informazione necessaria.
+* Quando viene estratta dal disco si procede ad aggiornare la tabella delle pagine e anche il TLB per poi riavviare il processo in modo che richieda di nuovo la pagina richiesta per fornirgliela dalla TLB.
+
+Questo processo è implementato anche grazie ai bit di validità, questi bit sono presenti in tabella delle pagine e in TLB e permettono di verificare se una pagina sia valida e quindi in memoria, o se una pagina non via valida e quindi sia presente solamente sul disco.
+
+Vi sono inoltre delle tecniche di sostituzione dei dati all'interno della memoria fisica, per farlo vengono adoperati diversi algoritmi come FIFO, ovvero first in first out, si sostituisce la pagina più vecchia, è semplice ma può aumentare la probabilità di page fault; Ottimale, si sostituisce la pagina che non verrà mai più usate o usate il più in la possibile, questa implementazione risulta però assai complessa per il fatto che non si conosce in precedenza quanto sarà usata una risorsa in futuro. Un'latra tecnica di sostituzione dei dati è quella per LRU approssimata, questa tecnica permette di avere dei bit che si abilitano quando la pagina viene utilizzata e periodicamente questi bit vengono resi 0, questo garantisce che se un bit è a 0 si può sostituire, se è a 1 no. Infine abbiamo la LRU classica che stampa un timestamp associato alla risorsa utilizzata ogni qualora essa viene utilizzata, le risorse usate meno di recente vengono sostituite. Questo algoritmo è costoso poichè bisogna confrontare di frequente i timestamp. La tecnica migliore è quella tramite LRU approssimata, la quale appunto utilizza solo un bit per capire le pagine meno utilizzate.
+
+PROBLEMA TRASHING => dovuto al continuo scambio delle pagine per l'assenza in RAM di esse.
+PROBLEMA COMPLESSITA' => la complessità elevata di hardware e software porta ad avere problemi di velocità, nonostante elementi come MMU e TLB, essi sono un grande vantaggio, ma in caso di errore un grande svantaggio. 
+
+VANTAGGIO MULTIPROGRAMMAZIONE
+VANTAGGIO EFFICIENZA I/O
+CONDIVISIONE E CREAZIONE DI PROCESSI
+
+
+Correzioni: Trap è eccezione generale mentre page fault è un tipo di trap che avviene nella CPU. Memoria di massa = disco, memoria fisica = RAM. La memoria logica non è infinita, ma quanto quella del disco. Quando viene caricato dal sistema operativo il frame in memoria essa deve avere un frame libero, in caso contrario si usa uno degli algoritmi precedentemente citati. BIT di validità: 1 se la pagina è in RAM, 0 se la pagina è su disco. 
+
+
