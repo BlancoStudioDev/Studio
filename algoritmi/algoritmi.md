@@ -28,6 +28,28 @@ Spazio: O(n) senza vettore ausiliario, O(log n) con vettore ausiliario
 
 <br>
 
+**Quick Sort**
+
+Si sceglie un perno all'interno della sequenza e in base a quello si va ad ordinare l'array, i numeri
+maggiori stanno a destra, quelli minori stanno a sinistra. Si chiama poi ricorsivamente l'algoritmo per ordinare tutto l'array.<br>
+
+* Caso Peggiore: Tempo => O(n^2)
+* Caso Migliore: Tempo => O(n log n)
+* Caso Medio: Tempo => O(1.39 n log n)
+
+* Caso Reale => Spazio Theta(n) -> questo perchè chiaramente devo chiamare n volte la chiamata ricorsiva facendo espandere lo stack per n volte.
+* Versione Migliorata => Spazio Theta(log n)
+
+## Strutture dati
+
+* Array -> Statica
+* Liste -> Dinamica => Scorrimento, Inserimento, Cancellazione e Ricerca.
+
+* Pila LIFO (IsEmpty, push, pop, top): Tempo -> O(1) 
+* Pila FIFO (IsEmpty, enqueue, dequeue, first): Tempo -> O(1)
+* Lista di alberi => Visita (O(n)) (simmetrico, anticipato e posticipato)
+* Heap -> Albero binario quasi completo ovvero completo fino al penultimolivello (ogni nodo ha due figli fino al penultimo livello) (spesso rappresentato come max Heap) (risistema: O(h), creaHeap(n log n)), Spazio O(1)
+
 ### Master Theoreme
 
 Ci sono 3 casi di questo teorema, ma si parte sempre da una formula comune:<br>
