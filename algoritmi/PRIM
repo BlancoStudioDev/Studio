@@ -1,0 +1,86 @@
+ALGORITMO DI PRIM BASE
+
+L'algoritmo di PRIM permette di ricavare l'albero ricoprente minimo utilizzando una strategia
+di ricerca degli archi presenti nell'albero o no. In pratica si va ad operare nel seguente modo:
+
+* Si prende un vertice iniziale
+* Da questo vertice iniziale si va a prendere l'arco con il peso minimo uscente dal vertice scelto
+* Si ripete questa politica ogni volta che si aggiunge un arco, si aggiunge anche un vertice, quindi
+  ogni volta che aggiungi un arco e quindi un vertice vai a prendere l'arco minimo uscente dai
+  vertici che hai in quel momento all'interno dell'albero.
+
+PSEUDOCODICE
+
+ALGORITMO PRIM (G(V,E,w)) -> albero
+
+  Sia Vicino[v] e d[v] due array con indici nell'insieme V
+  FOR EACH v in V DO
+    d[v] <- infinito
+  T <- (vuoto, vuoto)
+  DO
+    y <- elemento di V/Vt con valore minimo in d[v]
+    Vt <- Vt U (y)
+    IF d[y] != infinito THEN
+      x <- vicino[y]
+      Et <- Et U {(x,y)}
+    FOR EACH (y,z) in E DO
+      IF z non in Vt AND w(y,z) < d[z] THEN
+      	vicino[z] <- y
+	d[z] <- w(y,z)
+  WHILE V/Vt != 0
+  RETURN T
+
+Normalmente questo algoritmo ha la seguente complessità:
+* Variabili, dichiarazione, somme, sottrazioni, operazioni matematiche, assegnamenti, accesso alla
+  memoria, tutto sempre O(1)
+* Primo For Each -> tempo O(n)
+* For Each interno O(m) nell'esecuzione totale, poichè in una sola iterazione si scorrono solamente
+  gli archi uscenti, mentre in tutto il ciclo andrò a scorrere tutti gli archi del grafo.
+* While O(n)
+* Ricerca dell'elemento minimo O(n)
+
+Complessità finale O(m + n^2 + n) = O(m)
+
+
+
+ALGORITMO DI PRIM CON CODE DI PRIORITA'
+
+Questa implementazione utilizza le code con priorità implementate con Min Heap, esso permette di avere
+una complessità minore, infatti:
+
+* Variabili, dichiarazione, somme, sottrazioni, operazioni matematiche, assegnamenti, accesso alla
+  memoria, tutto sempre O(1)
+* Primo For Each -> tempo O(n log n) per via dell'insert nella coda con priorità.
+* For Each interno contiente un'operazione di ChangeKey, questa comporta in un Min Heap una complessità
+  pari a O(log n), quindi nel for each che viene eseguito deg(v) viene eseguito deg(v) log n. In totale 
+  però il contenuto del for each viene eseguito O(n deg(v)) = O(m) siccome c'è l'operazione di changekey
+  allora la sua complessità diventerà O(m log n).
+* Il while contiene il for each come spiegato in precedenza e anche un'operazione di deleteMin che ha complessità
+  implementata con una coda con priorità di O(log n), quindi nel while viene eseguita O(n log n)
+
+La complessità finale quindi diventa: O(n log n + n + m log n) = O((n+m)log n)
+
+PSEUDOCODICE
+
+ALGORITMO PRIM (G(V,E,w)) -> albero
+  Sia C una coda con priorità inizialmente vuota
+  Sia d[v] e Vicino[v] due array con indici nell'insieme V
+  FOR EACH v in V DO
+    d[v] <- infinito
+    C.insert(v,infinito)
+  T <- (vuoto, vuoto)
+  DO
+    y <- C.deleteMin()
+    Vt <- Vt U {y}
+    IF d[y] != infinito THEN
+      x <- Vicino[y]
+      Et <- Et U (x,y)
+    FOR EACH (y,z) in E DO
+      IF z non in Vt AND w(y,z) < d[z] THEN
+        C.ChangeKey(z,w(y,z))
+	Vicino[z] <- y
+	d[z] <- w(y,z)
+  WHILE C != 0
+  RETURN T
+
+
