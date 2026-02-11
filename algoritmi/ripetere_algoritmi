@@ -175,3 +175,47 @@ ALGORITMO BELLMANFORD (G(V,E,w), s) -> vettore
       IF D[u] + w(u,v) < D[v] THEN
         D[v] <- D[u] + w(u,v)
   RETURN D
+
+ALGORITMO FLOYDWARSHALL (G(V,E,w)) -> Matrice
+  Sia M una matrice n x n
+  
+  FOR i <- 1 TO n DO
+    FOR j <- 1 TO n DO
+      IF i == j THEN
+        M[i,j] = 0
+      ELSE IF (Vi,Vj) in E THEN 
+        M[i,j] = w(Vi,Vj)
+      ELSE
+        M[i,j] = infinito
+  
+  FOR k <- 1 TO n DO
+    FOR i <- 1 TO n DO
+      FOR j <- 1 TO n DO
+        IF M[i,k] + M[k,j] < M[i,j] THEN
+	  M[i,j] <- M[i,k] + M[k,j]
+
+  RETURN M
+
+
+ALGORITMO PRIM (G(V,E,w)) -> albero
+  Sia Vicino[v] e d[v] due array con indici nell'insieme di V
+  Sia C una coda con priorità inizialmente vuota
+  FOR EACH v in V/Vt DO
+    d[v] <- infinito
+    C.insert(v,infinito)
+  T <- (vuoto,vuoto)
+  DO
+    y <- deleteMin()
+    Vt <- Vt U {y}
+    IF d[y] != infinito THEN
+      x <- Vicino[y]
+      Et <- Et U {(x,y)}
+    FOR EACH (y,z) in E DO
+      IF z non in Vt AND w(y,z) < d[z] THEN
+        d[z] <- w(y,z)
+	vicino[z] <- y
+	C.changeKey(z,w(y,z))
+  
+  WHILE C != 0
+
+  RETURN T
