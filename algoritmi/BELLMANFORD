@@ -1,0 +1,23 @@
+PSEUDOCODICE
+
+ALGORITMO BELLMANFORD (G, s) -> vettore
+  Sia D un vettore con indici in V
+  D[s] <- 0
+  FOR EACH v in V/{s} DO D[v] <- infinito
+  FOR k <- 1 TO n - 1 DO
+    FOR EACH (u,v) in E DO
+      IF D[u] + w(u,v) < D[v] THEN
+        D[v] <- D[u] + w(u,v)
+  RETURN D
+
+ALGORITMO BELLMANFORD (G(V,E,w), s) -> vettore
+  Sia D un vettore con indici in V
+  D[s] <- 0
+  FOR EACH v in V/{s} DO D[v] <- infinito
+  FOR k <- 1 TO n DO
+    FOR EACH (u,v) in E DO
+      IF D[u] + w(u,v) < D[v] THEN
+        D[v] <- D[u] + w(u,v)
+  
+  RETURN D
+
