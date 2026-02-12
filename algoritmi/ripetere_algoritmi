@@ -219,3 +219,109 @@ ALGORITMO PRIM (G(V,E,w)) -> albero
   WHILE C != 0
 
   RETURN T
+
+ALGORITMO KRUSKAL (G(V,E,w)) -> albero
+  Ordinare in ordine non decrescente gli elementi di E in base al peso w
+  T <- (V,0)
+  FOR EACH (x,y) in ordine in E DO
+    IF x e y non sono connessi THEN
+      Aggiungi l'arco (x,y) a T
+  
+  RETURN T
+
+
+ALGORITMO KRUSKAL (G(V,E,w)) -> albero
+  Ordinare in ordine non decrescente l'insieme E in base al peso w
+  Sia P una partizione inizialmente vuota
+  For Each v in V DO
+    P.Makeset(v)
+  T <- (V,vuoto)
+  For Each (x,y) in E secondo l'ordine
+    Tx <- P.Find(x)
+    Ty <- P.Find(y)
+    IF Tx != Ty THEN
+      Aggiungi l'arco (x,y) a T
+      P.UNION(Tx,Ty)
+  RETURN T
+
+ALGORITMO DIJKSTRA (G(V,E,w), s) -> vettore
+  Sia d un vettore con indici in V
+  d[s] <- 0
+  
+  For Each v in V DO
+    d[v] <- infinito
+  
+  Sia C una coda con priorità inizialmente vuota
+  
+  For Each v in V DO
+    C.Insert(v,d[v])
+  
+  While C != 0 DO
+    y <- C.deleteMin()
+    For Each (u,v) in E DO
+      If d[u] + w(u,v) < d[v] THEN
+        d[v] <- d[u] + w(u,v)
+	C.ChangeKey(v,d[v])
+  
+  RETURN d
+
+ALGORITMO BELLMANFORD (G(V,E,w), s) -> vettore
+  Sia d un vettore con indici in V
+  d[s] <- 0
+
+  For Each v in V DO
+    d[v] <- infinito
+  
+  For k <- 1 TO n-1 DO
+   For Each (u,v) DO
+     IF d[u] + w(u,v) < d[v] THEN
+       d[v] <- d[u] + w(u,v)
+  
+  RETURN d
+
+ALGORITMO FLOYDWARSHALL (G(V,E,w)) -> matrice
+  Sia D una matrice di dimensione n x n con V = {1, n}
+
+  For i <- 1 To n DO
+    For j <- 1 To n DO
+      IF i == j THEN D[i,j] = 0
+      ELSE IF (Vi,Vj) in E THEN D[i,j] <- w(Vi,Vj)
+      ELSE D[i,j] <- 0
+  
+  For k <- 1 To n DO
+    For i <- 1 To n DO
+      For j <- 1 To n DO
+        IF D[i,k] + D[k,j] < D[i,j] THEN
+	  D[i,j] <- D[i,k] + D[k,j]
+  
+  RETURN D
+
+
+ALGORITMO PRIM (G(V,E,w)) -> albero
+  Sia Vicino e d due array con indici in V
+  Sia C una coda con priorità inizialmente vuota
+
+  For Each v in V DO
+    d[v] <- infinito
+    C.Insert(v,infinito)
+  
+  T <- (Vt vuoto, Et vuoto)
+
+  DO
+    y <- C.deleteMin()
+    Vt <- Vt U {y}
+
+    IF d[y] != infinito THEN
+      x <- vicino[y]
+      Et <- Et U {(x,y)}
+    
+    For Each (y,z) in E DO
+      IF z non in Vt AND w(y,z) < d[z] THEN
+        d[z] <- y
+	C.changeKey(z,w(y,z))
+	vicino[z] <- y
+    
+  While C != 0
+
+  RETURN T
+
