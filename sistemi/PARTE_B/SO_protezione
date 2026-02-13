@@ -5,3 +5,32 @@ protezione dei ﬁile e sue principali realizzazioni, evidenziandone caratterist
 
 Risposta:
 
+Criteri di protezione -> decidono che cosa debba fare
+Meccanismi di protezione -> come qualcosa debba essere eseguito
+
+Principi di protezione (semplificano le decisioni relative al progetto)
+ * Principio del privilegio minimo -> i processi, programmi e sistemi utenti devono ricevere solamente le risorse
+   minime necessarie all'esecuzione, questo permette al sistema di dare i privilegi minimi ai processi per la
+   loro esecuzione. Questo ha il vantaggio nella protezione, se un componente dovesse fallire si avrebbe un danno   limitato. Un sistema del genere deve permettere di abilitare e disattivare i privilegi ai processi e programmi
+   All'interno di questo sitema operativo sono presenti anche fli audit trails, ovvero un sistema di stracciamento di tutte le attività di protezione e sicurezza del sistema. Svantaggio, bisogna creare un account per ciascun 
+   utente.
+
+Domini di protezione:
+   Un sistema elaboratico è un insieme di processi e oggetti, gli oggetti fisici sono componenti come 
+   CPU, segmenti di memoria, stampanti, disci e unità a nastri, gli oggetti logici invece sono componenti come
+   file, programmi e semafori. In ogni dato momento un processo deve poter accedere solamente alle risorse di cui
+   ha bisogno, questo viene fatto con il principio di necessità di sapere. Esso è utile per limitare i danni che
+   possono essere causati al sistema da un processo difettoso. 
+
+Struttura dei domini di protezione:
+   Esso specifica le risorse accedibili dal processo durante la sua esecuzione. La possibilità eseguire una
+   operazione su un oggetto è detta diritto d'accesso. Un dominio è quindi un insieme di diritti d'accesso
+   ciascuno dei quali è composto da una coppia ordinata < nome oggetto, insieme dei diritti >. Questa accosiazone
+   tra un processo e un dominio può essere statica o dinamica, la statica permette di tenere il dominio del proce
+   sso costante. 
+
+Matrice D'accesso
+   Per associare i domini ai processi vi è la possibilità di usare una matrice d'accesso che associa alle righe 
+   della matrice ai domini e alle colonne gli oggetti. All'interno della matrice è possibile associare alla
+   colonna anche un dominio e quindi andando a creare delle celle dominio dominio che permette di attuare lo
+   switching, questo permette il cambiamento dinamico dei domini.
