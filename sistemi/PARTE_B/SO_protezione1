@@ -1,0 +1,53 @@
+Domanda:
+La protezione dei file in un sistema di elaborazione monoprocessore: si descrivano il concetto di
+protezione dei ﬁile e sue principali realizzazioni, evidenziandone caratteristiche, vantaggi e limiti.
+
+Risposta:
+
+Un sistema di elaborazione monoprocessore ha bisogno della protezione dei suoi file, la quale viene fatta 
+tramite diversi metodi. Dapprima dobbiamo definire la differenza tra politiche di protezione, che sono le 
+regole che decidono cosa fare, e i meccanismi, che decidono come queste regole debbano essere applicate.
+Inoltre, è doveroso citare uno dei principi capisaldi della protezione dei sistemi di elaborazione, ovvero 
+il principio del privilegio minimo, che impone al sistema di assegnare ai processi solamente le risorse 
+minime di cui il processo necessita per il tempo strettamente necessario. Questo tipo di approccio ha il 
+grande vantaggio che, se dovesse fallire una parte del sistema, il danno non invalida il resto poiché il
+processo è limitato nelle risorse. Inoltre, questo sistema ha la possibilità di avere gli audit trails,
+ovvero dei registri di tracciamento per l'analisi delle informazioni e di come esse vengono utilizzate,
+garantendo una buona sicurezza. Lo svantaggio maggiore è che per gestire questi audit trails bisogna 
+identificare univocamente ciascun utente per visionare cosa e come usa il sistema.
+
+Un'altra importante definizione è quella di oggetti e soggetti (o processi): gli oggetti sono le risorse 
+da proteggere, sia fisiche (CPU, memoria, stampanti) che logiche (file, programmi, semafori); i processi 
+sono invece i soggetti attivi che accedono a tali oggetti. Questa divisione impone che in ogni istante il
+processo debba usare solamente le risorse necessarie, attuando il principio di necessità. Inoltre, questa
+relazione tra processi e risorse deve essere mediata dai domini, ovvero dei raggruppamenti di diritti e
+permessi che un determinato processo possiede. Per assegnare questi domini ai processi nei confronti delle
+risorse viene creata la matrice di accesso: questa matrice presenta sulle righe i domini e sulle colonne 
+le risorse; nella posizione i,j troviamo i permessi (es. read, write, execute) che un determinato dominio
+ha nei confronti di una risorsa.
+
+Durante l'esecuzione di un processo, l'assegnazione dei domini può essere statica o dinamica. Nel caso 
+statico, i diritti restano invariati per tutta l'esecuzione: è un vantaggio per la semplicità e il risparmio
+di tempo, ma è un limite perché il processo potrebbe mantenere diritti eccessivi in fasi in cui non ne ha 
+bisogno. Se invece l'assegnazione è dinamica, si può cambiare il dominio (effettuare uno switch) per dare
+o togliere autorizzazioni a seconda della fase di esecuzione. Per implementare lo switch, nella matrice 
+viene inserita l'operazione switch che permette il passaggio da un dominio all'altro. Siccome la matrice
+è spesso sparsa e occupa molto spazio, si usano metodi più efficienti:
+
+Tabella globale: un insieme di triple (dominio, oggetto, diritti).
+
+Lista d'accesso (ACL) per oggetti: ogni colonna della matrice è memorizzata insieme all'oggetto stesso.
+
+Lista di capacità (C-List) per domini: ogni riga della matrice è associata al dominio (il processo 
+"possiede" il diritto).
+
+Chiave-serratura: ogni oggetto e ogni dominio hanno un codice univoco; l'accesso è consentito 
+solo se la chiave del dominio apre la serratura dell'oggetto.
+
+Infine, oltre allo switch, dobbiamo avere la possibilità di revocare i diritti. La revoca può essere: 
+immediata o ritardata, selettiva o generale, parziale o totale, temporanea o permanente. Con le liste 
+d'accesso (ACL) la revoca è immediata (basta cancellare l'entrata nella lista dell'oggetto). Con le 
+liste di capacità è più complesso, ma si può fare tramite: riacquisizione (i diritti scadono periodicamente), 
+puntatori all'indietro (per rintracciare chi ha il diritto), riferimento indiretto (si punta a una tabella 
+intermedia che viene eliminata) e infine chiavi (si cambia la master key dell'oggetto rendendo invalide 
+le vecchie chiavi dei processi).
