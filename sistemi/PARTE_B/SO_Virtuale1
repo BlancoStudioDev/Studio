@@ -1,0 +1,40 @@
+Domanda:
+
+La gestione della memoria virtuale in un sistema di elaborazione monoprocessore:
+se ne dia la definizione e se ne presenti la realizzazione e la gestione,
+evidenziandone caratteristiche, vantaggi e limiti
+
+Risposta:
+
+La memoria virtuale è una tecnica di gestione della memoria in un sistema di elaborazione.
+Questa tecnica permette ai processi di caricare in RAM e quindi di usare in memoria logica,
+solamente l'inizio di un programma o di un dato, se questo dovesse essere troppo grande per
+risiedere nella memoria RAM. Mettiamo per esempio che io abbia 4 gb di RAM e il programma
+che devo aprire ne occupa 5, io sistema operativo non devo per forza caricare in RAM tutto
+il programma, ma posso caricare solamente quelle funzioni basilari che mi servono per farlo
+partire, il resto del programma risiederà in una parte della memoria fisica, su disco,
+chiamata area di swap. Questa parte è normalmente più veloce del disco, ma comunque non
+veloce come la RAM. Ogni volta che un processo richiede un dato o un programma l'iter di
+esecuzione è il seguente: si va a prendere le informazioni dalla TLB per la traduzione, se
+non presenti si cerca in tabella delle pagine, se non presenti si apre un'eccezione, una trap,
+hardware, in particolare un page fault che invoca il sistema operativo per la sua risoluzione.
+Quando il sistema operativo ha risolto il problema e trovato nell'area di swap o nel disco il
+dato richiesto viene updatata la TLB e ripresa l'esecuzione. La prima parte prima del Page Fault
+viene orchestrata dalla MMU, Memory Management Unit, che ha il compito di orchestrare TLB e
+tabella delle pagine. Questo meccanismo appena descritto viene chiamato Lazy swapper o pager,
+ovvero una paginazione su richiesta del sistema. Un grande problema in questi sistemi è quindi
+andare effettivamente a cambiare i dati che sono stati usati in RAM con nuovi dati, questo
+viene fatto tramite degli algoritmi come FIFO, LRU, LRU approssimata e la sostituzione ottimale.
+Partiamo da  quello irrealizzabile ovvero la sostituzione ottimale che permette di modificare
+i dati nella RAM in base a quelli che non verranno mai più usati, teoricamente essi verrebbero
+tolti dall'area di RAM per sempre, questo è infattibile poichè non si prevede il futuro. La
+Tecnica FIFO semplicemente implementata con una coda FIFO, permette di togliere i dati dalla
+RAM in base a quelli che sono stati aggiunti per ultimi, la tecnica LRU normale consente di
+avere un Time Stamp su ogni dato in RAM per vedere quelli utilizzati meno di recente e andare
+a toglierli, cosa che comporta moltissimo tempo, la tecnica LRU approssimata consente di avere
+dei bit che vengono impostati a 1 ogni volta che un dato viene usato e ciclicamente il sistema
+li reimposta tutti a 0, così facendo si va a sapere quali sono i dati usati più di recente e
+gli altri semplicemente si tolgono dal sistema.
+Il problema maggiore di questo sistema è il trashing, ovvero quando il sistema perde più tempo
+nell'eseguire scambi di pagine in RAM piuttosto che eseguire quello che viene richiesto dai
+processi, questo porta ad avere un sistema molto lento e inefficiente.
