@@ -1,0 +1,38 @@
+Domanda:
+La gestione della memoria segmentata in un sistema di elaborazione monoprocessore:
+se ne dia la definizione e se ne presenti la realizzazione e la gestione,
+evidenziandone caratteristiche, vantaggi e limiti.
+
+Risposta:
+
+La memoria segmentata è un altro metodo di gestione della memoria, essa si basa a
+differenza della memoria paginata sull'utilizzo di segmenti di dimensione variabile
+creati direttamente dal processo, questi segmenti verranno poi tradotti tramite la
+MMU e utilizzati in corrispondenza con quelli della memoria fisica che rimangono
+comunque i frame. A differenza delle pagine, ceh avevano dimensione fissa, questi
+segmenti hanno dimensione decisa in base al processo che li sta eseguendo, per
+esempio può esserci un segmento per il codice, uno per lo stack e uno per le funzioni,
+tutti con dimensione diversa. Questo implica che il sistema di traduzione di indirizzi
+logici in fisici sia diverso, infatti è così composto: L'indirizzo logico viene preso
+dalla MMU e scomposto in due parti l'indirizzo del segmento e l'indirizzo di offset
+l'indirizzo del segmento viene preso e mandato alla tabella dei segmenti dove verrà
+tradotto e ci dirà la dimensione del segmento, questa dimensione del segmento poi
+viene confrontata con l'offset, se l'offset è maggiore della dimensione del segmento
+allora si ha un errore e quindi si chiama una trap, in caso positivo invece si va
+a cercare in memoria fisica il segmento andando a sommarci l'offset. Questa operazione
+porta però a frammentazione esterna, a differenza di quella paginata che era interna,
+la quale lascia all'interno della memoria dei buchi che non possono essere colmati
+da altri segmenti poichè troppo piccoli, vi è una soluzione ovvero il prendere tutti
+questi segmenti liberi e metterli insieme per avere uno spazio abbastanza grande per
+contenere un altro segmento, questo però porta a grandi tempi di computazione e quindi
+risulta inefficiente. Allo stesso tempo sono stati ideati degli algoritmi per inserire
+efficientemente i dati in memoria come: best fit, worst fit e first fit, il primo
+permette di inserire il segmento nello spazio di memoria migliore per la sua dimensione,
+il secondo invece lo inserisce nella parte di memoria peggiore e l'ultimo inserisce il
+segmento nel primo blocco di memoria libero che trova. L'associazione frame fisico e 
+spazio di indirizzamento logico, ovvero segmento, è uno a uno e di egual dimensione. 
+Per garantire la massima protezione nella tabella dei segmenti sono inseriti dei bit
+che permettono di verificare la corretta presenza dei dati in memoria fisica, i valid bit
+e altri bit per la protezione di questi dati e la loro condivisione, cosa possibile in
+memoria segmentata per l'associazione di più processi ad un unico spazio di indirizzamento
+in memoria fisica.
