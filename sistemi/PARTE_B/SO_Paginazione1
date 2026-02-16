@@ -1,0 +1,60 @@
+Domanda:
+La gestione della memoria paginata in un sistema di elaborazione monoprocessore: 
+se ne dia la definizione e se ne presenti la realizzazione e la gestione, 
+evidenziandone caratteristiche, vantaggi e limiti.
+
+Risposta:
+
+La memoria paginata è una tecnica di gestione della memoria, di un'architettura,
+che alloca parti non contigue di memoria per ogni processo e consente anche la
+multiprogrammazione. Il programmatore vede la memoria come un array da 0 al numero
+che corrisponde alla dimensione della memoria. Questo tipo di gestione della memoria
+si divide in due sottoparti, la memoria logica e la memoria fisica: la prima è la
+memoria vista dai processi, essi operano solamente con quella, la memoria fisica
+invece è la RAM, in cui sono contenute tutte le informazioni run time dei processi.
+Essendo che la memoria logica è visibile solo dai processi e che tutto quello che è
+in memoria logica è li perchè preso dalla memoria fisica, sarà necessario un metodo
+di traduzione dall'una all'altra, per questo quando un processo opera utilizza un
+indirizzo logico composto da una parte che identifica la pagina e una parte che è
+l'offset. Quando un processo fa una richiesta con un indirizzo logico esso viene
+preso mandato alla TLB ovvero translation lookaside buffer che controlla, essendo
+una piccola cache, se al suo interno ha la traduzione dell'indirizzo logico, se lo
+ha allora andrà nella memoria fisica a prendere le informazioni da dare poi al
+processo, in caso contrario passerà il compito alla tabella delle pagine, questa
+tabella contiene la traduzione di tutti gli indirizzi logici in indirizzi virtuali
+si va a prendere l'indirizzo della pagina e cercarlo all'interno della tabella, una
+volta trovato si usa l'offset per tradurre esattamente il dato necessario, una volta
+tradotto poi lo si cercherà nella RAM e lo si restituirà al processo. Ogni tabella
+delle pagine è univoca per ogni processo, il che vuol dire che sono generate per ogni
+nuovo processo. I problemi principali di questo tipo di gestione della memoria sono
+che si crea frammentazione interna, ovvero siccome le pagine sono di dimensione fissa
+se io vado a scrivere in 10 pagine e mezzo quel mezzo che rimane libero dell'undicesima
+pagina non potrà essere usato e rimarrà sempre libero. Un grande vantaggio però è
+quello di avere la possibibità di avere una memoria condivisa tra più processi poichè
+un frame fisico può essere associatao a più di un processo, per esempio se ho un editor
+di testo che è scritto in memoria fisica e questo editor di testo non ha componenti
+sovrascrivibili allora io lo posso associare a 20 processi che usano lo stesso editor
+chiamandolo da indirizzi logici e tabelle delle pagine diverse, per le risorse che
+possono essere sovrascritte questo non si può fare poichè si avrebbero problemi di
+conflitti nella scrittura. Per proteggere e validare questi dati la tabella delle
+pagine e la TLB si dispongono di bit per la conferma del dato, per esempio il valid
+bit che determina se l'informazione che abbiamo in TLB o in tabella delle pagine è
+correttamente caricata in RAM, o il lock, usato per la condivisione della memoria e
+infine il protection bit che permette di validare gli accessi sicuri alla memoria, se
+questi accessi non sono sicuri verrà chiamata una trap in particolare un page fault,
+ovvero un'eccezione. Infine bisogna parlare di come questa tabella delle pagine sia
+composta, infatti ne esistono di tre tipi diversi:
+ * Hashing -> permette di avere una funzione hash per la ricerca e l'inserimento dei
+              dati all'interno della tabella delle pagine, in particolare l'indirizzo
+	      logico viene trasformato in un hash che viene usato per la ricerca in
+	      tabella delle pagine.
+ * Gerarchica -> questa implementazione ha come caratteristica quella di avere non una
+ 	      sola tabella delle pagine, bensi una serie di tabelle delle pagine per
+	      l'accesso alle altre tabelle delle pagine. Questo porta a dei tempi di
+	      computazione, su grandi moli di dati, molto alti
+ * Invertita -> In questo sistema si usa una sola tabella delle pagine per tutti i
+ 	      processi e ogni processo cerca in essa tramite il PID, ovvero il process
+	      ID e l'ASID, che contraddistingue due pagine appartenenti a due processi
+	      diversi.
+
+
