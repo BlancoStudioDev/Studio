@@ -1,0 +1,30 @@
+Domanda:
+La protezione dei file in un sistema di elaborazione monoprocessore: si descrivano il
+concetto di protezione dei file e sue principali realizzazioni, evidenziandone caratteristiche,
+vantaggi e limiti.
+
+Scheletro:
+
+Criteri - Meccanismi
+
+Principio di privilegio di minimo
+
+Processi e oggetti (file/programmi/semafori - CPU/memoria/stampanti/dischi)
+
+Struttura domini
+ * Matrice d'accesso
+   - lista d'accesso
+   - lista d'abilitazione
+   - tabella globale (lista di triple)
+   - chiave serratura
+
+Revoca dei diritti:
+ * Immediata ritardata
+ * globale parziale
+ * selettiva generale
+ * temporanea permanente
+
+-> Riaquisizione
+-> Puntatori all'indietro
+-> Riferimento indiretto
+-> Chiavi
