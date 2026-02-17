@@ -1,0 +1,34 @@
+Domanda:
+Il file system in un sistema di elaborazione monoprocessore: si descrivano il
+concetto di file e di file system e le loro principali realizzazioni,
+evidenziandone caratteristiche, vantaggi e limiti.
+
+Risposta:
+
+I file come li conosciamo tutti sono la più piccola parte del nostro sistema, contenuti per
+esempio in cartelle, questo insieme di oggetti che l'utente vede ad alto livello è chiamata
+file system e serve per tenere in modo organizzato una serie di file, dati e oggetti. Un file
+ha diversi attributi come nome e tipo per esempio e il sistema operativo può offrire delle
+chiamate di sistema su questi file come per esempio crearli, scriverci dentro o leggerli e
+molte altre. Insieme a queste funzioni di sistema si aggiunge anche la parte della condivisione
+dei file che comporta l'esistenza di meccanismi come lock e semafori. Un singolo file può
+essere di vari tipi: una sequenza di byte, linee di lunghezza fissa, documenti formattati.
+Come detto in precedenza in un file system oltre ai file ci sono anche le directory ovvero
+file speciali che contengono i puntatori ad altri file e i volumi che sono partizioni di
+disco in cui sono memorizzati directory e file. All'interno di queste directory possiamo
+operare anche a livello utente operazioni come ricerca file o creazione di file e directory
+e altre funzioni. La struttura di queste directory può essere di diversi tipi: su un livello,
+su due livelli (autoesplicative), ad albero, a grafo aciclioco (come un albero ma mettendo
+puntatori ad un file in più file) e grafo generale (permette i cicli). La protezione di questo
+file system è necessaria soprattutto in un sistema multi utente, in questi sistemi ogni
+directory ha il bisogno di avere dei domini per a sua protezione implementabili con una lista
+d'accesso. Esistono diversi tipi di utenti, proprietario, gruppo o altri, questi utenti
+secondo i domini delle directory, se abilitati possono accedervi, possono farlo anche in
+LAN, SSH, SFTP o HTTP, dipendendo comunque dai privilegi che l'owner gli ha dato. L'implementazione
+è fatta su diversi livelli. La realizzazione delle directory è fatta tramite dei file
+speciali che contengono dei puntatori ad altri file, realizzabili con liste concatenate
+o tabelle. L'allocazione dei file viene fatta in diversi modi: contigua, collegata, con
+una tabella di allocazione dei file e con l'allocazione indicizzata. 
+
+
+NON FINITA
