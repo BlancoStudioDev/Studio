@@ -1,0 +1,27 @@
+Domanda: 
+La gestione delle periferiche in un sistema di elaborazione monoprocessore: si descriva l’organizzazione 
+del software di sistema per la loro gestione e le principali funzioni che esso deve realizzare,
+evidenziandone caratteristiche, vantaggi e limiti.
+
+Scheletro:
+
+Introduzione
+Organizzazione
+ * Sottosistema Kernel
+ * Interrupt
+ * Driver
+
+Attività:
+ * Interazioni
+   - Polling
+   - Interrupt
+
+ * Ottimizzazione e strutture dati
+   - Scheduling
+   - Caching
+   - Buffering
+   - Spooling (code su disco)
+
+ * DMA
+
+
