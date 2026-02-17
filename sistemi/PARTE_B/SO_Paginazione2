@@ -1,0 +1,61 @@
+Domanda:
+La gestione della memoria paginata in un sistema di elaborazione monoprocessore: 
+se ne dia la definizione e se ne presenti la realizzazione e la gestione, 
+evidenziandone caratteristiche, vantaggi e limiti.
+
+Risposta:
+
+La memoria paginata è una tecnica per la gestione della memoria che fa affidamento
+sulla divisione in memoria logica e memoria fisica. Queste due parti sono divise in
+maniera differente, la memoria logica, ovvero quella che utilizzano i processi, è
+divisa in pagine, che sono di dimensione costante e vengono tradotte da indirizzi
+logici a indirizzi fisici per poi scrivere in memoria fisica. Per fare questo vengono
+usate diverse tecniche e componenti come la MMU, la TLB e la tabella delle pagine. Di
+seguito verrà spiegato l'iter di traduzione: un processo richiede un dato, chiamandolo
+con un indirizzo logico, esso è diviso in due parti il numero della pagina e il numero
+dell'offset, il numero della pagina viene preso e cercato all'interno della TLB, ovvero
+una piccola cache che contiene tutte le traduzioni da indirizzo logico a indirizzo
+fisico che sono stati usati nel breve periodo, se la traduzione non è presente in questa
+piccola cache allora la MMU, che si occupa anche di interrogare la TLB, andrà a cercare
+la traduzione di questo indirizzo logico all'interno della tabella delle pagine. Questa
+tabella contiene tutte le traduzioni di tutti gli indirizzi usati dalla CPU e dai processi
+che operano al suo interno. Una volta tradotto l'indirizzo si prende il nuovo indirizzo
+fisico e lo si cerca nella memoria fisica ovvero la RAM. Tutto questo poi per aggiornare
+la TLB con i nuovi indirizzi. Questo tipo di memoria permette di avere al suo interno
+la condivisione di risorse tra i processi, anche se le tabelle delle pagine sono singole
+per processo. Questo viene fatto andando ad indirizzare in più tabelle delle pagine uno
+stesso indirizzo fisico, prendiamo per esempio che ci fosse un indirizzo che definisce
+un editor di testo, una risorsa immutabile nel tempo, più processi possono accedere
+all'editor di testo semplicemente andando a indirizzare, con la tabella delle pagine,
+i loro indirizzi all'editor, così facendo riduciamo la complessità delle chiamate in
+RAM, poichè prendiamo 20 processi, tutti hanno bisogno dell'editor, tutti e 20 usano
+lo stesso, l'unica cosa che cambia sono le informazioni che gli vengono passate, ma
+esse sono indirizzate in luoghi diversi della memoria. Allo stesso tempo bisogna
+specificare che tutte queste traduzioni non sono prive di protezione, bensì ci sono
+una serie di Bit, come il valid, protection e il lock, che essendo presenti in TLB
+o tabella delle pagine, permettono di capire se il dato da prendere è valido, se è
+già in condivisione con altri processi e tutta un'altra serie di cose. Infine
+bisogna andare ad analizzare la struttura di queste tabelle della pagine, ne esistono
+di 3 tipi: Hashing, Gerarchica e Invertita. La prima delle tre funziona grazie ad una
+funzione di hashing, la quale per ogni entry della tabella associa una funzione di
+creazione di un hash che poi servirà, andando a tradurre, sempre con la funzione di
+hash, l'indirizzo, a cercare la traduzione dei vari dati; La seconda consente di
+creare altre tabelle delle pagine a livelli più alti che traducono per quella a
+livello più basso, questo ha dei vantaggi di sicurezza, ma allo stesso tempo porta
+al tempo di computazione un aumento significativo, quindi poco praticabile su
+sistemi a grandi dimensioni; Infine la tabella delle pagine invertita si usa una
+sola tabella delle pagine per tutti i processi con l'aggiunta del PID, ovvero il
+process ID che permette di distinguere il processo da cui arriva l'indirizzo logico
+e a quale processo rimandare il dato e anche l'ASID, ovvero un codice che distingue
+due pagine appartenenti a due processi differenti.
+Il problema più grande di questa memoria paginata è la frammentazione, che risulta
+interna, questo significa che quando si vanno ad indirizzare i vari indirizzi lo si
+fa mettendo i dati in pagine di dimensione fissa, questo vuol dire che se una pagina
+è grande 1 e io devo mettere dati per 1.5 mezza pagina rimane libera, questo lascia
+sul lungo andare un sacco di spazio viene sprecato. Infine bisogna ricordare che la
+memoria fisica è divisa in frame di stessa dimensione delle pagine.
+
+
+
+FRAMMENTAZIONE INTERNA !!!!!!!!!!!!!
+FRAME MEMORIA FISICA !!!!!!!!!!!
