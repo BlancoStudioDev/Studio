@@ -1,0 +1,65 @@
+Domanda:
+La gestione delle periferiche in un sistema di elaborazione monoprocessore: si descriva l’organizzazione del software di sistema per la loro gestione e le principali funzioni che esso deve realizzare, evidenziandone caratteristiche, vantaggi e limiti.
+
+Risposta:
+
+I sistemi per la gestione delle periferiche sono critici per l'analisi e l'instradaento delle informazioni verso le
+componenti del computer che ne hanno bisogno. Il sottosistema di I/O si occupa proprio di questo andando a mascherare
+tutta la parte hardware e mostrando solamente il risultato lato utente. La costruzione di questo software è
+organizzata in modo gerarchico nel seguente modo:
+
+ * sottosistema di I/O kernel: fornisce un'interfaccia uniforme alle applicazioni nascondendo le differenze hardware
+ 
+ * Driver dei dispositivi: sono parti di software che permettono alla CPU e al sistema operativo di capire come
+   parlare con il dispositivo, essi possono essere standard come per tastiere e mouse, da installare forniti dal
+   produttore o da scaricare online, spesso per sistemi operativi non convenzionali come arch linux o qualche distro
+   particolare di linux. 
+
+ * Gestione degli interrupt: essi vengono gestiti andando temporaneamente a bloccare la CPU, per risolverli si chiama
+   il sistema operativo che prende in carico la richiesta e procede a risolverli con chiamate di sistema, prima però
+   necessita di sapere che con che tipo di interrupt ha a che fare e quindi lo leggerà nella IDT o interrupt
+   descriptor table. 
+
+Il sistema operativo deve quindi coordinare diverse attività critiche come: le strategie di interazione,
+l'Ottimizzazione e gestione dei dati e infine l'accesso diretto alla memoria, ma descriviamoli nel dettaglio:
+
+ * Le strategie di interazione:
+
+   Polling -> Siccome per ogni device che si va ad attaccare alla macchina la macchina ci deve comunicare allora
+   sono stati creati i device controller, essi permettono alla CPU di collegarsi ai vari device e prendere da essi le
+   informazioni necessarie, come per esempio il click del mouse, per fare questo c'è una strategia ovvero il polling
+   che consente di continuare a fare richieste a questi device controller per leggere eventuali input, questo è
+   abbastanza costoso per il procedimento di busy waiting che concerne le continue chiamate al device.
+ 
+   Interrupt -> Il dispositivo non comunica con il device controller, ma direttamente con la CPU, la CPU quindi
+   interrompe la sua esecuzione per mandare le informazioni al sistema operativo che si occupa dell'interruzione e
+   una volta risolta va a riprendere la naturale esecuzione. Una cosa che spesso accade è che ci sono più interrupt
+   contemporaneamente e questa sovrapposizione viene risolta usando un'uinterrupt mask che permette di assegnare un
+   livello di priorità agli interrupt che arrivano alla CPU ed eseguirli di conseguenza in ordine.
+
+ * Ottimizzazione e gestione dei dati:
+   
+   Scheduling dell'I/O -> viene gestito lo scheduling dell'input e output per gestire l'ordine di esecuzione delle
+   richieste
+
+   Buffering -> viene utilizzato un buffer con un meccanismo di produttore consumatore per prendere in carico le
+   richieste
+
+   Caching -> mantenimento dei dati in memorie veloci come la cache per ottimizzare accessi futuri avendo già i dati
+   che verranno utilizzati
+
+   Spooling -> gestione dei dispositivi tramite code su disco evitando che i flussi di diverse APP si mescolino
+
+ * DMA:
+   
+   Direct Memory Address, permette di avere un accesso diretto alla memoria senza passare per CPU, con i meccanismi di
+   prima o per device controller, i dati vengono direttamente scritti in memoria, per esempio efficientissimo per hard
+   disk.
+
+Vantaggi di questi sistemi sono che permettono di avere molti dispositivi connettibili alla macchina senza dover avere
+sistemi operativi proprietari per ogni macchina, inoltre la protezione garantisce che non ci siano problemi poichè lo
+utente non può accedere alle funzioni hardware per modificarne la struttura. I grandi limiti sono l'overhead, ovvero
+la lentezza nella computazione se ogni volta devo leggere i driver per poi soddisfare una richiesta e la complessità
+nel debug.
+
+
