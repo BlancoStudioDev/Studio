@@ -1,0 +1,62 @@
+Domanda:
+La protezione dei file in un sistema di elaborazione monoprocessore: si descrivano il
+concetto di protezione dei file e sue principali realizzazioni, evidenziandone caratteristiche,
+vantaggi e limiti.
+
+Risposta (con scheletro sotto):
+
+La protezione dei file all'interno di un sistema di elaborazione monoprocessore è un punto
+chiave per la sicurezza del sistema e per la sua buona riuscita; per prima cosa andiamo a
+definire una serie di termini cruciali per la risposta che andremo a sviluppare: i criteri
+sono le regole che definiscono come un sistema si deve muovere, mentre i meccanismi sono
+come un sistema sfrutta i criteri astratti mettendoli in pratica nel sistema. All'interno
+del sistema vige uno dei principi fondamentali di un sistema operativo, che è anche uno
+degli elementi più forti per la protezione del sistema, ovvero il principio del privilegio
+minimo, questo principio permette di andare ad assegnare ai processi solamente le risorse
+minime di cui ha bisogno, così in caso di fallimento di quella parte porterà con se solamente
+il fallimento di quelle risorse e non di tutto il sistema. Bisogna infine definire qualche
+altro termine: dominio, processi e oggetti; i domini sono una serie di privilegi e diritti
+che vengono assegnati ad un utente, ma anche ad un processo, i processi sono componenti del
+sistema come per esempio i semafori, i file e i programmi in esecuzione sull'architettura,
+infine gli oggetti sono gli oggetti fisici che sono contenuti nel sistema, come per esempio
+la RAM, la CPU e la memoria. Un ulteriore principio necessario da citare è quello di necessità
+principio che permette in ogni momento dell'esecuzione di assegnare ai processi solamente le
+risorse che gli servono, non di più, permettendo così di aumentare la sicurezza. A questo
+punto bisogna capire come si assegnano questi diritti di accesso ai dati e alle risorse, in
+particolare questo biene fatto con una matrice, chiamata matrice degli accessi o matrice d'accesso,
+essa contiene sulle righe i domini, quindi l'insieme dei diritti e dei privilegi, e sulle
+colonne contiene, nella matrice base, le risorse del sistema, nelle posizioni 1,j della
+matrice troviamo le varie operazioni che possono essere fatte su quella risorsa possedendo
+un determinato dominio. A questo punto dobbiamo definire cos'è un dominio statico e un 
+dominio dinamico, o privilegi statici e dinamici, in particolare un dominio può essere
+assegnato in modo statico o in modo dinamico, nel caso in cui esso sia statico i suoi
+diritti e privilegi non verranno mai cambiati nel tempo questo però è un problema se
+pensiamo che un processo potrebbe avere più diritti di quanti ne necessita in una determinata
+area del file system, allo stesso tempo è un sistema veloce poichè non si avrà mai
+un cambio di dominio, l'assegnamento dinamico invece consente di switchare dinamicamente 
+i vari domini, questo grazie sempre alla matrice d'accesso, inserendo all'interno delle
+colonne i domini, quindi ci saranno delle celle i,j che avranno sia riga che colonna
+con domini e potranno andare a scrivere nella propria cella switch consentendo lo switch 
+di domini. Nella tabella possiamo anche andare a srivere chi ha il permesso di owner
+di una determinata risorsa, il quale ha la possibilità di dare e revocare i domini.
+Siccome come appena detto questo sistema è implementato tramite matrice, di costo
+di accesso al peggio O(n+*(n+m)) dove n è il numero delle risorse e m il numero dei domini
+allora questo costo diventa molto grande molto velocemente, per questo esistono
+rappresentazioni più semplici, come la tabella d'accesso, che implementa la matrice
+come un array di triple: dominio, oggetto, privilegio. Un altro metodo di rappresentazione
+è quello di lista d'accesso, a ogni colonna è una lista d'accesso per oggetto, un
+altro metodo è quello della lista di abilitazione che fa la stessa cosa ma sulle righe,
+infine vi è la rappresentazione chiave serratura, un diritto associato ad un file ha
+un codice univoco, per accedervi il processo deve matchare questo codice. Infine
+oltre a dare i diritti li si può anche revocare, sempre per il discorso della dinamica,
+per fare questo con delle liste d'accesso è abbastanza semplice poichè basta scorrere
+all'interno della lista di una risorsa e cancellare un tipo di dominio, questa operazione
+può essere fatta immediatamente o ritardata, totale o parziale, temporanea o permanente e
+generale o selettiva; questa operazione nelle liste di abilitazione è più complessa e
+viene implementata in 4 modi diversi: riaquisizione -> vengono cancellati tutti i domini
+dopo tot tempo e il processo deve riottenerli, puntatori all'indietro -> viene mantenuta
+una lista con i puntatori e per eliminare i domini si seguono queste liste e si cancellano
+i puntatori, rifermineto infiretto -> l'abilitazione punta all'elemento di una tabella globale,
+la revoca viene fatta andando a cancellare questo puntatore, chiavi -> ogni oggetto ha una
+chiave che deve coincidere con la master key dell'oggetto, se quest'ultima cambia allora si
+invalidano tutte le altre key.
