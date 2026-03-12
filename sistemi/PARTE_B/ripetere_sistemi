@@ -1,0 +1,37 @@
+Allocazione dei file:
+● Allocazione contigua: ogni file occupa un certo numero di blocchi contigui su disco. Si memorizza per ogni file indirizzo di inizio e lunghezza in blocchi. Accessi sequenziali e diretti sono rapidi, ma si crea frammentazione esterna. una soluzione sono gli extent si trova un altro buco in cui inserire altri blocchi e si memorizzano le posizioni dei frammenti. Ottime prestazioni, ma vanno evitate eccessive frammentazioni.
+● Allocazione collegata: si memorizza per ogni file un puntatore a blocco iniziale e finale, e in ogni blocco c’è il puntatore al successivo. Ciò permette rapidi accessi sequenziali. 
+I puntatori occupano nell’insieme molto spazio, e un puntatore corrotto causa la perdita del file. Lo “spreco” di spazio per i puntatori si riduce, al prezzo di frammentazione interna, raggruppando più blocchi in un cluster, e inserendo un puntatore per cluster.
+● Una variante comune è la FAT (File Allocation Table): per ogni file si memorizza il blocco iniziale, e in una locazione speciale del disco si mantiene una tabella (FAT) che per ogni blocco del disco contiene o il blocco successivo o fine file o 0 se è vuoto. La FAT va tenuta in memoria centrale per avere prestazioni elevate.
+● Allocazione indicizzata: per ogni file si mantiene, tipicamente nel FD, un array di puntatori, ognuno dei quali punta un blocco del file. Supera tutti i problemi delle altre soluzioni, ma è critica la dimensione del blocco indice: 
+-troppo piccolo non permette file grandi
+-troppo grande spreca spazio per file piccoli.
+ Una soluzione è una lista di blocchi indice, oppure un indice multilivello (ogni puntatore punta a un altro blocco indice, fino ad arrivare ai blocchi), oppure una soluzione mista.
+La scelta dell’algoritmo va fatta in base al tipo di accesso, la loro frequenza, … Si possono anche combinare.
+Gestione dello Spazio Libero
+Il sistema operativo deve tracciare quali blocchi del disco sono vuoti per poter allocare nuovi file. Le strategie principali sono:
+Bitmap (Vettore di bit): Utilizza un bit per ogni blocco (1=libero, 0=occupato). È ideale per trovare blocchi contigui, ma richiede molta RAM per essere efficiente.
+Lista Collegata: Ogni blocco libero punta al successivo. Semplice per trovare il primo blocco disponibile, ma lenta nel cercare sequenze di blocchi.
+Raggruppamento: Una variante della lista in cui il primo blocco libero contiene gli indirizzi di altri n blocchi liberi.
+Conteggio: Memorizza l'indirizzo del primo blocco libero e il numero di blocchi contigui che lo seguono. Molto efficiente se il disco non è eccessivamente frammentato.
+Ottimizzazione delle Prestazioni
+Per ridurre i tempi di accesso al disco (molto più lenti della RAM), si utilizzano diverse tecniche:
+Caching: Uso di una Buffer Cache o Page Cache in memoria centrale. La tecnica di sostituzione più usata è la LRU (Least Recently Used).
+Memoria Virtuale Unificata: Integra la cache del file system con la gestione della memoria virtuale, evitando doppie copie di dati.
+Strategie di Lettura:
+Read-ahead: Carica in anticipo i blocchi durante letture sequenziali.
+Free-behind: Libera immediatamente i blocchi letti per far spazio a nuovi dati.
+RAM Disk: Porzioni di memoria centrale gestite come dischi virtuali per velocità estreme (ma volatili).
+
+ Montaggio e Coerenza del File System
+Il Mounting è l'operazione che rende accessibile un File System all'interno dell'albero delle directory del sistema operativo.
+Incoerenza: Si verifica se il sistema crasha mentre ci sono dati non ancora scritti su disco (presenti solo in cache).
+Soluzioni: * Controllo di coerenza: Scansione del disco al riavvio (es. fsck), non sempre risolutiva.
+Scritture Sincrone: Sicure ma lente.
+Journaling (Log): Registra le operazioni prima di eseguirle, permettendo un ripristino rapido e sicuro in caso di guasto.
+
+Virtual File System (VFS):
+Il VFS è uno strato di astrazione che permette al sistema operativo di interagire con diversi tipi di File System (locali, di rete, ecc.) in modo uniforme.
+Trasparenza: Le chiamate di sistema (open, read, write) sono le stesse a prescindere dal tipo di FS sottostante.
+vnode: Ogni oggetto (file o directory) è rappresentato da un vnode con un identificativo unico a livello di sistema, traducendo le richieste generiche in comandi specifici per il modulo del file system reale.
+
