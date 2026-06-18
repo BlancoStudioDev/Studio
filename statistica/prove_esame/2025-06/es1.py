@@ -1,83 +1,72 @@
+## --------------------
+#  Esercizio 1
+## --------------------
+#
+# In questo esercizio ipotizzeremo che sia fisso il numero di volte, nell'arco di un mese, che in
+# un centro medico viene eseguito un dato esame. Indicato con oЄN tale numero, sia pЄ[0, 1] la
+# probabilità che un utente che effettua l'esame non debba pagare la prestazione medica, perché
+# è coperto dal sistema sanitario pubblico. Siano, infine, $X1,... Xo$ delle variabili aleatorie,
+# ognuna delle quali assume le seguenti specificazioni:
+
+# - 1 quando la prestazione per l'i-esimo esame è riconosciuta dal sistema sanitario
+# - 0 altrimenti
+
+# 1. Che distribuzione segue $X$, indipendentemente dal valore di i?
+#
+# Una singola variabile aleatoria, X_i, anche se non prendiamo come rilevante la presenza di i
+# è un avariabile aleatoria con distribuzione Bernoulliana, poichè si tratta come un singolo
+# evento indipendente.
+#
+
+# 2. Che motivazioni utilizzereste per sostenere che le variabili aleatorie $X1,..., Xo$ sono i.i.d.?
+#
+# Le prestazioni di un singolo cliente, ovvero i suoi esami, non influenzano gli esami delle altre
+# persone, e pertanto non devono essere viste come variabili che dipendono da altre, ma completamente
+# indipendati
+#
+
+# 3. Sia $M$ la somma da i a o di $Xi$. Quando si verifica l'evento $M$=m?
+#
+# L'evento M si verifica nel momento che viene verificato m, quindi che M = m effettivamente.
+#
+
+# 4. Che distribuzione segue $M$?
+#
+# Distribuzione Binomiale, in quanto è una successione di diverse Bernoulliane, pertanto, se mette insieme
+# diverse Bernoulliane ottengo una Binomiale.
+#
+
+# 5. Indichiamo con $R$ la variabile aleatoria che indica il rimborso totale ottenuto dal centro medico in
+# un mese. Esprimete $R$ in funzione r e di una o più tra le variabili aleatorie introdotte, scegliendole
+# opportunamente. Esprimete poi la probabilità P(R) in funzione di o, p, r e x.
+#
+# R = r*M
+#
+# P(R) -> R = r*m -> P(R = x) = P(r*M = x) = P(M = x/r) = binom(o x/r) * p**(x/r) * (1-p)**(o - (x/r))
+#
+
+# 6. Calcolate il valore atteso e la varianza di R, esprimendoli in funzione di r, o e p
+#
+# Il valore atteso è definito come E[R] = r*E[M] = r * o * p, mentre la varianza è Var(R) = r**2Var(M) =
+# = r**2 * o * p *(1-p)
+#
+
+# 7. Solo in questo punto fissiamo r = 35, o = 40 e p=0.2. Disegnate il grafico della funzione di
+# massa di probabilità di R e commentate il risultato ottenuto
+#
+
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
-import statsmodels.api as sm
-from sqlalchemy.sql import true
+import scipy.stats as stats
+from scipy.special import binom
 
-esami = pd.read_csv("esami.csv")
-print(esami.head())
+o = 40
+p = 0.2
+r = 35
 
-print("\nValori nulli per colonna:")
-print(esami.isnull().sum())
+x = np.arange(0, o * r)
+y = binom(o, (x / r)) * p ** (x / r) * (1 - p) ** (o - (x / r))
 
-y = esami["mese"].value_counts().sort_index()
-x = y.index
 plt.bar(x, y)
-plt.show()
-
-print(esami["mese"].value_counts().sort_index())
-
-print(esami["mese"].corr(esami["tot_rimborsato"]))
-
-x = esami["mese"]
-y = esami["tot_rimborsato"]
-plt.scatter(x, y)
-plt.show()
-
-
-esami["inverno"] = esami["mese"].isin([12, 1, 2]).astype(int)
-esami["altri"] = esami["mese"].isin([3, 4, 5, 6, 7, 8, 9, 10, 11]).astype(int)
-
-print(
-    "\nCorrelazione inverno/tot_rimborsato:",
-    esami["inverno"].corr(esami["tot_rimborsato"]),
-)
-
-esami.boxplot(column="tot_rimborsato", by="inverno")
-plt.show()
-
-esami["estivo_rimborso"] = esami["tot_rimborsato"].isin([12, 1, 2]).astype(int)
-esami["altri_rimborso"] = (
-    esami["tot_rimborsato"].isin([3, 4, 5, 6, 7, 8, 9, 10, 11]).astype(int)
-)
-
-sm.qqplot(esami.mese, line="s")
-plt.show()
-
-sm.qqplot(esami[esami.inverno == 0].tot_rimborsato, line="s", fit=True)
-plt.show()
-
-sm.qqplot(esami[esami.altri == 0].tot_rimborsato, line="s", fit=True)
-plt.show()
-
-esami["a_caso"] = esami["mese"].isin([1, 3]).astype(int)
-
-print(esami["a_caso"])
-
-
-m = 2
-
-
-def f(x, m):
-    if x < 0 or x > m:
-        return 0
-    return 2 / m - (2 * x) / (m**2)
-
-
-def F(x, m):
-    if x < 0:
-        return 0
-    elif x > m:
-        return 1
-    return (2 * x) / m - (x**2) / (m**2)
-
-
-x = np.linspace(-1, m + 1, 200)
-y = [f(i, m) for i in x]
-Y = [F(i, m) for i in x]
-
-plt.plot(x, y)
-plt.show()
-
-plt.plot(x, Y)
 plt.show()
