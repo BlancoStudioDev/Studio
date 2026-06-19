@@ -1,0 +1,327 @@
+Esercizio 01:
+appunti lezione del 20260316
+SQL (Structure Query Language) - SELECT
+DDL (Data Definition Language) - CREATE/ALTER/DROP
+DML (Data Manipulation Language) - INSERT/UPDATE/DELETE
+comandi di interrogazione
+
+Esercizio 02:
+AS nella clausola SELECT è l'operatore di ridenominazione
+
+Esercizio 03:
+restituire i film prodotti nel 2010 e mostrare id, title e year nel risultato
+
+Esercizio 04:
+restituire i film prodotti in anni diversi da 2010 e mostrare id, title e year nel risultato
+
+Esercizio 05:
+restituire i dati dell'attore Leonardo DiCaprio
+
+Esercizio 06:
+i confronti sono case sensitive
+
+Esercizio 07:
+postgres offre numerose funzioni built-in per i confronti con diversi tipi di dato
+https://www.postgresql.org/docs/9.1/functions-string.html
+https://www.postgresql.org/docs/current/functions-datetime.html
+la funzione lower/upper converte a lowercase/uppercase il valore di una stringa
+char_length restituisce la lunghezza in caratteri di una stringa
+
+Esercizio 08:
+restituire i dati delle persone nate il giorno 11 novembre 1974
+
+Esercizio 09:
+restituire le persone nate nel 1974
+
+Esercizio 10:
+soluzione con between (operatore SQL)
+
+Esercizio 11:
+soluzione con uso di funzioni Postgres
+extract permette di estrarre una parte da un valore di tipo date
+to_char restituisce un dato come char specificando il formato
+:: è l'operatore di casting da un tipo di dato a un'altro (float to text in questo caso)
+
+Esercizio 12:
+restituire i film con durata compresa tra 1 e 2 ore
+
+Esercizio 13:
+restituire le pellicole con anno più recente del 2010 e durata compresa fra 1 e due ore estremi esclusi
+
+Esercizio 14:
+restituire le pellicole con anno più recente del 2010 oppure durata compresa fra 1 e due ore estremi esclusi
+tenere presente che gli operatori booleani sono applicati da sinistra a destra
+l'uso di parentesi permette di personalizzare la precedenza delle operazioni
+
+Esercizio 15:
+trovare le pellicole prodotte negli anni 2011, 2013, 2015
+
+Esercizio 16:
+trovare le persone delle quali non si conosce la data di decesso
+
+Esercizio 17:
+trovare le persone decedute
+
+Esercizio 18:
+1031 film nella tabella movie
+
+Esercizio 19:
+19 film del 2010
+
+Esercizio 20:
+987 film che non sono del 2010
+
+Esercizio 21:
+25 film per i quali non conosciamo il valore di year
+trovare i film che riguardano assassini (murder)
+intendiamo film che hanno murder nel titolo
+like prevedere % come wildcard: qualunque stringa
+like prevedere _ come wildcard: qualunque stringa di 1 carattere
+
+Esercizio 22:
+trovare i film che hanno murder all'inizio del campo
+
+Esercizio 23:
+trovare i film che hanno murder alla fine
+
+Esercizio 24:
+film che hanno "murder" nella trama
+ilike - like insensitive (operatore postgres non disponibile in altri dbms)
+
+Esercizio 25:
+come posso escludere i casi di declinazione di murder (murdering, murders)
+
+Esercizio 26:
+modifico il titolo del film 0058329
+inserisco una "anomalia" nel titolo, cioè uno spazio bianco all'inizio della stringa
+
+Esercizio 27:
+trovare i dati del film Marnie
+funzione trim per eliminare spazi bianchi all'inizio e alla fine di un campo
+
+Esercizio 28:
+trovare le persone nate nel 1980 ordinando per nome crescente
+ordinamento del risultato
+ASC ordinamento predefinito
+ASC/DESC modalità crescente o decrescente
+
+Esercizio 29:
+ordinare rispetto alla data di nascita (ASC) e poi al nome (DESC)
+
+Esercizio 30:
+operazioni di join
+trovare il titolo delle pellicole di genere Thriller
+
+Esercizio 31:
+questa è l'operazione di prodotto cartesiano fra genre e movie
+
+Esercizio 32:
+cardinalità del prodotto cartesiano:
+2483 record in imdb.genre
+1031 record in imdb.movie
+2483x1031 record nel prodotto cartesiano
+questo è il join dove seleziono i record corrispondenti nel prodotto cartesiano
+
+Esercizio 33:
+sintassi alternativa
+
+Esercizio 34:
+risultato della query
+trovare il titolo delle pellicole di genere Thriller
+
+Esercizio 35:
+ordina il risultato in base al titolo
+
+Esercizio 36:
+trovare il nome degli attori che recitano in inception
+
+Esercizio 37:
+trovare i film che sono Comedy e Thriller
+questa soluzione è errata: restituisce sempre insieme vuoto
+
+Esercizio 38:
+questa soluzione è errata: ottengo film che sono di un solo genere
+
+Esercizio 39:
+la soluzione utilizza self-join
+
+Esercizio 40:
+altra soluzione con subquery o query innestata o query nidificata
+
+Esercizio 41:
+altra soluzione con intersect
+
+Esercizio 42:
+soluzione in cui restituisco anche il titolo nel risultato
+
+Esercizio 43:
+altra soluzione con subquery o query innestata o query nidificata
+
+Esercizio 44:
+altra soluzione con intersect
+
+Esercizio 45:
+la seguente è equivalente come soluzione?
+no: due pellicole distinte possono avere lo stesso titolo e finirebbero erroneamente nel risultato
+
+Esercizio 46:
+Appunti lezione del 20260318
+selezionare il titolo delle pellicole prodotte negli Stati Uniti
+
+Esercizio 47:
+selezionare i paesi nei quali sono state distribuite le pellicole del 2010
+posso eliminare i duplicati nel risultato? uso la clausola distinct in select
+
+Esercizio 48:
+aggiungo il titolo della pellicola al risultato
+
+Esercizio 49:
+selezionare le pellicole per le quali non è noto il titolo di distribuzione in Italia
+selezionare gli attori che hanno recitato nel film Inception
+selezionare gli attori che hanno recitato in pellicole del 2010
+selezionare le persone che sono decedute in un paese diverso da quello di nascita
+
+Esercizio 50:
+nella query sopra, cosa succederebbe se fosse possibile avere NULL sull'attributo location.country?
+esempio: individuo nato in CAN e deceduto [NULL]
+questi record non apparterrebbero al risultato: i valori NULL sono sempre ignorati nelle operazioni di confronto
+mostrare il nome degli individui selezionati nella query precedente
+
+Esercizio 51:
+common table expressions (CTE)
+https://www.postgresql.org/docs/current/queries-with.html
+
+Esercizio 52:
+alternativa con cte in altra versione
+
+Esercizio 53:
+in una base di dati relazionale è possibile definire  viste (view)
+una vista è una query la cui definizione è memorizzata nel db e può essere usata in altre query
+una vista non materializza il risultato della query, memorizza solo la definizione
+creare una vista che memorizza i generi di ciascun movie
+
+Esercizio 54:
+la vista può essere ora usata in altre query
+la vista è utile per personalizzare i permessi di accesso sui dati delle relazioni nel db
+trovare il titolo dei film di genre Thriller
+la vista non materializza il risultato della query
+
+Esercizio 55:
+selezionare i film che non hanno materiali associati
+sono i film che compaiono in movie e non compaiono come chiave esterna in material
+
+Esercizio 56:
+postgreSQL mette a disposizione il comando EXPLAIN per stimare il tempo di esecuzione di uno statement SQL
+https://www.postgresql.org/docs/current/sql-explain.html
+
+Esercizio 57:
+soluzione alternativa
+explain analyze
+
+Esercizio 58:
+soluzione alternativa
+join esterno - left join
+A left join B on A.c = B.d contiene il risultato del join interno (inner) al quale si aggiungono le tuple spurie della relazione A (cioè la relazione a sinistra del join)
+explain analyze
+
+Esercizio 59:
+clausola WHERE ugualmente valida:
+where material.id is null;
+selezionare i paesi nei quali non sono prodotti film
+selezionare i film per i quali esistono materiali multimediali di tipo immagine o materiali testuali di qualche genere
+union filtra i duplicati (cioè i record che appartengono al risultato di entrambe le query in union)
+union all restituisce anche i duplicati (quindi avremo due record per una pellicola che appartiene al risultato di entrambe le query in union)
+
+Esercizio 60:
+selezionare i film per i quali esistono materiali multimediali di tipo immagine e materiali testuali di qualche genere
+explain analyze
+
+Esercizio 61:
+soluzione alternativa con cte e join
+explain analyze
+
+Esercizio 62:
+selezionare i film per i quali esistono materiali multimediali di tipo immagine o materiali testuali, ma non entrambi (or esclusivo)
+selezionare i paesi nei quali non sono prodotti film
+
+Esercizio 63:
+resetituire il nome dei paesi nei quali non sono prodotti film
+
+Esercizio 64:
+alternativa
+
+Esercizio 65:
+versione con natural join
+
+Esercizio 66:
+alternativa (subquery)
+
+Esercizio 67:
+alternativa (outer join)
+
+Esercizio 68:
+oltre al join esterno a sinistra esiste il join esterno a destra (right outer join)
+A right join B on A.c = B.d contiene il risultato del join interno (inner) al quale si aggiungono le tuple spurie della relazione B (cioè la relazione a destra del join)
+
+Esercizio 69:
+un'ulteriore versione di join esterno è il full outer join
+A full join B on A.c = B.d contiene il risultato del join interno (inner) al quale si aggiungono le tuple spurie della relazione A (cioè la relazione a sinistra del join) e le tuple spurie della relazione B (cioè la relazione a destra del join)
+ulteriore versione
+restituire i country c per i quali non esiste un record di produced con movie = c.iso3
+query correlata: si dice correlata una query nidificata dove la subquery contiene riferimenti a relazioni nella main query
+
+Esercizio 70:
+selezionare le pellicole prodotte solo in Italia
+cerco film prodotti in italia e non prodotti altrove
+
+Esercizio 71:
+questa soluzione non offre il risultato desiderato
+i filtri su country vengono fatti dopo il join quindi la clausola left non trova tuple spurie e la condizione is null non trova alcun risultato
+
+Esercizio 72:
+questa soluzione è corretta: filtrando n_ita.country <> 'ITA' nella clausola di join permette di includere la tupla 002-ITA come spuria
+
+Esercizio 73:
+prodotto cartesiano di produced m_ita e produced n_ita
+
+Esercizio 74:
+record nel join interno (inner) considerando la clausola from:
+imdb.produced m_ita inner join imdb.produced n_ita on m_ita.movie = n_ita.movie and n_ita.country <> 'ITA'
+
+Esercizio 75:
+record nel join esterno a sinistra (left) considerando la clausola from:
+imdb.produced m_ita left join imdb.produced n_ita on m_ita.movie = n_ita.movie and n_ita.country <> 'ITA'
+al risultato di inner si aggiunge l'unico record spurio di produced:
+
+Esercizio 76:
+soluzione con cte
+i filtri su m_ita e n_ita sono fatti prima del left join
+
+Esercizio 77:
+soluzione con except
+
+Esercizio 78:
+restituire il titolo dei film con durata superiore alla durata di Inception
+Trovare i film thriller con la migliore valutazione
+questa soluzione non è soddisfacente
+limit è una clausola che limita il risultato al numero di record specificato. Utile quando si deve paginare il risultato di una query (usandola insieme alla clausola OFFSET)
+non è soddisfacente perchè  qualora ci fossero più film con la medesima valutazione massima solo il primo sarebbe restituito e gli altri sarebbero esclusi
+
+Esercizio 79:
+la valutazione massima è quella che non risulta inferiore ad altre valutazioni
+uso join per trovare le valutazioni che non sono massime (sono inferiori ad almeno un'altra)
+uso except per trovare la valutazione massima
+
+Esercizio 80:
+soluzione con left join
+questa soluzione funziona solo se il movie con valutazione massima ha un'unica valutazione
+
+Esercizio 81:
+soluzione con exists
+
+Esercizio 82:
+restituire le coppie di attori che hanno recitato insieme in almeno due film diversi
+selezionare le persone che hanno recitato in film nei quali erano registi
+trovare le coppie di pellicole che non hanno generi in comune
+Trovare le persone che hanno partecipato ad almeno due film distinti usciti nello stesso anno
+
