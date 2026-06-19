@@ -63,3 +63,4 @@
 #
 # P(|X - \mu| <= \epsilon) = P(-\epsilon <= X - \mu <= \epsilon) = P(-\epsilon/(\sigma) <= X - \mu <= \epsilon/(\sigma)) =
 # = 2*phi(\epsilon/(sigma)) - 1
+#
