@@ -25,8 +25,9 @@ a = (3 * risultati.punteggio.mean() - 1) / 2
 # precedente comporti un errore (in valore assoluto) minore o uguale di 1.
 
 print(
+    "formula:",
     2 * stats.norm.cdf(1 / (np.sqrt((a**2 + a - 2) / (8 * len(risultati.punteggio)))))
-    - 1
+    - 1,
 )
 
 # 3. Indichiamo con X la variabile aleatoria che descrive il punteggio ottenuto. Il test si considera sostenuto
