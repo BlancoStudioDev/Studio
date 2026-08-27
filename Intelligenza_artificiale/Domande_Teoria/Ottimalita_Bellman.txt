@@ -1,0 +1,16 @@
+Domanda: Che cosa è il principio di ottimalità di Bellman e quale impatto ha sulla risoluzione di un MDP?
+
+
+Il Principio di ottimalità di Bellman afferma che: una politica ottima ha la proprietà che, 
+qualunque sia lo stato iniziale e la decisione presa in quello stato, le decisioni rimanenti
+devono costituire una politica ottima rispetto allo stato risultante della prima decisione.
+
+Questo consente che se una politica è ottima, ovvero una sequenza di decisioni è ottima, allora
+io posso scomporre questo problema in sotto parti che saranno sempre ottime, quindi di analizzarle 
+separatamente.
+
+Questo principio rende possibile la creazione della seguente equazione: U(s) = max_a Σ_s' P(s'|s,a) [R(s,a,s') + γU(s')]
+Essa consente di risolvere il problema della Value Iteration e Policy Iteration, senza dover valutare
+le possibili conseguenze. Ogni stato può essere valutato tramite il valore ottimo degli stati successivi,
+permettendo un calcolo iterativo sull'utilità dello stato e quindi una politica ottima.
+
