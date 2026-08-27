@@ -1,0 +1,19 @@
+Domanda: Come è definito un problema di classificazione binaria e con quali metriche si può valutare la performance di un 
+         classificatore per questo tipo di problema?
+
+
+Un problema di classificazione binaria è un problema di Machine Learning supervisionato in cui l'obiettivo del modello è assegnare ogni istanza di input a una di due classi mutuamente esclusive (tipicamente etichettate come Positivo/Negativo, 1/0, Vero/Falso).
+
+Metriche di valutazione principali per classificatori binari:
+
+Accuratezza (Accuracy): Percentuale di predizioni corrette (sia TP che TN) sul totale dei casi. Utile se le classi sono bilanciate.
+
+Precisione (Precision): Rapporto tra i Veri Positivi e tutti i previsti Positivi (TP / (TP+FP)). Misura l'affidabilità quando il modello dice "Sì".
+
+Richiamo o Sensibilità (Recall): Rapporto tra i Veri Positivi e i reali Positivi (TP / (TP+FN)). Misura la capacità di "non farsi sfuggire" i casi positivi.
+
+F1-Score: Media armonica tra Precision e Recall. Ottima quando il dataset è sbilanciato.
+
+Matrice di Confusione: Tabella 2x2 che riporta i conteggi di Veri Positivi, Veri Negativi, Falsi Positivi e Falsi Negativi.
+
+AUC-ROC: Misura l'area sotto la curva che traccia il tasso di veri positivi contro il tasso di falsi positivi a varie soglie decisionali.
