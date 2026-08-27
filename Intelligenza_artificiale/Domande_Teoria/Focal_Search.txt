@@ -1,0 +1,13 @@
+Domanda: 
+
+* Si descriva il funzionamento dell’algoritmo Focal Search, argomentando nello specifico su questi punti.
+    * Come sono caratterizzate le euristiche usate nell’algoritmo?
+    * Quali garanzie fornisce l’algoritmo rispetto alla soluzione ottima?
+    * Quali limitazioni pratiche ha l’algoritmo?
+
+
+Euristiche: Utilizza due euristiche. La prima (h1) deve essere strettamente ammissibile e serve per costruire l'insieme dei nodi validi (f = g + h1). La seconda (h2) è detta "focal heuristic", non ha vincoli di ammissibilità e viene usata esclusivamente per ordinare i nodi all'interno della lista FOCAL, spesso stimando il computational effort per arrivare al goal il prima possibile.
+
+Garanzie: Garantisce la Bounded Sub-Optimality. Significa che il costo della soluzione trovata sarà al massimo w volte il costo ottimo (C <= w * C*), dove w >= 1 è il parametro di ampiezza della lista FOCAL.
+
+Limitazioni: Il bilanciamento del parametro w è critico (w troppo piccolo = A* classico e lento; w troppo grande = si allontana troppo dall'ottimo). Inoltre, se l'euristica h2 è fuorviante, il tempo computazionale può peggiorare drasticamente a causa di ri-espansioni inefficaci.
