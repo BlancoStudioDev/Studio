@@ -1,0 +1,13 @@
+Esercizio 5: Decision Trees (Information Gain)
+
+L'Informatica Gain (IG) misura la riduzione di incertezza (Entropia) relativa alla variabile target che si ottiene partizionando l'insieme dei dati (S) secondo un determinato attributo (A). 
+La formula è: IG(S, A) = Entropia(S) - Somma_v [ (|Sv| / |S|) * Entropia(Sv) ]
+Dove 'v' sono i possibili valori dell'attributo A, e 'Sv' è il sottoinsieme in cui A assume il valore v.
+
+Esempio:
+Abbiamo un dataset S di 10 pazienti (5 Sani, 5 Malati). L'entropia iniziale H(S) è 1.
+Scegliamo l'attributo "Febbre" (Valori: Sì, No).
+- S_sì (chi ha la febbre): 4 pazienti, di cui 3 Malati e 1 Sano. Calcoliamo H(S_sì).
+- S_no (chi non ha la febbre): 6 pazienti, di cui 2 Malati e 4 Sani. Calcoliamo H(S_no).
+L'Information Gain sarà: 1 - [ (4/10)*H(S_sì) + (6/10)*H(S_no) ]. 
+Il Decision Tree calcola l'IG per tutti gli attributi disponibili e sceglie come nodo radice (o split) quello con l'IG più alto, ovvero quello che "purifica" maggiormente i dati.
