@@ -1,0 +1,22 @@
+Domanda: 
+
+* Si descriva il funzionamento del metodo Adaptive Dynamic Programming argomentando, nello specifico, sui seguenti punti:
+    * A quale problema si applica?
+    * Di quali fasi è composto?
+    * Quali sono i suoi limiti?
+
+
+A quale problema si applica?
+L'ADP si applica a problemi di Reinforcement Learning (apprendimento per rinforzo) di tipo Model-Based, in cui l'agente deve operare in un ambiente modellabile come un MDP, ma di cui inizialmente NON conosce il Modello di Transizione P(s'|s,a) e la funzione di Reward R(s,a,s').
+
+Fasi di cui è composto:
+
+Fase di Learning (Stima): L'agente esplora l'ambiente compiendo azioni e registra le transizioni. Conta quante volte ha raggiunto s' partendo da (s, a) per stimare empiricamente la probabilità P(s'|s,a), e registra le ricompense ricevute per stimare R(s,a,s').
+
+Fase di Planning (Risoluzione): Una volta approssimato un modello interno dell'MDP tramite le statistiche raccolte, l'agente utilizza un classico algoritmo di Dynamic Programming (come Policy Iteration o Value Iteration) per risolvere l'MDP stimato e calcolare la sua policy ottima.
+
+Limiti:
+
+Curse of Dimensionality: Richiede moltissima memoria per memorizzare l'intero modello di transizione (che ha dimensione |S| x |A| x |S|). Diventa impraticabile su spazi degli stati grandi.
+
+Oneri Computazionali: Risolvere un intero MDP da zero (fase di planning) ogni volta che il modello viene aggiornato richiede tempi di calcolo eccessivi durante l'apprendimento.

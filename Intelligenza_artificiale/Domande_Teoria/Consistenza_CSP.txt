@@ -1,0 +1,11 @@
+Esercizio 5: Tipi di Consistenza in un CSP
+
+In un Constraint Satisfaction Problem (CSP) è possibile applicare procedure di inferenza per ridurre i domini prima o durante la ricerca. I tipi principali sono:
+
+Consistenza di Nodo (Node Consistency): Si riferisce ai vincoli unari (che coinvolgono 1 sola variabile). Un CSP è nodo-consistente se tutti i valori nel dominio di ogni variabile rispettano i suoi vincoli unari. Si ottiene iterando e rimuovendo i valori non validi.
+
+Consistenza ad Arco (Arc Consistency): Riguarda i vincoli binari. Una variabile X è arco-consistente rispetto a Y se per ogni valore di X esiste almeno un valore valido in Y che soddisfa il vincolo. Si rende un'intera rete arco-consistente solitamente tramite l'algoritmo AC-3.
+
+Consistenza di Cammino (Path Consistency): Generalizzazione a 3 variabili. Considera i vincoli binari implicati transitivamente. Assicura che per ogni assegnamento valido per (X, Y), esista un valore per Z che soddisfi simultaneamente i vincoli con X e Y. Algoritmo tipico: PC-2.
+
+k-Consistenza: Forma generale. Afferma che dato un assegnamento consistente per k-1 variabili, sarà sempre possibile trovare un valore compatibile per la k-esima variabile. L'arc consistency equivale alla 2-consistenza, la path alla 3-consistenza.
