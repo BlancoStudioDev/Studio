@@ -120,4 +120,7 @@ if (ztl_giornalieri.passaggi % 2 != 0).any():
 else:
     print("sono tutti passaggi pari")
 
-# 10. Validare l'ipotesi che `passaggi` contenga dei valori assimilabili ad un campione estratto da una popolazione la cui distribuzione sia la stessa della variabile aleatoria $Z$ dell'esercizio 1.
+# 10. Validare l'ipotesi che `passaggi` contenga dei valori assimilabili ad un campione
+# estratto da una popolazione la cui distribuzione sia la stessa della variabile aleatoria
+# $Z$ dell'esercizio 1.
+#
